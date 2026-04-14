@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Icon } from "astro-iconify";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <Layout title="Home" description="Welcome to my personal site.">
@@ -17,13 +18,13 @@ import { Icon } from "astro-iconify";
     </p>
     <div class="mt-8 flex gap-4">
       <a
-        href="/blog"
+        href={`${base}/blog`}
         class="inline-flex items-center px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
       >
         Read the blog
       </a>
       <a
-        href="/linktree"
+        href={`${base}/linktree`}
         class="inline-flex items-center px-4 py-2 rounded-md border border-border text-sm font-medium hover:bg-accent transition-colors"
       >
         Find me online

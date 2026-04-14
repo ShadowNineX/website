@@ -7,6 +7,7 @@ import { Icon } from "astro-iconify";
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <Layout title="Blog" description="Thoughts, projects, and more.">
@@ -23,7 +24,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
             {posts.map((post) => (
               <li>
                 <a
-                  href={`/blog/${post.id}`}
+                  href={`${base}/blog/${post.id}`}
                   class="group relative block rounded-xl overflow-hidden border border-cyan-500/20 bg-card hover:border-cyan-400/60 hover:shadow-[0_0_24px_0_oklch(0.66_0.16_195/_0.18)] transition-all duration-300"
                 >
                   {/* teal top accent bar */}
