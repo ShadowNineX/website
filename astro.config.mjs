@@ -10,8 +10,9 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
-    },
-    site: "https://shadownine.dev",
+  },
+  site: "https://shadowninex.github.io",
+  base: "/website",
 
   integrations: [sitemap(), mdx()],
 });
