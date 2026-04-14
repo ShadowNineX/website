@@ -1,0 +1,217 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Icon } from "astro-iconify";
+import { Image } from "astro:assets";
+import avatar from "@/assets/nine.jpg";
+import backgroundAvatar from "@/assets/sonic-prime-tails-nine.gif";
+
+const links = [
+  {
+    label: "GitHub",
+    href: "https://github.com/ShadowNineX",
+    description: "Repositories and projects",
+    icon: "simple-icons:github",
+    color: "#181717",
+    darkColor: "#ffffff",
+  },
+  {
+    label: "Bluesky",
+    href: "https://bsky.app/profile/shadowninex.bsky.social",
+    description: "Find me on Bluesky",
+    icon: "simple-icons:bluesky",
+    color: "#0285FF",
+  },
+  {
+    label: "MyAnimeList",
+    href: "https://myanimelist.net/profile/ShadowNine",
+    description: "Anime and manga lists",
+    icon: "simple-icons:myanimelist",
+    color: "#2E51A2",
+  },
+  {
+    label: "Last.fm",
+    href: "https://www.last.fm/user/ShadowNineX",
+    description: "Music library",
+    icon: "simple-icons:lastdotfm",
+    color: "#D51007",
+    widget: {
+      src: "https://lastfm-recently-played.vercel.app/api?user=ShadowNineX&header_style=normal_stats&footer_style=wave&maxage=60&loved=true",
+      alt: "Last.fm recently played",
+    },
+  },
+  {
+    label: "Spotify",
+    href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
+    description: "Listening to",
+    icon: "simple-icons:spotify",
+    color: "#1DB954",
+    widget: {
+      src: "https://spotify-github-profile.kittinanx.com/api/view?uid=31wl2m3aqxcky555yhqi7epzau7u&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&bar_color=3d8b37",
+      alt: "Spotify now playing",
+    },
+  },
+  {
+    label: "Steam",
+    href: "https://steamcommunity.com/id/ShadowNineX",
+    description: "Games",
+    icon: "simple-icons:steam",
+    color: "#1b2838",
+    darkColor: "#c6d4df",
+  },
+  {
+    label: "Tumblr",
+    href: "https://www.tumblr.com/blog/shadowninex",
+    description: "Tumblr",
+    icon: "simple-icons:tumblr",
+    color: "#35465C",
+  },
+  {
+    label: "Pinterest",
+    href: "https://www.pinterest.com/ShadowNineX",
+    description: "Pinterest boards",
+    icon: "simple-icons:pinterest",
+    color: "#E60023",
+  },
+];
+---
+
+<Layout title="Links" description="Find me across the web.">
+  <section class="max-w-md mx-auto pb-20">
+    <!-- Banner + avatar -->
+    <div class="relative">
+      <Image
+        src={backgroundAvatar}
+        alt=""
+        width={448}
+        height={192}
+        loading="eager"
+        class="w-full h-48 object-cover"
+      />
+      <div class="absolute -bottom-12 left-1/2 -translate-x-1/2">
+        <Image
+          src={avatar}
+          alt="ShadowNine"
+          width={256}
+          height={256}
+          loading="eager"
+          class="rounded-full w-24 h-24 object-cover ring-4 ring-background"
+        />
+      </div>
+    </div>
+
+    <!-- Name + bio -->
+    <div class="flex flex-col items-center pt-16 pb-2 px-6">
+      <h1 class="text-2xl font-bold tracking-tight">
+        <span class="relative inline-flex items-center gap-1.5">
+          <span class="name-shimmer"> ShadowNine </span>
+          <span
+            class="inline-flex items-center rounded-full bg-cyan-500/15 border border-cyan-500/30 px-1.5 py-0.5 text-[10px] font-semibold text-cyan-300 tracking-wide uppercase select-none"
+          >
+            dev
+          </span>
+        </span>
+      </h1>
+      <p class="mt-1 text-muted-foreground text-sm">Find me across the web.</p>
+    </div>
+
+    <ul class="mt-6 px-6 space-y-3">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative flex flex-col w-full rounded-lg border border-border bg-card overflow-hidden transition-all duration-200 hover:border-transparent hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm"
+            >
+              {/* colored left accent that slides in on hover */}
+              <span
+                class="accent-color absolute inset-y-0 left-0 w-1 rounded-l-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
+              />
+              <div class="flex items-center justify-between px-5 py-4">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="icon-color"
+                    style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
+                  >
+                    <Icon
+                      name={link.icon}
+                      class="shrink-0 transition-transform duration-200 group-hover:scale-110"
+                      width="18"
+                      height="18"
+                    />
+                  </span>
+                  <div>
+                    <span class="font-medium text-sm">{link.label}</span>
+                    <p class="text-xs text-muted-foreground">
+                      {link.description}
+                    </p>
+                  </div>
+                </div>
+                <Icon
+                  name="lucide:arrow-up-right"
+                  class="text-muted-foreground transition-all duration-200 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  width="16"
+                  height="16"
+                />
+              </div>
+              {link.widget && (
+                <img
+                  src={link.widget.src}
+                  alt={link.widget.alt}
+                  loading="lazy"
+                  class="w-full border-t border-border/50"
+                />
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>
+
+<style>
+  .icon-color {
+    color: var(--lc);
+  }
+
+  :global(.dark) .icon-color {
+    color: var(--dc);
+  }
+
+  .accent-color {
+    background-color: var(--lc);
+  }
+
+  :global(.dark) .accent-color {
+    background-color: var(--dc);
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
+  }
+
+  .name-shimmer {
+    background: linear-gradient(
+      90deg,
+      #0e7490 0%,
+      #06b6d4 25%,
+      #a5f3fc 50%,
+      #06b6d4 75%,
+      #0e7490 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
+    animation: shimmer 2.5s linear infinite;
+  }
+</style>

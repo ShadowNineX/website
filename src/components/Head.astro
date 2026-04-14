@@ -1,0 +1,61 @@
+---
+import { SEO } from "astro-seo";
+import type { Props as SEOProps } from "astro-seo";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  openGraph?: SEOProps["openGraph"];
+  twitter?: SEOProps["twitter"];
+  noindex?: boolean;
+  nofollow?: boolean;
+}
+
+const {
+  title = "ShadowNine's Personal Website",
+  description,
+  canonical,
+  openGraph,
+  twitter,
+  noindex,
+  nofollow,
+} = Astro.props;
+---
+
+<head>
+  <script is:inline>
+    (function () {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      document.documentElement.classList.toggle("dark", mq.matches);
+      mq.addEventListener("change", (e) =>
+        document.documentElement.classList.toggle("dark", e.matches),
+      );
+      document.addEventListener("astro:before-swap", (e) => {
+        e.newDocument.documentElement.classList.toggle(
+          "dark",
+          document.documentElement.classList.contains("dark"),
+        );
+      });
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <SEO
+    {title}
+    {description}
+    {canonical}
+    {openGraph}
+    {twitter}
+    {noindex}
+    {nofollow}
+    extend={{
+      link: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "icon", href: "/favicon.ico" },
+      ],
+    }}
+  />
+  <slot />
+</head>
