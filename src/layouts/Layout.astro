@@ -24,6 +24,18 @@ const navLinks = [
   { href: `${base}/blog`, label: "Blog" },
   { href: `${base}/linktree`, label: "Links" },
 ];
+
+const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
+const home = normalize(`${base}/`);
+const currentPath = normalize(pathname);
+
+const isActive = (href: string) => {
+  const target = normalize(href);
+  // The home link should only match the home route exactly, otherwise it
+  // would match every page (since every path starts with the base).
+  if (target === home) return currentPath === home;
+  return currentPath === target || currentPath.startsWith(`${target}/`);
+};
 ---
 
 <!doctype html>
@@ -55,7 +67,7 @@ const navLinks = [
                 href={href}
                 class:list={[
                   "transition-colors",
-                  pathname === href
+                  isActive(href)
                     ? "text-foreground font-medium"
                     : "hover:text-foreground",
                 ]}
