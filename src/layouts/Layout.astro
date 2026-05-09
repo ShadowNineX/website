@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Head from "../components/Head.astro";
 import { ClientRouter } from "astro:transitions";
+import ThreeBackground from "../components/ThreeBackground.astro";
 import type { Props as SEOProps } from "astro-seo";
 
 interface Props {
@@ -41,6 +42,7 @@ const navLinks = [
     <slot name="head" />
   </Head>
   <body class="bg-background text-foreground min-h-screen flex flex-col">
+    <ThreeBackground />
     <header
       class="border-b border-border sticky top-0 z-50 bg-background/80 backdrop-blur-sm"
     >
