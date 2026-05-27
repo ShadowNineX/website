@@ -11,8 +11,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: "https://shadowninex.github.io",
-  base: "/website",
+  site: "https://shadownine.dev",
 
   integrations: [sitemap(), mdx()],
 });
