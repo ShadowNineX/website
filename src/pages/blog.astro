@@ -8,71 +8,205 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const blogDescription = "Thoughts, projects, and more.";
+const blogOgImageOrigin = import.meta.env.DEV
+  ? Astro.url.origin
+  : (Astro.site?.origin ?? Astro.url.origin);
+const blogOgImageUrl = new URL(`${base}/og/blog.png`, blogOgImageOrigin).href;
+const featuredPost = posts[0];
+const archivePosts = posts.slice(1);
+const imageTransitionName = (id: string) => `blog-image-${id}`;
+const titleTransitionName = (id: string) => `blog-title-${id}`;
+const dateTransitionName = (id: string) => `blog-date-${id}`;
+const descriptionTransitionName = (id: string) => `blog-description-${id}`;
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 ---
 
-<Layout title="Blog" description="Thoughts, projects, and more.">
-  <section class="max-w-3xl mx-auto px-6 py-20">
-    <h1 class="text-3xl font-bold tracking-tight">Blog</h1>
-    <p class="mt-2 text-muted-foreground">Thoughts, projects, and more.</p>
+<Layout
+  title="Blog"
+  description={blogDescription}
+  openGraph={{
+    basic: {
+      title: "Blog",
+      type: "website",
+      image: blogOgImageUrl,
+      url: new URL(`${base}/blog/`, blogOgImageOrigin).href,
+    },
+    optional: {
+      description: blogDescription,
+      siteName: "ShadowNine",
+      locale: "en_US",
+    },
+    image: {
+      secureUrl: blogOgImageUrl,
+      width: 1200,
+      height: 630,
+      alt: "Latest ShadowNine blog post images",
+    },
+  }}
+  twitter={{
+    card: "summary_large_image",
+    title: "Blog",
+    description: blogDescription,
+    image: blogOgImageUrl,
+    imageAlt: "Latest ShadowNine blog post images",
+  }}
+>
+  <section class="mx-auto max-w-5xl px-6 py-14 sm:py-20">
+    <header class="max-w-3xl">
+      <p class="text-sm font-medium text-primary">Blog</p>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+        Notes, projects, and weird little field reports.
+      </h1>
+      <p class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+        Writing about code, games, music, web experiments, and whatever idea
+        refuses to leave quietly.
+      </p>
+    </header>
 
-    <div class="mt-12">
-      {
-        posts.length === 0 ? (
-          <p class="text-muted-foreground">No posts yet — check back soon.</p>
-        ) : (
-          <ul class="space-y-6">
-            {posts.map((post) => (
-              <li>
+    {
+      posts.length === 0 ? (
+        <div class="mt-12 rounded-md border border-border bg-card px-5 py-8">
+          <p class="text-sm text-muted-foreground">No posts yet. Check back soon.</p>
+        </div>
+      ) : (
+        <>
+          <div class="mt-12 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+            {featuredPost && (
+              <article>
                 <a
-                  href={`${base}/blog/${post.id}`}
-                  class="group relative block rounded-xl overflow-hidden border border-cyan-500/20 bg-card hover:border-cyan-400/60 hover:shadow-[0_0_24px_0_oklch(0.66_0.16_195/_0.18)] transition-all duration-300"
+                  href={`${base}/blog/${featuredPost.id}`}
+                  class="group block overflow-hidden rounded-md border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10"
                 >
-                  {/* teal top accent bar */}
-                  <span class="absolute top-0 inset-x-0 h-0.5 bg-linear-to-r from-transparent via-cyan-400/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
-
-                  {post.data.image && (
-                    <Image
-                      src={post.data.image}
-                      alt={post.data.imageAlt ?? ""}
-                      width={768}
-                      height={240}
-                      class="w-full aspect-video object-cover"
-                    />
+                  {featuredPost.data.image && (
+                    <div class="overflow-hidden border-b border-border bg-muted">
+                      <Image
+                        src={featuredPost.data.image}
+                        alt={featuredPost.data.imageAlt ?? ""}
+                        width={1200}
+                        height={630}
+                        transition:name={imageTransitionName(featuredPost.id)}
+                        transition:animate="initial"
+                        class="aspect-video w-full object-cover"
+                      />
+                    </div>
                   )}
-
-                  {/* heavy gradient scrim over bottom half */}
-                  <div class="absolute inset-0 bg-linear-to-t from-black/85 via-black/40 to-transparent" />
-
-                  <div class="absolute inset-0 flex flex-col justify-end p-5 z-10">
-                    <time class="inline-flex items-center gap-1.5 text-xs font-medium text-cyan-300/90 tracking-wide uppercase">
-                      {post.data.date.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <h2 class="mt-1 text-lg font-semibold leading-snug text-white group-hover:text-cyan-200 transition-colors duration-200">
-                      {post.data.title}
+                  <div class="p-5 sm:p-6">
+                    <div class="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      <time
+                        transition:name={dateTransitionName(featuredPost.id)}
+                        transition:animate="initial"
+                      >
+                        {formatDate(featuredPost.data.date)}
+                      </time>
+                      <span class="h-1 w-1 rounded-full bg-primary/70"></span>
+                      <span>Latest</span>
+                    </div>
+                    <h2
+                      transition:name={titleTransitionName(featuredPost.id)}
+                      transition:animate="initial"
+                      class="mt-3 text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-3xl"
+                    >
+                      {featuredPost.data.title}
                     </h2>
-                    <p class="mt-1 text-white/70 text-sm leading-relaxed">
-                      {post.data.description}
+                    <p
+                      transition:name={descriptionTransitionName(featuredPost.id)}
+                      transition:animate="initial"
+                      class="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base"
+                    >
+                      {featuredPost.data.description}
                     </p>
-                    <span class="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cyan-300/80 group-hover:text-cyan-200 transition-colors duration-200">
-                      Read more
+                    <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                      Open post
                       <Icon
-                        name="lucide:arrow-right"
-                        width="12"
-                        height="12"
-                        class="transition-transform duration-200 group-hover:translate-x-0.5"
+                        name="lucide:arrow-up-right"
+                        width="15"
+                        height="15"
+                        class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                       />
                     </span>
                   </div>
                 </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
+              </article>
+            )}
+
+            <aside class="rounded-md border border-border bg-card p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Index
+                </h2>
+                <span class="text-sm text-muted-foreground">
+                  {posts.length} {posts.length === 1 ? "post" : "posts"}
+                </span>
+              </div>
+              <div class="mt-5 space-y-4">
+                {posts.map((post) => (
+                  <a
+                    href={`${base}/blog/${post.id}`}
+                    class="group grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border border-transparent p-2 transition-colors hover:border-border hover:bg-background/70"
+                  >
+                    <span class="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+                      <Icon name="lucide:file-text" width="16" height="16" />
+                    </span>
+                    <span class="min-w-0">
+                      <span class="block truncate text-sm font-medium">
+                        {post.data.title}
+                      </span>
+                      <time class="mt-0.5 block text-xs text-muted-foreground">
+                        {formatDate(post.data.date)}
+                      </time>
+                    </span>
+                    <Icon
+                      name="lucide:chevron-right"
+                      width="16"
+                      height="16"
+                      class="text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground"
+                    />
+                  </a>
+                ))}
+              </div>
+            </aside>
+          </div>
+
+          {archivePosts.length > 0 && (
+            <section class="mt-14">
+              <div class="mb-5 flex items-end justify-between gap-4">
+                <div>
+                  <p class="text-sm font-medium text-primary">Archive</p>
+                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
+                    More posts
+                  </h2>
+                </div>
+              </div>
+              <ul class="grid gap-4 sm:grid-cols-2">
+                {archivePosts.map((post) => (
+                  <li>
+                    <a
+                      href={`${base}/blog/${post.id}`}
+                      class="group block rounded-md border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+                    >
+                      <time class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {formatDate(post.data.date)}
+                      </time>
+                      <h3 class="mt-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
+                        {post.data.title}
+                      </h3>
+                      <p class="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+                        {post.data.description}
+                      </p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </>
+      )
+    }
   </section>
 </Layout>

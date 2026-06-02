@@ -1,12 +1,17 @@
 ---
 import { Image } from "astro:assets";
 import { Icon } from "astro-iconify";
-import avatar from "@/assets/nine_happy.jpg";
+import avatar from "@/content/blog/hello-world.jpg";
 import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const githubUsername = "ShadowNineX";
 const githubProfileUrl = `https://github.com/${githubUsername}`;
+const blogPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const latestBlogPost = blogPosts[0];
 
 interface GitHubUser {
   login: string;
@@ -64,6 +69,12 @@ const formatMonthYear = (date: string) =>
     month: "short",
     year: "numeric",
   }).format(new Date(date));
+const formatBlogDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
 
 const totalStars = githubRepos.reduce(
   (sum, repo) => sum + repo.stargazers_count,
@@ -466,6 +477,82 @@ const musicWidgets = [
       }
     </div>
   </section>
+
+  {
+    latestBlogPost && (
+      <section class="mx-auto max-w-5xl px-6 py-14">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm font-medium text-primary">Latest from the blog</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight">
+              Notes from the workbench
+            </h2>
+          </div>
+          <a
+            href={`${base}/blog`}
+            class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            View all posts
+            <Icon name="lucide:arrow-up-right" width="15" height="15" />
+          </a>
+        </div>
+
+        <a
+          href={`${base}/blog/${latestBlogPost.id}`}
+          class="group mt-8 grid overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10 md:grid-cols-[0.95fr_1.05fr]"
+        >
+          {latestBlogPost.data.image && (
+            <div class="overflow-hidden border-b border-border bg-muted md:border-b-0 md:border-r">
+              <Image
+                src={latestBlogPost.data.image}
+                alt={latestBlogPost.data.imageAlt ?? ""}
+                width={1200}
+                height={630}
+                transition:name={`blog-image-${latestBlogPost.id}`}
+                transition:animate="initial"
+                class="aspect-video h-full w-full object-cover"
+              />
+            </div>
+          )}
+          <div class="flex flex-col justify-center p-5 sm:p-6">
+            <div class="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <time
+                transition:name={`blog-date-${latestBlogPost.id}`}
+                transition:animate="initial"
+              >
+                {formatBlogDate(latestBlogPost.data.date)}
+              </time>
+              <span class="h-1 w-1 rounded-full bg-primary/70"></span>
+              <span>Latest</span>
+            </div>
+            <h3
+              transition:name={`blog-title-${latestBlogPost.id}`}
+              transition:animate="initial"
+              class="mt-3 text-2xl font-bold tracking-tight transition-colors group-hover:text-primary sm:text-3xl"
+            >
+              {latestBlogPost.data.title}
+            </h3>
+            <p
+              transition:name={`blog-description-${latestBlogPost.id}`}
+              transition:animate="initial"
+              class="mt-3 text-sm leading-6 text-muted-foreground sm:text-base"
+            >
+              {latestBlogPost.data.description}
+            </p>
+            <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
+              Read post
+              <Icon
+                name="lucide:arrow-up-right"
+                width="15"
+                height="15"
+                class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </span>
+          </div>
+        </a>
+      </section>
+    )
+  }
 
   <section class="mx-auto max-w-5xl px-6 py-14">
     <div

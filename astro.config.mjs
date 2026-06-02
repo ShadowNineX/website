@@ -12,6 +12,10 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   site: "https://shadownine.dev",
+  devToolbar: {
+    enabled: true,
+    placement: "bottom-center",
+  },
 
   integrations: [sitemap(), mdx()],
 });

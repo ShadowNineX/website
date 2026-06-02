@@ -12,15 +12,50 @@ interface Props {
   nofollow?: boolean;
 }
 
-const {
-  title = "ShadowNine's Personal Website",
-  description,
-  canonical,
-  openGraph,
-  twitter,
-  noindex,
-  nofollow,
-} = Astro.props;
+const { title, description, canonical, openGraph, twitter, noindex, nofollow } =
+  Astro.props;
+
+const siteName = "ShadowNine";
+const defaultTitle = "ShadowNine";
+const resolvedTitle = title ?? defaultTitle;
+const resolvedDescription =
+  description ??
+  "ShadowNine's personal website for weird projects, experiments, links, and notes.";
+const canonicalUrl =
+  canonical ??
+  new URL(Astro.url.pathname + Astro.url.search, Astro.site ?? Astro.url).href;
+const socialImage = "https://github.com/ShadowNineX.png?size=512";
+const socialImageAlt = "ShadowNine GitHub avatar";
+const shouldTemplateTitle = Boolean(title && title !== siteName);
+
+const resolvedOpenGraph =
+  openGraph ??
+  ({
+    basic: {
+      title: resolvedTitle,
+      type: "website",
+      image: socialImage,
+      url: canonicalUrl,
+    },
+    optional: {
+      description: resolvedDescription,
+      siteName,
+      locale: "en_US",
+    },
+    image: {
+      alt: socialImageAlt,
+    },
+  } satisfies SEOProps["openGraph"]);
+
+const resolvedTwitter =
+  twitter ??
+  ({
+    card: "summary",
+    title: resolvedTitle,
+    description: resolvedDescription,
+    image: socialImage,
+    imageAlt: socialImageAlt,
+  } satisfies SEOProps["twitter"]);
 ---
 
 <head>
@@ -41,13 +76,15 @@ const {
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
+  <meta name="theme-color" content="#ff0000" />
   <meta name="generator" content={Astro.generator} />
   <SEO
-    {title}
-    {description}
-    {canonical}
-    {openGraph}
-    {twitter}
+    title={resolvedTitle}
+    titleTemplate={shouldTemplateTitle ? `%s | ${siteName}` : undefined}
+    description={resolvedDescription}
+    canonical={canonicalUrl}
+    openGraph={resolvedOpenGraph}
+    twitter={resolvedTwitter}
     {noindex}
     {nofollow}
     extend={{

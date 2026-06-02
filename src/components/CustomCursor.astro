@@ -1,0 +1,166 @@
+---
+import cursor from "@/assets/cursor.webp";
+---
+
+<img
+  id="custom-cursor"
+  src={cursor.src}
+  alt=""
+  aria-hidden="true"
+  data-hotspot-x="0"
+  data-hotspot-y="0"
+  transition:persist="custom-cursor"
+  class="custom-cursor"
+/>
+
+<style>
+  .custom-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2147483647;
+    width: 64px;
+    height: 64px;
+    pointer-events: none;
+    transform: translate3d(-9999px, -9999px, 0);
+    will-change: transform;
+  }
+
+  :global(.custom-cursor-active),
+  :global(.custom-cursor-active *) {
+    cursor: none !important;
+  }
+</style>
+
+<script>
+  interface ShadowNineCursorState {
+    cursor?: HTMLImageElement;
+    hotspotX: number;
+    hotspotY: number;
+    initialized: boolean;
+    ready: boolean;
+    visible: boolean;
+    x: number;
+    y: number;
+  }
+
+  declare global {
+    interface Window {
+      __shadowNineCursor?: ShadowNineCursorState;
+    }
+  }
+
+  const setupCustomCursor = () => {
+    const cursor = document.getElementById(
+      "custom-cursor",
+    ) as HTMLImageElement | null;
+    if (!cursor) return;
+
+    const state = (window.__shadowNineCursor ??= {
+      initialized: false,
+      hotspotX: 0,
+      hotspotY: 0,
+      ready: false,
+      visible: false,
+      x: 0,
+      y: 0,
+    } satisfies ShadowNineCursorState);
+
+    state.cursor = cursor;
+    state.hotspotX = Number(cursor.dataset.hotspotX ?? 0);
+    state.hotspotY = Number(cursor.dataset.hotspotY ?? 0);
+
+    const canUseCustomCursor = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+
+    const syncActiveState = () => {
+      document.documentElement.classList.toggle(
+        "custom-cursor-active",
+        canUseCustomCursor && state.ready,
+      );
+    };
+
+    const render = () => {
+      if (!state.cursor) return;
+
+      state.cursor.style.transform = state.visible && state.ready
+        ? `translate3d(${state.x - state.hotspotX}px, ${state.y - state.hotspotY}px, 0)`
+        : "translate3d(-9999px, -9999px, 0)";
+    };
+
+    const markReady = () => {
+      state.ready = true;
+      syncActiveState();
+      render();
+    };
+
+    const markFailed = () => {
+      state.ready = false;
+      state.visible = false;
+      syncActiveState();
+      render();
+    };
+
+    cursor.addEventListener("load", markReady, { once: true });
+    cursor.addEventListener("error", markFailed, { once: true });
+
+    if (cursor.complete) {
+      if ((cursor as HTMLImageElement).naturalWidth > 0) {
+        markReady();
+      } else {
+        markFailed();
+      }
+    } else {
+      markFailed();
+    }
+
+    if (state.initialized) {
+      syncActiveState();
+      render();
+      return;
+    }
+
+    window.addEventListener(
+      "pointermove",
+      (event) => {
+        state.x = event.clientX;
+        state.y = event.clientY;
+        state.visible = canUseCustomCursor && state.ready;
+        render();
+      },
+      { passive: true },
+    );
+
+    window.addEventListener(
+      "pointerenter",
+      () => {
+        state.visible = canUseCustomCursor && state.ready;
+        render();
+      },
+      { passive: true },
+    );
+
+    window.addEventListener(
+      "pointerleave",
+      () => {
+        state.visible = false;
+        render();
+      },
+      { passive: true },
+    );
+
+    document.addEventListener("astro:before-swap", (event) => {
+      event.newDocument.documentElement.classList.toggle(
+        "custom-cursor-active",
+        canUseCustomCursor && state.ready,
+      );
+    });
+
+    state.initialized = true;
+    render();
+  };
+
+  setupCustomCursor();
+  document.addEventListener("astro:page-load", setupCustomCursor);
+</script>
