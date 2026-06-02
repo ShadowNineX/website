@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Head from "../components/Head.astro";
 import { ClientRouter } from "astro:transitions";
+import { Icon } from "astro-iconify";
 import ThreeBackground from "../components/ThreeBackground.astro";
 import type { Props as SEOProps } from "astro-seo";
 
@@ -21,9 +22,9 @@ const { title, description, canonical, openGraph, twitter, noindex, nofollow } =
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const pathname = Astro.url.pathname;
 const navLinks = [
-  { href: `${base}/`, label: "Home" },
-  { href: `${base}/blog`, label: "Blog" },
-  { href: `${base}/linktree`, label: "Links" },
+  { href: `${base}/`, label: "Home", icon: "lucide:house" },
+  { href: `${base}/blog`, label: "Blog", icon: "lucide:book-open" },
+  { href: `${base}/linktree`, label: "Links", icon: "lucide:sparkles" },
 ];
 
 const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
@@ -56,25 +57,59 @@ const isActive = (href: string) => {
   <body class="bg-background text-foreground min-h-screen flex flex-col">
     <ThreeBackground />
     <header
-      class="border-b border-border sticky top-0 z-50 bg-background/80 backdrop-blur-sm"
+      class="sticky top-0 z-50 border-b border-border/70 bg-background/75 shadow-sm shadow-primary/5 backdrop-blur-xl"
     >
-      <nav
-        class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between"
+      <div
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/45 to-transparent"
       >
-        <a href={`${base}/`} class="font-semibold text-sm">ShadowNine</a>
-        <div class="flex gap-6 text-sm text-muted-foreground">
+      </div>
+      <nav
+        class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
+      >
+        <a
+          href={`${base}/`}
+          class="group flex min-w-0 items-center gap-3 rounded-md border border-border/80 bg-card/70 px-3 py-2 text-sm font-semibold shadow-sm transition-all hover:border-primary/40 hover:bg-card"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:rotate-3 group-hover:scale-105"
+          >
+            <Icon name="lucide:zap" width="17" height="17" />
+          </span>
+          <span class="hidden tracking-tight sm:block">ShadowNine</span>
+        </a>
+        <div
+          class="flex max-w-full items-center gap-1 rounded-lg border border-border/80 bg-card/70 p-1 shadow-sm"
+        >
           {
-            navLinks.map(({ href, label }) => (
+            navLinks.map(({ href, label, icon }) => (
               <a
                 href={href}
                 class:list={[
-                  "transition-colors",
+                  "group relative inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all",
                   isActive(href)
-                    ? "text-foreground font-medium"
-                    : "hover:text-foreground",
+                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 ]}
+                aria-current={isActive(href) ? "page" : undefined}
               >
-                {label}
+                <Icon
+                  name={icon}
+                  width="16"
+                  height="16"
+                  class:list={[
+                    "shrink-0 transition-transform",
+                    isActive(href)
+                      ? ""
+                      : "group-hover:-translate-y-0.5 group-hover:scale-105",
+                  ]}
+                />
+                <span class="hidden sm:inline">{label}</span>
+                <span class="sr-only sm:hidden">{label}</span>
+                {
+                  isActive(href) && (
+                    <span class="absolute inset-x-3 -bottom-1 h-px rounded-full bg-primary-foreground/60" />
+                  )
+                }
               </a>
             ))
           }

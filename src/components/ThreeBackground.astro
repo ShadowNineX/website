@@ -11,50 +11,550 @@
   import * as THREE from "three";
 
   const canvas = document.getElementById("three-bg") as HTMLCanvasElement;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(
-    60,
+    55,
     window.innerWidth / window.innerHeight,
     0.1,
     1000,
   );
-  camera.position.z = 1;
+  camera.position.set(0, 0, 10);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
     alpha: true,
   });
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  const ambient = new THREE.AmbientLight(0x7dd3fc, 0.75);
+  scene.add(ambient);
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+  keyLight.position.set(4, 6, 8);
+  scene.add(keyLight);
+
+  const cyanLight = new THREE.PointLight(0x22d3ee, 2, 32);
+  cyanLight.position.set(-5, 2.5, 5);
+  scene.add(cyanLight);
+
+  const amberLight = new THREE.PointLight(0xf59e0b, 1.2, 30);
+  amberLight.position.set(6, -3, 4);
+  scene.add(amberLight);
 
   // Starfield
-  const starCount = 6000;
+  const starCount = 4200;
   const positions = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 600;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 600;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 600;
+    positions[i * 3] = (Math.random() - 0.5) * 180;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 120;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 180 - 35;
   }
 
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  const mat = new THREE.PointsMaterial({ color: 0x88ccff, size: 0.6 });
+  const mat = new THREE.PointsMaterial({
+    color: 0x88ccff,
+    size: 0.08,
+    transparent: true,
+    opacity: 0.78,
+    depthWrite: false,
+  });
   const stars = new THREE.Points(geo, mat);
   scene.add(stars);
 
-  window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+  const world = new THREE.Group();
+  scene.add(world);
+
+  const glass = new THREE.MeshStandardMaterial({
+    color: 0x22d3ee,
+    emissive: 0x083344,
+    metalness: 0.4,
+    roughness: 0.22,
+    transparent: true,
+    opacity: 0.2,
+    wireframe: true,
   });
 
+  const amberWire = new THREE.MeshStandardMaterial({
+    color: 0xfbbf24,
+    emissive: 0x451a03,
+    metalness: 0.2,
+    roughness: 0.3,
+    transparent: true,
+    opacity: 0.3,
+    wireframe: true,
+  });
+
+  const lineMaterial = new THREE.LineBasicMaterial({
+    color: 0x67e8f9,
+    transparent: true,
+    opacity: 0.34,
+  });
+
+  const accentLineMaterial = new THREE.LineBasicMaterial({
+    color: 0xf59e0b,
+    transparent: true,
+    opacity: 0.22,
+  });
+
+  const createYinYangTexture = () => {
+    const size = 512;
+    const textureCanvas = document.createElement("canvas");
+    textureCanvas.width = size;
+    textureCanvas.height = size;
+
+    const context = textureCanvas.getContext("2d");
+    if (!context) return null;
+
+    const center = size / 2;
+    const radius = size * 0.42;
+
+    context.clearRect(0, 0, size, size);
+    context.beginPath();
+    context.arc(center, center, radius, 0, Math.PI * 2);
+    context.clip();
+
+    context.fillStyle = "#e0faff";
+    context.fillRect(0, 0, size, size);
+
+    context.beginPath();
+    context.arc(center, center, radius, -Math.PI / 2, Math.PI / 2);
+    context.fillStyle = "#102331";
+    context.fill();
+
+    context.beginPath();
+    context.arc(center, center - radius / 2, radius / 2, 0, Math.PI * 2);
+    context.fillStyle = "#102331";
+    context.fill();
+
+    context.beginPath();
+    context.arc(center, center + radius / 2, radius / 2, 0, Math.PI * 2);
+    context.fillStyle = "#e0faff";
+    context.fill();
+
+    context.beginPath();
+    context.arc(center, center - radius / 2, radius * 0.12, 0, Math.PI * 2);
+    context.fillStyle = "#e0faff";
+    context.fill();
+
+    context.beginPath();
+    context.arc(center, center + radius / 2, radius * 0.12, 0, Math.PI * 2);
+    context.fillStyle = "#102331";
+    context.fill();
+
+    context.beginPath();
+    context.arc(center, center, radius, 0, Math.PI * 2);
+    context.strokeStyle = "#67e8f9";
+    context.lineWidth = 16;
+    context.stroke();
+
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 4;
+    return texture;
+  };
+
+  const yinYangTexture = createYinYangTexture();
+  const yinYang = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.25, 1.25, 0.16, 96),
+    [
+      new THREE.MeshStandardMaterial({
+        color: 0x0f2d3a,
+        metalness: 0.45,
+        roughness: 0.28,
+        emissive: 0x082f49,
+      }),
+      new THREE.MeshStandardMaterial({
+        map: yinYangTexture,
+        metalness: 0.2,
+        roughness: 0.18,
+        emissive: 0x083344,
+        emissiveIntensity: 0.28,
+      }),
+      new THREE.MeshStandardMaterial({
+        map: yinYangTexture,
+        metalness: 0.2,
+        roughness: 0.18,
+        emissive: 0x083344,
+        emissiveIntensity: 0.28,
+      }),
+    ],
+  );
+
+  const createNameplateTexture = ({
+    title,
+    subtitle,
+    colors,
+  }: {
+    title: string;
+    subtitle: string;
+    colors: {
+      start: string;
+      middle: string;
+      end: string;
+      border: string;
+      accent: string;
+      text: string;
+      shadow: string;
+    };
+  }) => {
+    const textureCanvas = document.createElement("canvas");
+    textureCanvas.width = 1024;
+    textureCanvas.height = 256;
+
+    const context = textureCanvas.getContext("2d");
+    if (!context) return null;
+
+    const gradient = context.createLinearGradient(0, 0, 1024, 256);
+    gradient.addColorStop(0, colors.start);
+    gradient.addColorStop(0.5, colors.middle);
+    gradient.addColorStop(1, colors.end);
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 1024, 256);
+
+    context.strokeStyle = colors.border;
+    context.lineWidth = 10;
+    context.strokeRect(18, 18, 988, 220);
+
+    context.strokeStyle = colors.accent;
+    context.lineWidth = 3;
+    context.strokeRect(42, 42, 940, 172);
+
+    context.shadowColor = colors.shadow;
+    context.shadowBlur = 28;
+    context.fillStyle = colors.text;
+    context.font = "700 104px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(title, 512, 126);
+
+    context.shadowBlur = 0;
+    context.fillStyle = colors.accent;
+    context.font = "600 28px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
+    context.letterSpacing = "6px";
+    context.fillText(subtitle, 512, 205);
+
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 4;
+    return texture;
+  };
+
+  const createNameplate = ({
+    texture,
+    color,
+    emissive,
+    edgeColor,
+  }: {
+    texture: THREE.Texture | null;
+    color: number;
+    emissive: number;
+    edgeColor: number;
+  }) => {
+    const group = new THREE.Group();
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(4.8, 1.2, 0.28),
+      new THREE.MeshStandardMaterial({
+        color,
+        emissive,
+        emissiveIntensity: 0.3,
+        metalness: 0.58,
+        roughness: 0.24,
+      }),
+    );
+    const face = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.55, 1.02),
+      new THREE.MeshStandardMaterial({
+        map: texture,
+        emissive,
+        emissiveIntensity: 0.36,
+        metalness: 0.18,
+        roughness: 0.2,
+      }),
+    );
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(body.geometry),
+      new THREE.LineBasicMaterial({
+        color: edgeColor,
+        transparent: true,
+        opacity: 0.72,
+      }),
+    );
+
+    face.position.z = 0.151;
+    group.add(body, face, edges);
+    return group;
+  };
+
+  const nameplate = createNameplate({
+    texture: createNameplateTexture({
+      title: "ShadowNine",
+      subtitle: "DEV",
+      colors: {
+        start: "#071821",
+        middle: "#0f3a46",
+        end: "#1f1708",
+        border: "rgba(103, 232, 249, 0.85)",
+        accent: "rgba(245, 158, 11, 0.9)",
+        text: "#e8feff",
+        shadow: "rgba(34, 211, 238, 0.9)",
+      },
+    }),
+    color: 0x102331,
+    emissive: 0x06212c,
+    edgeColor: 0x67e8f9,
+  });
+  nameplate.rotation.y = -0.22;
+  nameplate.rotation.x = 0.08;
+
+  const shadowNameplate = createNameplate({
+    texture: createNameplateTexture({
+      title: "Shadow",
+      subtitle: "THE HEDGEHOG",
+      colors: {
+        start: "#1f0508",
+        middle: "#5f0a12",
+        end: "#09090b",
+        border: "rgba(248, 113, 113, 0.92)",
+        accent: "rgba(250, 204, 21, 0.86)",
+        text: "#fff1f2",
+        shadow: "rgba(239, 68, 68, 0.95)",
+      },
+    }),
+    color: 0x2b080c,
+    emissive: 0x3f0508,
+    edgeColor: 0xef4444,
+  });
+  shadowNameplate.rotation.y = 0.26;
+  shadowNameplate.rotation.x = -0.08;
+
+  const shadowStripe = new THREE.Mesh(
+    new THREE.BoxGeometry(4.8, 1.2, 0.28),
+    new THREE.MeshStandardMaterial({
+      color: 0xfacc15,
+      emissive: 0x451a03,
+      emissiveIntensity: 0.55,
+      metalness: 0.36,
+      roughness: 0.2,
+      transparent: true,
+      opacity: 0.22,
+    }),
+  );
+  shadowStripe.scale.set(1, 0.12, 1.05);
+  shadowStripe.rotation.z = -0.16;
+  shadowStripe.position.z = -0.02;
+  shadowNameplate.add(shadowStripe);
+
+  const floaters: Array<{
+    object: THREE.Object3D;
+    spin: THREE.Vector3;
+    drift: number;
+  }> = [];
+  const placements: Array<{
+    label: string;
+    position: THREE.Vector3;
+    radius: number;
+  }> = [];
+
+  const addFloater = (
+    label: string,
+    object: THREE.Object3D,
+    position: THREE.Vector3,
+    scale: number,
+    spin: THREE.Vector3,
+    drift: number,
+    radius: number,
+  ) => {
+    if (import.meta.env.DEV) {
+      for (const placement of placements) {
+        const distance = placement.position.distanceTo(position);
+        const minimumDistance = placement.radius + radius;
+
+        if (distance < minimumDistance) {
+          console.warn(
+            `[ThreeBackground] "${label}" is too close to "${placement.label}" (${distance.toFixed(2)} < ${minimumDistance.toFixed(2)}).`,
+          );
+        }
+      }
+    }
+
+    placements.push({ label, position: position.clone(), radius });
+    object.position.copy(position);
+    object.scale.setScalar(scale);
+    world.add(object);
+    floaters.push({ object, spin, drift });
+  };
+
+  const torus = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(1.25, 0.18, 160, 12, 2, 5),
+    glass,
+  );
+  addFloater(
+    "torus knot",
+    torus,
+    new THREE.Vector3(5.6, 1, -6.2),
+    1.05,
+    new THREE.Vector3(0.0016, 0.0024, 0.0006),
+    0.55,
+    1.7,
+  );
+
+  const octa = new THREE.Mesh(new THREE.OctahedronGeometry(1.8, 1), amberWire);
+  addFloater(
+    "octahedron",
+    octa,
+    new THREE.Vector3(-6.4, 0.1, -5.8),
+    0.8,
+    new THREE.Vector3(0.0012, -0.0022, 0.001),
+    0.7,
+    1.45,
+  );
+
+  const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, 1), glass);
+  addFloater(
+    "icosahedron",
+    ico,
+    new THREE.Vector3(0.1, 3.65, -7.7),
+    0.75,
+    new THREE.Vector3(-0.0018, 0.0014, 0.002),
+    0.45,
+    1.1,
+  );
+
+  const dodeca = new THREE.Mesh(
+    new THREE.DodecahedronGeometry(1.25, 0),
+    amberWire,
+  );
+  addFloater(
+    "dodecahedron",
+    dodeca,
+    new THREE.Vector3(1.65, -3.55, -6.6),
+    0.74,
+    new THREE.Vector3(0.0024, 0.001, -0.0014),
+    0.62,
+    0.95,
+  );
+
+  const ringGroup = new THREE.Group();
+  for (let i = 0; i < 4; i++) {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(2.2 + i * 0.45, 0.01, 8, 128),
+      i % 2 === 0 ? glass : amberWire,
+    );
+    ring.rotation.x = Math.PI / 2 + i * 0.18;
+    ring.rotation.y = i * 0.38;
+    ringGroup.add(ring);
+  }
+  addFloater(
+    "orbital rings",
+    ringGroup,
+    new THREE.Vector3(0, -0.1, -10.4),
+    0.95,
+    new THREE.Vector3(0.0006, 0.0012, 0.0004),
+    0.3,
+    2.55,
+  );
+
+  addFloater(
+    "yin-yang medallion",
+    yinYang,
+    new THREE.Vector3(5.7, -3.3, -5),
+    0.82,
+    new THREE.Vector3(0.001, 0.002, 0.0028),
+    0.5,
+    1.05,
+  );
+
+  addFloater(
+    "ShadowNine nameplate",
+    nameplate,
+    new THREE.Vector3(-3.9, -3.55, -3.5),
+    0.7,
+    new THREE.Vector3(0.0005, 0.0012, -0.00035),
+    0.42,
+    1.8,
+  );
+
+  addFloater(
+    "Shadow the Hedgehog nameplate",
+    shadowNameplate,
+    new THREE.Vector3(-3.7, 3.1, -4.7),
+    0.68,
+    new THREE.Vector3(-0.00045, -0.0011, 0.0003),
+    0.46,
+    1.75,
+  );
+
+  const curves = new THREE.Group();
+  for (let i = 0; i < 7; i++) {
+    const y = -3.8 + i * 1.25;
+    const z = -8 - i * 0.9;
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-8.5, y, z),
+      new THREE.Vector3(-3.2, y + Math.sin(i) * 1.3, z - 1.8),
+      new THREE.Vector3(1.6, y - Math.cos(i) * 1.1, z - 0.6),
+      new THREE.Vector3(8.5, y + Math.sin(i * 1.7), z - 2.4),
+    ]);
+    const points = curve.getPoints(80);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(
+      geometry,
+      i % 2 === 0 ? lineMaterial : accentLineMaterial,
+    );
+    curves.add(line);
+  }
+  scene.add(curves);
+
+  const mouse = new THREE.Vector2(0, 0);
+
+  const onPointerMove = (event: PointerEvent) => {
+    mouse.x = (event.clientX / window.innerWidth - 0.5) * 2;
+    mouse.y = (event.clientY / window.innerHeight - 0.5) * 2;
+  };
+
+  const onResize = () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  };
+
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
+  window.addEventListener("resize", onResize);
+
+  const startedAt = performance.now();
   (function animate() {
     requestAnimationFrame(animate);
-    stars.rotation.x += 0.0001;
-    stars.rotation.y += 0.00015;
+    const elapsed = (performance.now() - startedAt) / 1000;
+    const motionScale = prefersReducedMotion.matches ? 0.25 : 1;
+
+    stars.rotation.x += 0.00007 * motionScale;
+    stars.rotation.y += 0.00012 * motionScale;
+    curves.rotation.z = Math.sin(elapsed * 0.08) * 0.035;
+
+    world.rotation.x +=
+      (mouse.y * 0.08 - world.rotation.x) * 0.018 * motionScale;
+    world.rotation.y +=
+      (mouse.x * 0.12 - world.rotation.y) * 0.018 * motionScale;
+
+    for (const floater of floaters) {
+      floater.object.rotation.x += floater.spin.x * motionScale;
+      floater.object.rotation.y += floater.spin.y * motionScale;
+      floater.object.rotation.z += floater.spin.z * motionScale;
+      floater.object.position.y +=
+        Math.sin(elapsed * floater.drift + floater.object.position.x) * 0.0015;
+    }
+
+    cyanLight.position.x = Math.sin(elapsed * 0.35) * 5;
+    amberLight.position.y = Math.cos(elapsed * 0.24) * 3;
     renderer.render(scene, camera);
   })();
 </script>

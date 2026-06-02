@@ -1,39 +1,57 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { Icon } from "astro-iconify";
 import { Image } from "astro:assets";
-import avatar from "@/assets/nine.jpg";
+import { Icon } from "astro-iconify";
 import backgroundAvatar from "@/assets/sonic-prime-tails-nine.gif";
+import Layout from "@/layouts/Layout.astro";
+
+const githubUsername = "ShadowNineX";
+const githubProfileUrl = `https://github.com/${githubUsername}`;
+const githubAvatarUrl = `${githubProfileUrl}.png?size=256`;
+const displayName = "ShadowNine";
+const profileBio = "Tails fan. 𖤐";
+
+const stats = [
+  { label: "Code", value: "GitHub" },
+  { label: "Music", value: "Last.fm" },
+  { label: "Games", value: "Steam" },
+];
 
 const links = [
   {
     label: "GitHub",
-    href: "https://github.com/ShadowNineX",
-    description: "Repositories and projects",
+    href: githubProfileUrl,
+    description: "Repositories, experiments, and project source",
     icon: "simple-icons:github",
     color: "#181717",
     darkColor: "#ffffff",
+    group: "Code",
+    featured: true,
   },
   {
     label: "Bluesky",
     href: "https://bsky.app/profile/shadowninex.bsky.social",
-    description: "Find me on Bluesky",
+    description: "Short posts and internet chatter",
     icon: "simple-icons:bluesky",
     color: "#0285FF",
+    group: "Social",
   },
   {
-    label: "MyAnimeList",
-    href: "https://myanimelist.net/profile/ShadowNine",
-    description: "Anime and manga lists",
-    icon: "simple-icons:myanimelist",
-    color: "#2E51A2",
+    label: "Steam",
+    href: "https://steamcommunity.com/id/ShadowNineX",
+    description: "Games and Steam profile",
+    icon: "simple-icons:steam",
+    color: "#1b2838",
+    darkColor: "#c6d4df",
+    group: "Play",
   },
   {
     label: "Last.fm",
     href: "https://www.last.fm/user/ShadowNineX",
-    description: "Music library",
+    description: "Recently played music and scrobbles",
     icon: "simple-icons:lastdotfm",
     color: "#D51007",
+    group: "Music",
+    featured: true,
     widget: {
       src: "https://lastfm-recently-played.vercel.app/api?user=ShadowNineX&header_style=normal_stats&footer_style=wave&maxage=60&loved=true",
       alt: "Last.fm recently played",
@@ -42,150 +60,222 @@ const links = [
   {
     label: "Spotify",
     href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
-    description: "Listening to",
+    description: "Now playing and listening history",
     icon: "simple-icons:spotify",
     color: "#1DB954",
+    group: "Music",
     widget: {
       src: "https://spotify-github-profile.kittinanx.com/api/view?uid=31wl2m3aqxcky555yhqi7epzau7u&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&bar_color=3d8b37",
       alt: "Spotify now playing",
     },
   },
   {
-    label: "Steam",
-    href: "https://steamcommunity.com/id/ShadowNineX",
-    description: "Games",
-    icon: "simple-icons:steam",
-    color: "#1b2838",
-    darkColor: "#c6d4df",
-  },
-  {
-    label: "Tumblr",
-    href: "https://www.tumblr.com/blog/shadowninex",
-    description: "Tumblr",
-    icon: "simple-icons:tumblr",
-    color: "#35465C",
-  },
-  {
-    label: "Pinterest",
-    href: "https://www.pinterest.com/ShadowNineX",
-    description: "Pinterest boards",
-    icon: "simple-icons:pinterest",
-    color: "#E60023",
+    label: "MyAnimeList",
+    href: "https://myanimelist.net/profile/ShadowNine",
+    description: "Anime and manga lists",
+    icon: "simple-icons:myanimelist",
+    color: "#2E51A2",
+    group: "Media",
   },
   {
     label: "Flickr",
     href: "https://www.flickr.com/photos/shadownine",
-    description: "Photos",
+    description: "Photos and visual scraps",
     icon: "logos:flickr",
     color: "#0063DC",
     colored: true,
+    group: "Media",
+  },
+  {
+    label: "Pinterest",
+    href: "https://www.pinterest.com/ShadowNineX",
+    description: "Boards, references, and saved ideas",
+    icon: "simple-icons:pinterest",
+    color: "#E60023",
+    group: "Media",
+  },
+  {
+    label: "Tumblr",
+    href: "https://www.tumblr.com/blog/shadowninex",
+    description: "Posts, reblogs, and archive energy",
+    icon: "simple-icons:tumblr",
+    color: "#35465C",
+    group: "Social",
   },
 ];
+
+const groupOrder = ["Code", "Social", "Music", "Media", "Play"];
 ---
 
-<Layout title="Links" description="Find me across the web.">
-  <section class="max-w-md mx-auto pb-20">
-    <!-- Banner + avatar -->
-    <div class="relative">
+<Layout title="Links" description={`Find ${displayName} across the web.`}>
+  <section class="mx-auto max-w-xl px-4 pb-20 pt-6 sm:px-6">
+    <div class="relative overflow-hidden rounded-lg border border-border bg-card shadow-xl shadow-primary/5">
       <Image
         src={backgroundAvatar}
         alt=""
-        width={448}
-        height={192}
+        width={672}
+        height={240}
         loading="eager"
-        class="w-full h-48 object-cover"
+        class="h-52 w-full object-cover sm:h-60"
       />
-      <div class="absolute -bottom-12 left-1/2 -translate-x-1/2">
-        <Image
-          src={avatar}
-          alt="ShadowNine"
-          width={256}
-          height={256}
-          loading="eager"
-          class="rounded-full w-24 h-24 object-cover ring-4 ring-background"
-        />
+      <div class="absolute inset-0 bg-linear-to-t from-background via-background/20 to-transparent"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"></div>
+
+      <div class="relative -mt-20 px-5 pb-6 sm:px-7">
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div class="flex items-end gap-4">
+            <div class="relative shrink-0">
+              <span class="absolute -inset-1 rounded-full bg-linear-to-br from-cyan-300 via-primary to-amber-300 opacity-80 blur-sm"></span>
+              <img
+                src={githubAvatarUrl}
+                alt={`${displayName} GitHub avatar`}
+                width="128"
+                height="128"
+                loading="eager"
+                class="relative size-28 rounded-full border-4 border-background bg-background object-cover shadow-2xl shadow-cyan-500/20"
+              />
+            </div>
+
+            <div class="pb-1">
+              <p class="text-xs font-semibold uppercase tracking-wider text-primary">
+                @{githubUsername}
+              </p>
+              <h1 class="mt-1 text-3xl font-bold tracking-tight">
+                <span class="bg-linear-to-r from-cyan-400 via-white to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(6,182,212,0.45)]">
+                  {displayName}
+                </span>
+              </h1>
+              <p class="mt-1 max-w-xs text-sm text-muted-foreground">
+                {profileBio}
+              </p>
+            </div>
+          </div>
+
+          <a
+            href={githubProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+          >
+            <Icon name="simple-icons:github" width="16" height="16" />
+            GitHub
+          </a>
+        </div>
+
+        <dl class="mt-6 grid grid-cols-3 gap-2">
+          {
+            stats.map((stat) => (
+              <div class="rounded-md border border-border bg-background/75 px-3 py-2 text-center backdrop-blur">
+                <dt class="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  {stat.label}
+                </dt>
+                <dd class="mt-1 text-lg font-semibold">{stat.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
       </div>
     </div>
 
-    <!-- Name + bio -->
-    <div class="flex flex-col items-center pt-16 pb-2 px-6">
-      <h1 class="text-2xl font-bold tracking-tight">
-        <span class="relative inline-flex items-center gap-1.5">
-          <span class="name-shimmer"> ShadowNine </span>
-          <span
-            class="inline-flex items-center rounded-full bg-cyan-500/15 border border-cyan-500/30 px-1.5 py-0.5 text-[10px] font-semibold text-cyan-300 tracking-wide uppercase select-none"
-          >
-            dev
-          </span>
-        </span>
-      </h1>
-      <p class="mt-1 text-muted-foreground text-sm">Find me across the web.</p>
-    </div>
-
-    <ul class="mt-6 px-6 space-y-3">
+    <div class="mt-5 flex flex-wrap justify-center gap-2">
       {
-        links.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group relative flex flex-col w-full rounded-lg border border-border bg-card overflow-hidden transition-all duration-200 hover:border-transparent hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm"
-            >
-              {/* colored left accent that slides in on hover */}
-              <span
-                class="accent-color absolute inset-y-0 left-0 w-1 rounded-l-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
-              />
-              <div class="flex items-center justify-between px-5 py-4">
-                <div class="flex items-center gap-3">
-                  {link.colored ? (
-                    <Icon
-                      name={link.icon}
-                      class="shrink-0 transition-transform duration-200 group-hover:scale-110"
-                      width="18"
-                      height="18"
-                    />
-                  ) : (
-                    <span
-                      class="icon-color"
-                      style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
-                    >
-                      <Icon
-                        name={link.icon}
-                        class="shrink-0 transition-transform duration-200 group-hover:scale-110"
-                        width="18"
-                        height="18"
-                      />
-                    </span>
-                  )}
-                  <div>
-                    <span class="font-medium text-sm">{link.label}</span>
-                    <p class="text-xs text-muted-foreground">
-                      {link.description}
-                    </p>
-                  </div>
-                </div>
-                <Icon
-                  name="lucide:arrow-up-right"
-                  class="text-muted-foreground transition-all duration-200 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  width="16"
-                  height="16"
-                />
-              </div>
-              {link.widget && (
-                <img
-                  src={link.widget.src}
-                  alt={link.widget.alt}
-                  loading="lazy"
-                  class="w-full border-t border-border/50"
-                />
-              )}
-            </a>
-          </li>
+        groupOrder.map((group) => (
+          <a
+            href={`#${group.toLowerCase()}`}
+            class="rounded-md border border-border bg-card/80 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+          >
+            {group}
+          </a>
         ))
       }
-    </ul>
+    </div>
+
+    <div class="mt-7 space-y-7">
+      {
+        groupOrder.map((group) => {
+          const groupLinks = links.filter((link) => link.group === group);
+
+          return (
+            <section id={group.toLowerCase()} class="scroll-mt-24">
+              <div class="mb-3 flex items-center gap-3">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group}
+                </h2>
+                <span class="h-px flex-1 bg-border" />
+              </div>
+
+              <ul class="space-y-3">
+                {groupLinks.map((link, index) => (
+                  <li style={`--i: ${index}`}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class:list={[
+                        "link-card group relative flex w-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl active:translate-y-0",
+                        link.featured ? "featured-link" : "",
+                      ]}
+                      style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
+                    >
+                      <span class="accent-color absolute inset-y-0 left-0 w-1.5 opacity-80 transition-all duration-300 group-hover:w-2" />
+                      <span class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                      <div class="flex items-center justify-between gap-4 px-5 py-4">
+                        <div class="flex min-w-0 items-center gap-3">
+                          <span class="icon-shell flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-background/70 transition-transform duration-300 group-hover:scale-105">
+                            {link.colored ? (
+                              <Icon
+                                name={link.icon}
+                                class="shrink-0"
+                                width="20"
+                                height="20"
+                              />
+                            ) : (
+                              <span class="icon-color">
+                                <Icon
+                                  name={link.icon}
+                                  class="shrink-0"
+                                  width="20"
+                                  height="20"
+                                />
+                              </span>
+                            )}
+                          </span>
+                          <div class="min-w-0">
+                            <span class="block truncate text-sm font-semibold">
+                              {link.label}
+                            </span>
+                            <p class="mt-0.5 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                              {link.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        <Icon
+                          name="lucide:arrow-up-right"
+                          class="shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+                          width="17"
+                          height="17"
+                        />
+                      </div>
+
+                      {link.widget && (
+                        <img
+                          src={link.widget.src}
+                          alt={link.widget.alt}
+                          loading="lazy"
+                          class="w-full border-t border-border/50 bg-background"
+                        />
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })
+      }
+    </div>
   </section>
 </Layout>
 
@@ -206,29 +296,33 @@ const links = [
     background-color: var(--dc);
   }
 
-  @keyframes shimmer {
-    0% {
-      background-position: 200% center;
+  .link-card {
+    animation: rise-in 460ms ease both;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+
+  .featured-link {
+    box-shadow: 0 16px 48px color-mix(in oklch, var(--primary) 12%, transparent);
+  }
+
+  .icon-shell {
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--lc) 18%, transparent);
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
     }
-    100% {
-      background-position: -200% center;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
-  .name-shimmer {
-    background: linear-gradient(
-      90deg,
-      #0e7490 0%,
-      #06b6d4 25%,
-      #a5f3fc 50%,
-      #06b6d4 75%,
-      #0e7490 100%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
-    animation: shimmer 2.5s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    .link-card {
+      animation: none;
+    }
   }
 </style>

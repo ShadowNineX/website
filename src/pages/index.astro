@@ -1,34 +1,578 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import { Image } from "astro:assets";
 import { Icon } from "astro-iconify";
+import avatar from "@/assets/nine_happy.jpg";
+import Layout from "@/layouts/Layout.astro";
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const githubUsername = "ShadowNineX";
+const githubProfileUrl = `https://github.com/${githubUsername}`;
+
+interface GitHubUser {
+  login: string;
+  name: string | null;
+  bio: string | null;
+  blog: string | null;
+  public_repos: number;
+  followers: number;
+  following: number;
+  created_at: string;
+}
+
+interface GitHubRepo {
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  topics: string[];
+  stargazers_count: number;
+  pushed_at: string;
+  license: {
+    spdx_id: string | null;
+  } | null;
+}
+
+const fetchGitHubJson = async <T,>(url: string): Promise<T> => {
+  const token = import.meta.env.GITHUB_TOKEN as string | undefined;
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `GitHub API request failed: ${response.status} ${response.statusText} for ${url}`,
+    );
+  }
+
+  return (await response.json()) as T;
+};
+
+const [githubUser, githubRepos] = await Promise.all([
+  fetchGitHubJson<GitHubUser>(`https://api.github.com/users/${githubUsername}`),
+  fetchGitHubJson<GitHubRepo[]>(
+    `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`,
+  ),
+]);
+
+const formatMonthYear = (date: string) =>
+  new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+
+const totalStars = githubRepos.reduce(
+  (sum, repo) => sum + repo.stargazers_count,
+  0,
+);
+const displayName = githubUser.name ?? githubUser.login;
+const profileBio = githubUser.bio ?? "Developer, builder, tinkerer.";
+
+const profileStats = [
+  {
+    label: "Public repos",
+    value: githubUser.public_repos.toString(),
+    icon: "lucide:folder-git-2",
+    tileClass:
+      "border-cyan-300/25 bg-cyan-300/5 shadow-cyan-300/10 hover:border-cyan-300/45",
+    iconClass: "text-cyan-300",
+  },
+  {
+    label: "GitHub stars",
+    value: totalStars.toString(),
+    icon: "lucide:star",
+    tileClass:
+      "border-amber-300/25 bg-amber-300/5 shadow-amber-300/10 hover:border-amber-300/45",
+    iconClass: "text-amber-300",
+  },
+  {
+    label: "Since",
+    value: formatMonthYear(githubUser.created_at),
+    icon: "lucide:calendar-days",
+    tileClass:
+      "border-violet-300/25 bg-violet-300/5 shadow-violet-300/10 hover:border-violet-300/45",
+    iconClass: "text-violet-300",
+  },
+];
+
+const focusAreas = [
+  {
+    title: "AI-assisted tooling",
+    description:
+      "Building MCP-powered tools that let AI operate inside developer workflows, game tools, and reverse-engineering environments.",
+    icon: "lucide:bot",
+  },
+  {
+    title: "Game and modding systems",
+    description:
+      "Exploring Unreal Engine, Portal 2: Community Edition, Cheat Engine, Neodash, Rising World, and other toolchains that make games more hackable.",
+    icon: "lucide:gamepad-2",
+  },
+  {
+    title: "Personal web experiments",
+    description:
+      "Making Astro/Vue sites, editor experiments, and random TypeScript projects for myself because the idea sounds fun or weird enough to try.",
+    icon: "lucide:sparkles",
+  },
+];
+
+const projectIcons: Record<string, string> = {
+  "ce-mcp": "lucide:cpu",
+  CESDK: "lucide:plug",
+  headbreaker: "lucide:puzzle",
+  "vscode-eta": "lucide:braces",
+  "p2ce-hono-web-server": "lucide:server",
+  "wallpaper-engine": "lucide:monitor-play",
+  "MCP-UAsset-Toolkit": "lucide:wrench",
+  ToSteamArtwork: "lucide:image",
+};
+
+const projectMeta: Record<string, string> = {
+  "p2ce-hono-web-server": "Portal 2 CE",
+  "wallpaper-engine": "npm package",
+  "MCP-UAsset-Toolkit": "Unreal Engine",
+  ToSteamArtwork: "Steam tools",
+};
+
+const projectDescription: Record<string, string> = {
+  "ce-mcp":
+    "A C# MCP bridge for automating Cheat Engine with AI. It is the most-starred public project on the profile.",
+  "MCP-UAsset-Toolkit":
+    "Automation for Unreal Engine reverse engineering using UAsset API, CUE4Parse, MCP, and AI-assisted workflows.",
+  ToSteamArtwork:
+    "A TypeScript utility that converts images, GIFs, and videos to Steam artwork dimensions.",
+};
+
+const projects = githubRepos
+  .filter((repo) => repo.description)
+  .sort((a, b) => {
+    const stars = b.stargazers_count - a.stargazers_count;
+    if (stars !== 0) return stars;
+
+    return new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime();
+  })
+  .slice(0, 6)
+  .map((repo) => {
+    const meta =
+      projectMeta[repo.name] ??
+      (repo.stargazers_count === 1
+        ? "1 star"
+        : `${repo.stargazers_count} stars`);
+
+    return {
+      name: repo.name,
+      description:
+        projectDescription[repo.name] ??
+        repo.description ??
+        "A public GitHub project from ShadowNine.",
+      href: repo.html_url,
+      language: repo.language ?? "Code",
+      meta,
+      icon: projectIcons[repo.name] ?? "lucide:folder-git-2",
+    };
+  });
+
+const stackGroups = [
+  {
+    title: "Languages",
+    items: [
+      { label: "TypeScript", icon: "simple-icons:typescript", color: "#3178C6" },
+      { label: "C#", icon: "simple-icons:csharp", color: "#512BD4" },
+      { label: "C++", icon: "simple-icons:cplusplus", color: "#00599C" },
+      { label: "Kotlin", icon: "simple-icons:kotlin", color: "#7F52FF" },
+      { label: "Go", icon: "simple-icons:go", color: "#00ADD8" },
+      { label: "Lua", icon: "simple-icons:lua", color: "#2C2D72" },
+      { label: "Python", icon: "simple-icons:python", color: "#3776AB" },
+    ],
+  },
+  {
+    title: "Frontend",
+    items: [
+      { label: "Astro", icon: "simple-icons:astro", color: "#FF5D01" },
+      { label: "Vue", icon: "simple-icons:vuedotjs", color: "#4FC08D" },
+      { label: "Tailwind CSS", icon: "simple-icons:tailwindcss", color: "#06B6D4" },
+      { label: "shadcn-vue", icon: "lucide:layers-3", color: "#71717A" },
+      { label: "Vite", icon: "simple-icons:vite", color: "#646CFF" },
+    ],
+  },
+  {
+    title: "Tools",
+    items: [
+      { label: "Bun", icon: "simple-icons:bun", color: "#000000", darkColor: "#FBF0DF" },
+      { label: ".NET", icon: "simple-icons:dotnet", color: "#512BD4" },
+      { label: "CMake", icon: "simple-icons:cmake", color: "#064F8C" },
+      { label: "Unreal Engine", icon: "simple-icons:unrealengine", color: "#0E1128", darkColor: "#F5F7FA" },
+      { label: "MCP", icon: "lucide:bot", color: "#22D3EE" },
+    ],
+  },
+];
+
+const links = [
+  {
+    label: "GitHub",
+    href: githubProfileUrl,
+    icon: "simple-icons:github",
+  },
+  {
+    label: "Links",
+    href: `${base}/linktree`,
+    icon: "lucide:link",
+  },
+  {
+    label: "Blog",
+    href: `${base}/blog`,
+    icon: "lucide:book-open",
+  },
+];
+
+const musicWidgets = [
+  {
+    label: "Spotify",
+    href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
+    icon: "simple-icons:spotify",
+    color: "#1DB954",
+    src: "https://spotify-github-profile.kittinanx.com/api/view?uid=31wl2m3aqxcky555yhqi7epzau7u&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&bar_color=3d8b37",
+    alt: "Spotify now playing",
+  },
+  {
+    label: "Last.fm",
+    href: "https://www.last.fm/user/ShadowNineX",
+    icon: "simple-icons:lastdotfm",
+    color: "#D51007",
+    src: "https://lastfm-recently-played.vercel.app/api?user=ShadowNineX&header_style=normal_stats&footer_style=wave&maxage=60&loved=true",
+    alt: "Last.fm recently played",
+  },
+];
 ---
 
-<Layout title="Home" description="Welcome to my personal site.">
-  <section class="max-w-3xl mx-auto px-6 py-20">
-    <h1 class="text-4xl font-bold tracking-tight">Hey, I'm ShadowNine</h1>
-    <p class="mt-4 text-lg text-muted-foreground">
-      Developer, builder, tinkerer. Welcome to my corner of the web.
-    </p>
-    <p
-      class="mt-3 inline-flex items-center gap-2 text-sm text-amber-400/90 bg-amber-400/10 border border-amber-400/20 rounded-md px-3 py-1.5"
+<Layout
+  title={displayName}
+  description={`${displayName}'s personal site, projects, tools, and links.`}
+>
+  <section
+    class="mx-auto grid max-w-5xl gap-10 px-6 py-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-20"
+  >
+    <div>
+      <p
+        class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary"
+      >
+        <Icon name="lucide:terminal" width="15" height="15" />
+        {githubUser.login} on GitHub
+      </p>
+      <h1
+        class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-6xl"
+      >
+        I make weird projects for fun and hack things together until they work.
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+        I'm {displayName}, a developer who works on multiple projects at once.
+        I like messing with odd ideas, building tools for niche problems, and
+        stitching together code, game systems, AI, modding, and web stuff just
+        to see what happens.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+            >
+              <Icon name={link.icon} width="16" height="16" />
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute -inset-4 rounded-4xl border border-primary/10 bg-primary/5 blur-2xl"
+      >
+      </div>
+      <div class="group/card h-170 perspective-[1400px] sm:h-180">
+        <div
+          class="relative h-full rounded-lg animate-profile-card-spin transform-3d group-hover/card:paused group-focus-within/card:paused motion-reduce:animate-none"
+        >
+          <div
+            class="absolute left-0 top-0 h-full w-3 origin-left bg-primary/30 shadow-lg shadow-primary/20 transform-[translateZ(6px)_rotateY(90deg)]"
+          >
+          </div>
+          <div
+            class="absolute right-0 top-0 h-full w-3 origin-right bg-amber-300/25 shadow-lg shadow-amber-300/10 transform-[translateZ(6px)_rotateY(-90deg)]"
+          >
+          </div>
+          <div
+            class="absolute left-0 top-0 h-3 w-full origin-top bg-cyan-300/25 transform-[translateZ(6px)_rotateX(-90deg)]"
+          >
+          </div>
+          <div
+            class="absolute bottom-0 left-0 h-3 w-full origin-bottom bg-primary/20 transform-[translateZ(6px)_rotateX(90deg)]"
+          >
+          </div>
+          <div
+            class="absolute inset-0 overflow-hidden border border-primary/20 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
+          >
+            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-cyan-300 via-primary to-amber-300"></div>
+            <div class="absolute -right-20 -top-20 size-48 rounded-full bg-cyan-400/15 blur-3xl"></div>
+            <div class="absolute -bottom-24 -left-16 size-52 rounded-full bg-amber-300/15 blur-3xl"></div>
+            <Image
+              src={avatar}
+              alt="ShadowNine avatar"
+              width={512}
+              height={512}
+              loading="eager"
+              class="h-107.5 w-full object-cover sm:h-117.5"
+            />
+            <div class="relative border-t border-border p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-primary">
+                    GitHub profile
+                  </p>
+                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
+                    <span class="bg-linear-to-r from-cyan-300 via-white to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(34,211,238,0.35)]">
+                      {displayName}
+                    </span>
+                  </h2>
+                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-amber-300/25 bg-amber-300/10 px-2.5 py-1 text-sm text-muted-foreground">
+                    <Icon
+                      name="lucide:sparkle"
+                      width="14"
+                      height="14"
+                      class="text-amber-300"
+                    />
+                    {profileBio}
+                  </p>
+                </div>
+              </div>
+              <dl class="mt-5 grid grid-cols-3 gap-3">
+                {
+                  profileStats.map((stat) => (
+                    <div
+                      class:list={[
+                        "rounded-md border bg-background/75 p-3 shadow-lg backdrop-blur transition-colors",
+                        stat.tileClass,
+                      ]}
+                    >
+                      <dt class="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+                        <Icon
+                          name={stat.icon}
+                          width="13"
+                          height="13"
+                          class={stat.iconClass}
+                        />
+                        {stat.label}
+                      </dt>
+                      <dd class="mt-2 text-center text-lg font-bold text-foreground">
+                        {stat.value}
+                      </dd>
+                    </div>
+                  ))
+                }
+              </dl>
+            </div>
+          </div>
+
+          <div
+            class="isolate absolute inset-0 overflow-hidden border border-border bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[rotateY(180deg)_translateZ(6px)]"
+          >
+            <div class="absolute inset-0 -z-10 bg-card"></div>
+
+            <div class="relative flex h-full flex-col p-4">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-primary">
+                    Listening corner
+                  </p>
+                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
+                    Music stuff
+                  </h2>
+                </div>
+                <Icon
+                  name="lucide:music-4"
+                  width="24"
+                  height="24"
+                  class="text-primary"
+                />
+              </div>
+
+              <div class="music-scroll mt-4 min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border border-border bg-background/60 p-3">
+                <div class="space-y-3">
+                {
+                  musicWidgets.map((widget) => (
+                    <a
+                      href={widget.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group/music overflow-hidden rounded-lg bg-background/90 shadow-lg shadow-black/10 backdrop-blur transition-transform hover:-translate-y-0.5"
+                      style={`--music-color: ${widget.color};`}
+                    >
+                      <div class="flex items-center justify-between px-4 py-2.5">
+                        <span class="flex items-center gap-2 text-sm font-semibold">
+                          <span class="flex size-8 items-center justify-center rounded-md bg-card text-(--music-color)">
+                            <Icon name={widget.icon} width="17" height="17" />
+                          </span>
+                          {widget.label}
+                        </span>
+                        <Icon
+                          name="lucide:arrow-up-right"
+                          width="15"
+                          height="15"
+                          class="text-muted-foreground transition-transform group-hover/music:-translate-y-0.5 group-hover/music:translate-x-0.5"
+                        />
+                      </div>
+                      <img
+                        src={widget.src}
+                        alt={widget.alt}
+                        loading="lazy"
+                        class="block h-auto w-full border-t border-border/50 bg-background"
+                      />
+                    </a>
+                  ))
+                }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-border bg-card/40">
+    <div class="mx-auto grid max-w-5xl gap-4 px-6 py-8 md:grid-cols-3">
+      {
+        focusAreas.map((area) => (
+          <article class="rounded-lg border border-border bg-background/70 p-5">
+            <Icon
+              name={area.icon}
+              width="22"
+              height="22"
+              class="text-primary"
+            />
+            <h2 class="mt-4 text-base font-semibold tracking-tight">
+              {area.title}
+            </h2>
+            <p class="mt-2 text-sm leading-6 text-muted-foreground">
+              {area.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-14">
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
     >
-      <Icon name="lucide:triangle-alert" width="14" height="14" />
-      This page is a work in progress — more coming soon.
-    </p>
-    <div class="mt-8 flex gap-4">
+      <div>
+        <p class="text-sm font-medium text-primary">Selected projects</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight">
+          Useful things I've built
+        </h2>
+      </div>
       <a
-        href={`${base}/blog`}
-        class="inline-flex items-center px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+        href={`${githubProfileUrl}?tab=repositories`}
+        class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
-        Read the blog
+        View all repositories
+        <Icon name="lucide:arrow-up-right" width="15" height="15" />
       </a>
-      <a
-        href={`${base}/linktree`}
-        class="inline-flex items-center px-4 py-2 rounded-md border border-border text-sm font-medium hover:bg-accent transition-colors"
-      >
-        Find me online
-      </a>
+    </div>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {
+        projects.map((project) => (
+          <a
+            href={project.href}
+            class="group rounded-lg border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <span class="inline-flex size-10 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon name={project.icon} width="20" height="20" />
+                </span>
+                <div>
+                  <h3 class="font-semibold tracking-tight">{project.name}</h3>
+                  <p class="mt-0.5 text-xs text-muted-foreground">
+                    {project.language} · {project.meta}
+                  </p>
+                </div>
+              </div>
+              <Icon
+                name="lucide:arrow-up-right"
+                width="16"
+                height="16"
+                class="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+              />
+            </div>
+            <p class="mt-4 text-sm leading-6 text-muted-foreground">
+              {project.description}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 pb-20">
+    <div class="grid gap-4 md:grid-cols-[0.85fr_1.15fr]">
+      <div class="rounded-lg border border-border bg-card p-6">
+        <p class="text-sm font-medium text-primary">Now-ish</p>
+        <h2 class="mt-2 text-2xl font-bold tracking-tight">Current pattern</h2>
+        <p class="mt-4 text-sm leading-6 text-muted-foreground">
+          Most of my recent repos are experiments: AI bots, VS Code language
+          tooling, web wallpaper infrastructure, MCP automation, and game
+          modding projects. The common thread is simple: weird idea first, hack
+          it together, then polish the parts that turn out useful.
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-border bg-card p-6">
+        <p class="text-sm font-medium text-primary">Tech stack</p>
+        <div class="mt-5 grid gap-5 sm:grid-cols-3">
+          {
+            stackGroups.map((group) => (
+              <div>
+                <h3 class="text-sm font-semibold">{group.title}</h3>
+                <ul class="mt-3 space-y-2">
+                  {group.items.map((item) => (
+                    <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span
+                        class="tech-icon flex size-6 shrink-0 items-center justify-center rounded-md border border-border bg-background/70"
+                        style={`--tech-color: ${item.color}; --tech-dark-color: ${item.darkColor ?? item.color};`}
+                      >
+                        <Icon name={item.icon} width="14" height="14" />
+                      </span>
+                      {item.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  .tech-icon {
+    color: var(--tech-color);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in oklch, var(--tech-color) 18%, transparent);
+  }
+
+  :global(.dark) .tech-icon {
+    color: var(--tech-dark-color);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in oklch, var(--tech-dark-color) 18%, transparent);
+  }
+</style>
