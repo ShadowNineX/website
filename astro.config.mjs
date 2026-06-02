@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 import sitemap from "@astrojs/sitemap";
+import robotsTxt from "astro-robots-txt";
 
 import mdx from "@astrojs/mdx";
 
@@ -17,5 +18,5 @@ export default defineConfig({
     placement: "bottom-center",
   },
 
-  integrations: [sitemap(), mdx()],
+  integrations: [sitemap(), robotsTxt(), mdx()],
 });
