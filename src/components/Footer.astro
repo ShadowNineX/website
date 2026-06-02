@@ -1,0 +1,106 @@
+---
+import { Icon } from "astro-iconify";
+import { execSync } from "node:child_process";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const fallbackYear = new Date().getFullYear();
+const siteName = "ShadowNine";
+
+const runGit = (command: string) => {
+  try {
+    return execSync(command, {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return "";
+  }
+};
+
+const commitHash =
+  import.meta.env.PUBLIC_GIT_COMMIT?.slice(0, 7) ??
+  import.meta.env.PUBLIC_COMMIT_SHA?.slice(0, 7) ??
+  import.meta.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ??
+  runGit("git rev-parse --short HEAD");
+const fullCommitHash =
+  import.meta.env.PUBLIC_GIT_COMMIT ??
+  import.meta.env.PUBLIC_COMMIT_SHA ??
+  import.meta.env.VERCEL_GIT_COMMIT_SHA ??
+  runGit("git rev-parse HEAD");
+const remoteUrl = runGit("git config --get remote.origin.url")
+  .replace(/^git@github\.com:/, "https://github.com/")
+  .replace(/\.git$/, "");
+const commitUrl =
+  remoteUrl && fullCommitHash ? `${remoteUrl}/commit/${fullCommitHash}` : "";
+
+const footerLinks = [
+  { href: `${base}/`, label: "Home", icon: "lucide:house" },
+  { href: `${base}/blog`, label: "Blog", icon: "lucide:book-open" },
+  { href: `${base}/linktree`, label: "Links", icon: "lucide:sparkles" },
+];
+---
+
+<footer class="border-t border-border bg-card/35">
+  <div
+    class="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-7 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div class="space-y-2">
+      <p class="text-sm font-medium">
+        &copy; <span data-current-year>{fallbackYear}</span> {siteName}. All
+        rights reserved.
+      </p>
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="lucide:code-2" width="13" height="13" />
+          Built with Astro and Bun
+        </span>
+        {
+          commitHash && (
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="lucide:git-commit-horizontal" width="13" height="13" />
+              {commitUrl ? (
+                <a
+                  href={commitUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-mono transition-colors hover:text-foreground"
+                  aria-label={`View commit ${commitHash} on GitHub`}
+                >
+                  {commitHash}
+                </a>
+              ) : (
+                <span class="font-mono">{commitHash}</span>
+              )}
+            </span>
+          )
+        }
+      </p>
+    </div>
+
+    <nav aria-label="Footer navigation">
+      <ul class="flex flex-wrap gap-2">
+        {
+          footerLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="inline-flex items-center gap-2 rounded-md border border-border bg-background/70 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/35 hover:text-foreground"
+              >
+                <Icon name={link.icon} width="15" height="15" />
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const currentYear = document.querySelector("[data-current-year]");
+
+  if (currentYear) {
+    currentYear.textContent = new Date().getFullYear().toString();
+  }
+</script>

@@ -4,6 +4,7 @@ import Head from "../components/Head.astro";
 import { ClientRouter } from "astro:transitions";
 import { Icon } from "astro-iconify";
 import CustomCursor from "../components/CustomCursor.astro";
+import Footer from "@/components/Footer.astro";
 import ThreeBackground from "../components/ThreeBackground.astro";
 import type { Props as SEOProps } from "astro-seo";
 
@@ -121,5 +122,6 @@ const isActive = (href: string) => {
     <main class="flex-1">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
