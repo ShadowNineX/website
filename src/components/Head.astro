@@ -26,6 +26,10 @@ const canonicalUrl =
   new URL(Astro.url.pathname + Astro.url.search, Astro.site ?? Astro.url).href;
 const socialImage = "https://github.com/ShadowNineX.png?size=512";
 const socialImageAlt = "ShadowNine GitHub avatar";
+const socialImageType = "image/png";
+const socialImageWidth = 512;
+const socialImageHeight = 512;
+const twitterCreator = "@ShadowNineX";
 const shouldTemplateTitle = Boolean(title && title !== siteName);
 
 const resolvedOpenGraph =
@@ -43,19 +47,27 @@ const resolvedOpenGraph =
       locale: "en_US",
     },
     image: {
+      secureUrl: socialImage,
+      type: socialImageType,
+      width: socialImageWidth,
+      height: socialImageHeight,
       alt: socialImageAlt,
     },
   } satisfies SEOProps["openGraph"]);
 
-const resolvedTwitter =
-  twitter ??
-  ({
-    card: "summary",
-    title: resolvedTitle,
-    description: resolvedDescription,
-    image: socialImage,
-    imageAlt: socialImageAlt,
-  } satisfies SEOProps["twitter"]);
+const defaultTwitter = {
+  card: "summary",
+  creator: twitterCreator,
+  title: resolvedTitle,
+  description: resolvedDescription,
+  image: socialImage,
+  imageAlt: socialImageAlt,
+} satisfies SEOProps["twitter"];
+const resolvedTwitter = {
+  ...defaultTwitter,
+  ...twitter,
+  creator: twitter?.creator ?? defaultTwitter.creator,
+} satisfies SEOProps["twitter"];
 ---
 
 <head>
