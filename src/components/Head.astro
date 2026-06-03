@@ -30,6 +30,7 @@ const socialImageType = "image/png";
 const socialImageWidth = 512;
 const socialImageHeight = 512;
 const twitterCreator = "@ShadowNineX";
+const twitterSite = "@ShadowNineX";
 const shouldTemplateTitle = Boolean(title && title !== siteName);
 
 const resolvedOpenGraph =
@@ -57,6 +58,7 @@ const resolvedOpenGraph =
 
 const defaultTwitter = {
   card: "summary",
+  site: twitterSite,
   creator: twitterCreator,
   title: resolvedTitle,
   description: resolvedDescription,
@@ -66,6 +68,7 @@ const defaultTwitter = {
 const resolvedTwitter = {
   ...defaultTwitter,
   ...twitter,
+  site: twitter?.site ?? defaultTwitter.site,
   creator: twitter?.creator ?? defaultTwitter.creator,
 } satisfies SEOProps["twitter"];
 ---
