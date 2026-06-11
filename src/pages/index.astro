@@ -230,12 +230,12 @@ const links = [
   },
   {
     label: "Links",
-    href: `${base}/linktree/`,
+    href: `${base}/linktree`,
     icon: "lucide:link",
   },
   {
     label: "Blog",
-    href: `${base}/blog/`,
+    href: `${base}/blog`,
     icon: "lucide:book-open",
   },
 ];
@@ -489,7 +489,7 @@ const musicWidgets = [
             </h2>
           </div>
           <a
-            href={`${base}/blog/`}
+            href={`${base}/blog`}
             class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             View all posts
@@ -498,7 +498,7 @@ const musicWidgets = [
         </div>
 
         <a
-          href={`${base}/blog/${latestBlogPost.id}/`}
+          href={`${base}/blog/${latestBlogPost.id}`}
           class="group mt-8 grid overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10 md:grid-cols-[0.95fr_1.05fr]"
         >
           {latestBlogPost.data.image && (

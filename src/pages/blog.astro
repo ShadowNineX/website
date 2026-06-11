@@ -81,7 +81,7 @@ const formatDate = (date: Date) =>
             {featuredPost && (
               <article>
                 <a
-                  href={`${base}/blog/${featuredPost.id}/`}
+                  href={`${base}/blog/${featuredPost.id}`}
                   class="group block overflow-hidden rounded-md border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10"
                 >
                   {featuredPost.data.image && (
@@ -148,7 +148,7 @@ const formatDate = (date: Date) =>
               <div class="mt-5 space-y-4">
                 {posts.map((post) => (
                   <a
-                    href={`${base}/blog/${post.id}/`}
+                    href={`${base}/blog/${post.id}`}
                     class="group grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border border-transparent p-2 transition-colors hover:border-border hover:bg-background/70"
                   >
                     <span class="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
@@ -188,7 +188,7 @@ const formatDate = (date: Date) =>
                 {archivePosts.map((post) => (
                   <li>
                     <a
-                      href={`${base}/blog/${post.id}/`}
+                      href={`${base}/blog/${post.id}`}
                       class="group block rounded-md border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
                     >
                       <time class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
