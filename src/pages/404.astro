@@ -1,0 +1,70 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Icon } from "astro-iconify";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<Layout
+  title="Page Not Found"
+  description="The page you were looking for could not be found."
+  noindex
+>
+  <section class="mx-auto flex min-h-[calc(100vh-11rem)] max-w-5xl items-center px-6 py-16">
+    <div class="grid w-full gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      <div class="relative aspect-square max-w-xs">
+        <div class="absolute inset-0 rounded-lg border border-primary/25 bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur-xl">
+        </div>
+        <div class="absolute inset-x-8 top-8 h-2 rounded-full bg-linear-to-r from-cyan-300 via-primary to-amber-300">
+        </div>
+        <div class="absolute left-8 top-20 flex gap-2">
+          <span class="size-3 rounded-full bg-red-400"></span>
+          <span class="size-3 rounded-full bg-amber-300"></span>
+          <span class="size-3 rounded-full bg-emerald-300"></span>
+        </div>
+        <div class="absolute inset-x-8 bottom-8 top-32 rounded-md border border-border bg-background/80 p-5">
+          <div class="flex h-full flex-col justify-between">
+            <div class="space-y-3">
+              <div class="h-3 w-24 rounded-full bg-muted"></div>
+              <div class="h-3 w-36 rounded-full bg-muted"></div>
+              <div class="h-3 w-20 rounded-full bg-primary/45"></div>
+            </div>
+            <p class="text-7xl font-black tracking-tight text-primary/90">
+              404
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
+          <Icon name="lucide:search-x" width="15" height="15" />
+          Missing page
+        </p>
+        <h1 class="mt-5 max-w-2xl text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+          This page wandered out of the route table.
+        </h1>
+        <p class="mt-4 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+          The link may be old, the URL may have a typo, or the page may have
+          moved while the site was being rearranged.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={`${base}/`}
+            class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            <Icon name="lucide:house" width="16" height="16" />
+            Home
+          </a>
+          <a
+            href={`${base}/blog`}
+            class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            <Icon name="lucide:book-open" width="16" height="16" />
+            Blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
