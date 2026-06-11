@@ -14,6 +14,9 @@ export default defineConfig({
   },
   site: "https://shadownine.dev",
   trailingSlash: "never",
+  build: {
+    format: "file",
+  },
   devToolbar: {
     enabled: true,
     placement: "bottom-center",
