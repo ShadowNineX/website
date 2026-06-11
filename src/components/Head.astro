@@ -21,9 +21,11 @@ const resolvedTitle = title ?? defaultTitle;
 const resolvedDescription =
   description ??
   "ShadowNine's personal website for weird projects, experiments, links, and notes.";
+const canonicalPathname = Astro.url.pathname.endsWith("/")
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
 const canonicalUrl =
-  canonical ??
-  new URL(Astro.url.pathname + Astro.url.search, Astro.site ?? Astro.url).href;
+  canonical ?? new URL(canonicalPathname, Astro.site ?? Astro.url).href;
 const socialImage = "https://github.com/ShadowNineX.png?size=512";
 const socialImageAlt = "ShadowNine GitHub avatar";
 const socialImageType = "image/png";

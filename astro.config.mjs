@@ -13,6 +13,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   site: "https://shadownine.dev",
+  trailingSlash: "always",
   devToolbar: {
     enabled: true,
     placement: "bottom-center",
