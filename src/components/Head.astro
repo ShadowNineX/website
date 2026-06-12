@@ -1,5 +1,6 @@
 ---
 import { SEO } from "astro-seo";
+import { canonicalUrlForPath } from "@/lib/routes";
 import type { Props as SEOProps } from "astro-seo";
 
 interface Props {
@@ -21,13 +22,9 @@ const resolvedTitle = title ?? defaultTitle;
 const resolvedDescription =
   description ??
   "ShadowNine's personal website for weird projects, experiments, links, and notes.";
-const canonicalPathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const canonicalBaseUrl = Astro.site ?? Astro.url;
 const canonicalUrl =
-  canonical ??
-  (canonicalPathname === "/"
-    ? canonicalBaseUrl.origin
-    : new URL(canonicalPathname, canonicalBaseUrl).href);
+  canonical ?? canonicalUrlForPath(Astro.url.pathname, canonicalBaseUrl);
 const socialImage = "https://github.com/ShadowNineX.png?size=512";
 const socialImageAlt = "ShadowNine GitHub avatar";
 const socialImageType = "image/png";

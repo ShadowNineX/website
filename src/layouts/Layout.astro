@@ -6,6 +6,7 @@ import { Icon } from "astro-iconify";
 import CustomCursor from "../components/CustomCursor.astro";
 import Footer from "@/components/Footer.astro";
 import ThreeBackground from "../components/ThreeBackground.astro";
+import { normalizeRoutePath } from "@/lib/routes";
 import type { Props as SEOProps } from "astro-seo";
 
 interface Props {
@@ -29,12 +30,11 @@ const navLinks = [
   { href: `${base}/linktree`, label: "Links", icon: "lucide:sparkles" },
 ];
 
-const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
-const home = normalize(`${base}/`);
-const currentPath = normalize(pathname);
+const home = normalizeRoutePath(`${base}/`);
+const currentPath = normalizeRoutePath(pathname);
 
 const isActive = (href: string) => {
-  const target = normalize(href);
+  const target = normalizeRoutePath(href);
   // The home link should only match the home route exactly, otherwise it
   // would match every page (since every path starts with the base).
   if (target === home) return currentPath === home;
