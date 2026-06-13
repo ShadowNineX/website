@@ -1,0 +1,64 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Icon } from "astro-iconify";
+
+const updatedAt = "June 13, 2026";
+const sections = [
+  {
+    title: "What this site collects",
+    body: "This site does not ask you to create an account, submit personal details, or sign in. Normal server logs may include basic request information such as your IP address, browser, requested page, and timestamp.",
+  },
+  {
+    title: "Third-party content",
+    body: "Some pages include links, images, or widgets from services like GitHub, Spotify, Last.fm, and other external sites. Those services may receive request data when their content loads or when you open their links.",
+  },
+  {
+    title: "Cookies and tracking",
+    body: "This site does not intentionally set advertising or analytics cookies. If embedded third-party content sets its own cookies, that is handled by the third-party service.",
+  },
+  {
+    title: "How information is used",
+    body: "Basic technical information is used to keep the site working, troubleshoot problems, understand abuse, and improve reliability. It is not sold.",
+  },
+  {
+    title: "Contact",
+    body: "If you have a privacy question about this site, the easiest way to reach me is through the links on the Links page.",
+  },
+];
+---
+
+<Layout
+  title="Privacy"
+  description="Privacy information for ShadowNine's personal website."
+>
+  <section class="mx-auto max-w-3xl px-6 py-14 sm:py-20">
+    <header>
+      <p class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
+        <Icon name="lucide:shield-check" width="15" height="15" />
+        Privacy
+      </p>
+      <h1 class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+        Privacy policy
+      </h1>
+      <p class="mt-4 text-base leading-7 text-muted-foreground">
+        A short, practical note about what this personal site does and does not
+        collect. Last updated {updatedAt}.
+      </p>
+    </header>
+
+    <div class="mt-10 space-y-5">
+      {
+        sections.map((section) => (
+          <section class="rounded-lg border border-border bg-card/85 p-5 shadow-sm">
+            <h2 class="text-lg font-semibold tracking-tight">
+              {section.title}
+            </h2>
+            <p class="mt-3 text-sm leading-6 text-muted-foreground">
+              {section.body}
+            </p>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
