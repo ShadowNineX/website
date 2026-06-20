@@ -11,10 +11,19 @@ interface Props {
   twitter?: SEOProps["twitter"];
   noindex?: boolean;
   nofollow?: boolean;
+  themeColor?: string;
 }
 
-const { title, description, canonical, openGraph, twitter, noindex, nofollow } =
-  Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  openGraph,
+  twitter,
+  noindex,
+  nofollow,
+  themeColor = "#ff0000",
+} = Astro.props;
 
 const siteName = "ShadowNine";
 const defaultTitle = "ShadowNine";
@@ -92,7 +101,7 @@ const resolvedTwitter = {
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
-  <meta name="theme-color" content="#ff0000" />
+  <meta name="theme-color" content={themeColor} />
   <meta name="generator" content={Astro.generator} />
   <SEO
     title={resolvedTitle}

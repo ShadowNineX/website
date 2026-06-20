@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { canonicalUrlForPath } from "@/lib/routes";
+import { getSeoImage } from "@/lib/seo-image";
+import yiImage from "@/assets/yi.jpg";
+
+const title = "Yi";
+const description = "A dedicated Yi page on ShadowNine.";
+const imageAlt = "Yi";
+const themeColor = "#facc15";
+const canonicalUrl = canonicalUrlForPath(
+  Astro.url.pathname,
+  Astro.site ?? Astro.url,
+);
+const seoImage = await getSeoImage({
+  image: yiImage,
+  requestUrl: Astro.url,
+  site: Astro.site,
+});
+const imageUrl = seoImage?.url ?? new URL(yiImage.src, Astro.url).href;
+---
+
+<Layout
+  {title}
+  {description}
+  canonical={canonicalUrl}
+  {themeColor}
+  showChrome={false}
+  openGraph={{
+    basic: {
+      title,
+      type: "website",
+      image: imageUrl,
+      url: canonicalUrl,
+    },
+    optional: {
+      description,
+      siteName: "ShadowNine",
+      locale: "en_US",
+    },
+    image: {
+      secureUrl: imageUrl,
+      type: seoImage?.type ?? "image/jpeg",
+      width: seoImage?.width ?? yiImage.width,
+      height: seoImage?.height ?? yiImage.height,
+      alt: imageAlt,
+    },
+  }}
+  twitter={{
+    card: "summary_large_image",
+    title,
+    description,
+    image: imageUrl,
+    imageAlt: imageAlt,
+  }}
+>
+  <section class="grid min-h-screen place-items-center p-4">
+    <Image
+      src={yiImage}
+      alt={imageAlt}
+      width={900}
+      loading="eager"
+      class="max-h-[calc(100vh-2rem)] w-auto max-w-full rounded-lg object-contain shadow-2xl shadow-primary/10"
+    />
+  </section>
+</Layout>
