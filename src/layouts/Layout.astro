@@ -73,17 +73,17 @@ const isActive = (href: string) => {
     {showChrome && <ThreeBackground />}
     {
       showChrome && (
-        <header class="sticky top-0 z-50 border-b border-border/70 bg-background/75 shadow-sm shadow-primary/5 backdrop-blur-xl">
-          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/45 to-transparent" />
+        <header class="sticky top-0 z-50 border-b border-border/70 bg-background/80 shadow-sm shadow-primary/10 backdrop-blur-xl">
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/55 via-45% to-accent/45" />
           <nav class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <a
               href={`${base}/`}
-              class="group flex min-w-0 items-center gap-3 rounded-md border border-border/80 bg-card/70 px-3 py-2 text-sm font-semibold shadow-sm transition-all hover:border-primary/40 hover:bg-card"
+              class="group flex min-w-0 items-center gap-3 rounded-md border border-border/80 bg-card/80 px-3 py-2 text-sm font-semibold shadow-sm transition-all hover:border-primary/50 hover:bg-card"
             >
-              <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:rotate-3 group-hover:scale-105">
+              <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-transform group-hover:rotate-3 group-hover:scale-105">
                 <Icon name="lucide:zap" width="17" height="17" />
               </span>
-              <span class="hidden tracking-tight sm:block">ShadowNine</span>
+              <span class="hidden tracking-tight sm:block">ShadowNine.dev</span>
             </a>
             <div class="flex max-w-full items-center gap-1 rounded-lg border border-border/80 bg-card/70 p-1 shadow-sm">
               {navLinks.map(({ href, label, icon }) => (

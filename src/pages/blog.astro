@@ -8,7 +8,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const blogDescription = "Thoughts, projects, and more.";
+const blogDescription = "Project notes, cozy updates, and little field reports.";
 const blogOgImageOrigin = import.meta.env.DEV
   ? Astro.url.origin
   : (Astro.site?.origin ?? Astro.url.origin);
@@ -62,11 +62,11 @@ const formatDate = (date: Date) =>
     <header class="max-w-3xl">
       <p class="text-sm font-medium text-primary">Blog</p>
       <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-        Notes, projects, and weird little field reports.
+        Notes from the project shelf.
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-        Writing about code, games, music, web experiments, and whatever idea
-        refuses to leave quietly.
+        Code, games, music, web experiments, and the ideas that were worth
+        writing down before they wandered off.
       </p>
     </header>
 
@@ -106,7 +106,7 @@ const formatDate = (date: Date) =>
                         {formatDate(featuredPost.data.date)}
                       </time>
                       <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-                      <span>Latest</span>
+                      <span>Fresh note</span>
                     </div>
                     <h2
                       transition:name={titleTransitionName(featuredPost.id)}
@@ -123,7 +123,7 @@ const formatDate = (date: Date) =>
                       {featuredPost.data.description}
                     </p>
                     <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-                      Open post
+                      Read post
                       <Icon
                         name="lucide:arrow-up-right"
                         width="15"
@@ -139,7 +139,7 @@ const formatDate = (date: Date) =>
             <aside class="rounded-md border border-border bg-card p-5">
               <div class="flex items-center justify-between gap-3">
                 <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  Index
+                  Shelf
                 </h2>
                 <span class="text-sm text-muted-foreground">
                   {posts.length} {posts.length === 1 ? "post" : "posts"}
@@ -180,7 +180,7 @@ const formatDate = (date: Date) =>
                 <div>
                   <p class="text-sm font-medium text-primary">Archive</p>
                   <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    More posts
+                    More notes
                   </h2>
                 </div>
               </div>
