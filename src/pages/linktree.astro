@@ -8,7 +8,7 @@ const githubUsername = "ShadowNineX";
 const githubProfileUrl = `https://github.com/${githubUsername}`;
 const githubAvatarUrl = `${githubProfileUrl}.png?size=256`;
 const displayName = "ShadowNine";
-const profileBio = "Tails fan. 𖤐";
+const profileBio = "Tails fan, project tinkerer, cozy profile keeper.";
 
 const stats = [
   { label: "Code", value: "GitHub" },
@@ -20,7 +20,7 @@ const links = [
   {
     label: "GitHub",
     href: githubProfileUrl,
-    description: "Repositories, experiments, and project source",
+    description: "Repositories, experiments, and project source.",
     icon: "simple-icons:github",
     color: "#181717",
     darkColor: "#ffffff",
@@ -30,7 +30,7 @@ const links = [
   {
     label: "Bluesky",
     href: "https://bsky.app/profile/shadowninex.bsky.social",
-    description: "Short posts and internet chatter",
+    description: "Short posts and internet chatter.",
     icon: "simple-icons:bluesky",
     color: "#0285FF",
     group: "Social",
@@ -38,7 +38,7 @@ const links = [
   {
     label: "Steam",
     href: "https://steamcommunity.com/id/ShadowNineX",
-    description: "Games and Steam profile",
+    description: "Games, profile art, and playtime.",
     icon: "simple-icons:steam",
     color: "#1b2838",
     darkColor: "#c6d4df",
@@ -47,7 +47,7 @@ const links = [
   {
     label: "Last.fm",
     href: "https://www.last.fm/user/ShadowNineX",
-    description: "Recently played music and scrobbles",
+    description: "Recently played music and scrobbles.",
     icon: "simple-icons:lastdotfm",
     color: "#D51007",
     group: "Music",
@@ -60,7 +60,7 @@ const links = [
   {
     label: "Spotify",
     href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
-    description: "Now playing and listening history",
+    description: "Now playing and listening history.",
     icon: "simple-icons:spotify",
     color: "#1DB954",
     group: "Music",
@@ -72,7 +72,7 @@ const links = [
   {
     label: "MyAnimeList",
     href: "https://myanimelist.net/profile/ShadowNine",
-    description: "Anime and manga lists",
+    description: "Anime and manga lists.",
     icon: "simple-icons:myanimelist",
     color: "#2E51A2",
     group: "Media",
@@ -80,7 +80,7 @@ const links = [
   {
     label: "Flickr",
     href: "https://www.flickr.com/photos/shadownine",
-    description: "Photos and visual scraps",
+    description: "Photos and visual scraps.",
     icon: "logos:flickr",
     color: "#0063DC",
     colored: true,
@@ -89,7 +89,7 @@ const links = [
   {
     label: "Pinterest",
     href: "https://www.pinterest.com/ShadowNineX",
-    description: "Boards, references, and saved ideas",
+    description: "Boards, references, and saved ideas.",
     icon: "simple-icons:pinterest",
     color: "#E60023",
     group: "Media",
@@ -97,7 +97,7 @@ const links = [
   {
     label: "Tumblr",
     href: "https://www.tumblr.com/blog/shadowninex",
-    description: "Posts, reblogs, and archive energy",
+    description: "Posts, reblogs, and archive energy.",
     icon: "simple-icons:tumblr",
     color: "#35465C",
     group: "Social",
@@ -107,7 +107,7 @@ const links = [
 const groupOrder = ["Code", "Social", "Music", "Media", "Play"];
 ---
 
-<Layout title="Links" description={`Find ${displayName} across the web.`}>
+<Layout title="Links" description={`Find ${displayName}'s cozy corners across the web.`}>
   <section class="mx-auto max-w-xl px-4 pb-20 pt-6 sm:px-6">
     <div class="relative overflow-hidden rounded-lg border border-border bg-card shadow-xl shadow-primary/5">
       <Image
@@ -118,21 +118,21 @@ const groupOrder = ["Code", "Social", "Music", "Media", "Play"];
         loading="eager"
         class="h-52 w-full object-cover sm:h-60"
       />
-      <div class="absolute inset-0 bg-linear-to-t from-background via-background/20 to-transparent"></div>
-      <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-sky-300/0 via-primary/70 to-rose-300/0"></div>
 
       <div class="relative -mt-20 px-5 pb-6 sm:px-7">
         <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div class="flex items-end gap-4">
             <div class="relative shrink-0">
-              <span class="absolute -inset-1 rounded-full bg-linear-to-br from-cyan-300 via-primary to-amber-300 opacity-80 blur-sm"></span>
+              <span class="absolute -inset-1 rounded-full bg-linear-to-br from-sky-300 via-primary to-rose-300 opacity-85"></span>
               <img
                 src={githubAvatarUrl}
                 alt={`${displayName} GitHub avatar`}
                 width="128"
                 height="128"
                 loading="eager"
-                class="relative size-28 rounded-full border-4 border-background bg-background object-cover shadow-2xl shadow-cyan-500/20"
+                class="relative size-28 rounded-full border-4 border-background bg-background object-cover shadow-2xl shadow-primary/20"
               />
             </div>
 
@@ -141,7 +141,7 @@ const groupOrder = ["Code", "Social", "Music", "Media", "Play"];
                 @{githubUsername}
               </p>
               <h1 class="mt-1 text-3xl font-bold tracking-tight">
-                <span class="bg-linear-to-r from-cyan-400 via-white to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(6,182,212,0.45)]">
+                <span class="bg-linear-to-r from-amber-500 via-rose-400 to-sky-500 bg-clip-text text-transparent dark:from-amber-200 dark:via-orange-100 dark:to-sky-200">
                   {displayName}
                 </span>
               </h1>
@@ -155,7 +155,7 @@ const groupOrder = ["Code", "Social", "Music", "Media", "Play"];
             href={githubProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center justify-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+            class="inline-flex items-center justify-center gap-2 rounded-md border border-primary/35 bg-primary/15 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
           >
             <Icon name="simple-icons:github" width="16" height="16" />
             GitHub

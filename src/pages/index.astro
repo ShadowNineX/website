@@ -89,44 +89,44 @@ const profileStats = [
     value: githubUser.public_repos.toString(),
     icon: "lucide:folder-git-2",
     tileClass:
-      "border-cyan-300/25 bg-cyan-300/5 shadow-cyan-300/10 hover:border-cyan-300/45",
-    iconClass: "text-cyan-300",
+      "border-sky-300/35 bg-sky-300/10 shadow-sky-300/10 hover:border-sky-300/55",
+    iconClass: "text-sky-500 dark:text-sky-300",
   },
   {
     label: "GitHub stars",
     value: totalStars.toString(),
     icon: "lucide:star",
     tileClass:
-      "border-amber-300/25 bg-amber-300/5 shadow-amber-300/10 hover:border-amber-300/45",
-    iconClass: "text-amber-300",
+      "border-amber-300/40 bg-amber-300/15 shadow-amber-300/10 hover:border-amber-300/60",
+    iconClass: "text-amber-600 dark:text-amber-300",
   },
   {
     label: "Since",
     value: formatMonthYear(githubUser.created_at),
     icon: "lucide:calendar-days",
     tileClass:
-      "border-violet-300/25 bg-violet-300/5 shadow-violet-300/10 hover:border-violet-300/45",
-    iconClass: "text-violet-300",
+      "border-rose-300/35 bg-rose-300/10 shadow-rose-300/10 hover:border-rose-300/55",
+    iconClass: "text-rose-500 dark:text-rose-300",
   },
 ];
 
 const focusAreas = [
   {
-    title: "AI-assisted tooling",
+    title: "AI-assisted tools",
     description:
-      "Building MCP-powered tools that let AI operate inside developer workflows, game tools, and reverse-engineering environments.",
+      "Building MCP-powered tools that make developer workflows, game tooling, and reverse-engineering projects easier to steer.",
     icon: "lucide:bot",
   },
   {
-    title: "Game and modding systems",
+    title: "Game and modding work",
     description:
-      "Exploring Unreal Engine, Portal 2: Community Edition, Cheat Engine, Neodash, Rising World, and other toolchains that make games more hackable.",
+      "Exploring Unreal Engine, Portal 2: Community Edition, Cheat Engine, Neodash, Rising World, and the toolchains behind playable ideas.",
     icon: "lucide:gamepad-2",
   },
   {
     title: "Personal web experiments",
     description:
-      "Making Astro/Vue sites, editor experiments, and random TypeScript projects for myself because the idea sounds fun or weird enough to try.",
+      "Making Astro/Vue sites, editor experiments, and TypeScript projects because the idea sounds cozy, useful, or weird enough to try.",
     icon: "lucide:sparkles",
   },
 ];
@@ -262,7 +262,7 @@ const musicWidgets = [
 
 <Layout
   title={displayName}
-  description={`${displayName}'s personal site, projects, tools, and links.`}
+  description={`${displayName}'s cozy personal site for projects, tools, links, and notes.`}
 >
   <section
     class="mx-auto grid max-w-5xl gap-10 px-6 py-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-20"
@@ -272,25 +272,26 @@ const musicWidgets = [
         class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary"
       >
         <Icon name="lucide:terminal" width="15" height="15" />
-        {githubUser.login} on GitHub
+        cozy project workshop
       </p>
       <h1
         class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-6xl"
       >
-        I make weird projects for fun and hack things together until they work.
+        ShadowNine's warm little workshop for code, games, and ideas.
       </h1>
       <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-        I'm {displayName}, a developer who works on multiple projects at once.
-        I like messing with odd ideas, building tools for niche problems, and
-        stitching together code, game systems, AI, modding, and web stuff just
-        to see what happens.
+        I'm {displayName}, a developer who likes building tools, modding
+        experiments, cozy web pages, and odd ideas that need a place to live.
+        I keep the projects here close to the stuff I care about: practical
+        tools, playful experiments, game systems, music, and small notes from
+        whatever I am building next.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         {
           links.map((link) => (
             <a
               href={link.href}
-              class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+            class="inline-flex items-center gap-2 rounded-md border border-border bg-card/90 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
             >
               <Icon name={link.icon} width="16" height="16" />
               {link.label}
@@ -302,7 +303,7 @@ const musicWidgets = [
 
     <div class="relative">
       <div
-        class="absolute -inset-4 rounded-4xl border border-primary/10 bg-primary/5 blur-2xl"
+        class="absolute inset-0 rounded-lg border border-primary/15 bg-card/35"
       >
       </div>
       <div class="group/card h-170 perspective-[1400px] sm:h-180">
@@ -326,11 +327,9 @@ const musicWidgets = [
           >
           </div>
           <div
-            class="absolute inset-0 overflow-hidden border border-primary/20 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
+            class="absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
           >
-            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-cyan-300 via-primary to-amber-300"></div>
-            <div class="absolute -right-20 -top-20 size-48 rounded-full bg-cyan-400/15 blur-3xl"></div>
-            <div class="absolute -bottom-24 -left-16 size-52 rounded-full bg-amber-300/15 blur-3xl"></div>
+            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-sky-300 via-primary to-rose-300"></div>
             <Image
               src={avatar}
               alt="ShadowNine avatar"
@@ -346,16 +345,16 @@ const musicWidgets = [
                     GitHub profile
                   </p>
                   <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    <span class="bg-linear-to-r from-cyan-300 via-white to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(34,211,238,0.35)]">
+                    <span class="bg-linear-to-r from-amber-500 via-rose-400 to-sky-500 bg-clip-text text-transparent dark:from-amber-200 dark:via-orange-100 dark:to-sky-200">
                       {displayName}
                     </span>
                   </h2>
-                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-amber-300/25 bg-amber-300/10 px-2.5 py-1 text-sm text-muted-foreground">
+                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-amber-300/35 bg-amber-300/15 px-2.5 py-1 text-sm text-muted-foreground">
                     <Icon
                       name="lucide:sparkle"
                       width="14"
                       height="14"
-                      class="text-amber-300"
+                      class="text-amber-500 dark:text-amber-300"
                     />
                     {profileBio}
                   </p>
@@ -398,10 +397,10 @@ const musicWidgets = [
               <div class="flex items-center justify-between gap-4">
                 <div>
                   <p class="text-xs font-semibold uppercase tracking-wider text-primary">
-                    Listening corner
+                    cozy listening corner
                   </p>
                   <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    Music stuff
+                    Music and comfort tracks
                   </h2>
                 </div>
                 <Icon
@@ -412,7 +411,7 @@ const musicWidgets = [
                 />
               </div>
 
-              <div class="music-scroll mt-4 min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border border-border bg-background/60 p-3">
+              <div class="music-scroll mt-4 min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border border-border bg-background/70 p-3">
                 <div class="space-y-3">
                 {
                   musicWidgets.map((widget) => (
@@ -455,11 +454,11 @@ const musicWidgets = [
     </div>
   </section>
 
-  <section class="border-y border-border bg-card/40">
+  <section class="border-y border-border bg-card/55">
     <div class="mx-auto grid max-w-5xl gap-4 px-6 py-8 md:grid-cols-3">
       {
         focusAreas.map((area) => (
-          <article class="rounded-lg border border-border bg-background/70 p-5">
+          <article class="rounded-lg border border-border bg-background/75 p-5 shadow-sm">
             <Icon
               name={area.icon}
               width="22"
@@ -483,16 +482,16 @@ const musicWidgets = [
       <section class="mx-auto max-w-5xl px-6 py-14">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p class="text-sm font-medium text-primary">Latest from the blog</p>
+            <p class="text-sm font-medium text-primary">Latest note</p>
             <h2 class="mt-2 text-3xl font-bold tracking-tight">
-              Notes from the workbench
+              Fresh from the workbench
             </h2>
           </div>
           <a
             href={`${base}/blog`}
             class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            View all posts
+            View all notes
             <Icon name="lucide:arrow-up-right" width="15" height="15" />
           </a>
         </div>
@@ -523,7 +522,7 @@ const musicWidgets = [
                 {formatBlogDate(latestBlogPost.data.date)}
               </time>
               <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-              <span>Latest</span>
+              <span>Fresh note</span>
             </div>
             <h3
               transition:name={`blog-title-${latestBlogPost.id}`}
@@ -561,7 +560,7 @@ const musicWidgets = [
       <div>
         <p class="text-sm font-medium text-primary">Selected projects</p>
         <h2 class="mt-2 text-3xl font-bold tracking-tight">
-          Useful things I've built
+          Useful things I have built
         </h2>
       </div>
       <a
@@ -588,7 +587,7 @@ const musicWidgets = [
                 <div>
                   <h3 class="font-semibold tracking-tight">{project.name}</h3>
                   <p class="mt-0.5 text-xs text-muted-foreground">
-                    {project.language} · {project.meta}
+                    {project.language} / {project.meta}
                   </p>
                 </div>
               </div>
@@ -616,8 +615,8 @@ const musicWidgets = [
         <p class="mt-4 text-sm leading-6 text-muted-foreground">
           Most of my recent repos are experiments: AI bots, VS Code language
           tooling, web wallpaper infrastructure, MCP automation, and game
-          modding projects. The common thread is simple: weird idea first, hack
-          it together, then polish the parts that turn out useful.
+          modding projects. The common thread is simple: follow the idea, make
+          it useful, then keep the parts that feel worth returning to.
         </p>
       </div>
 

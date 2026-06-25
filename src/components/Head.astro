@@ -22,7 +22,7 @@ const {
   twitter,
   noindex,
   nofollow,
-  themeColor = "#ff0000",
+  themeColor = "#f4b24d",
 } = Astro.props;
 
 const siteName = "ShadowNine";
@@ -30,7 +30,7 @@ const defaultTitle = "ShadowNine";
 const resolvedTitle = title ?? defaultTitle;
 const resolvedDescription =
   description ??
-  "ShadowNine's personal website for weird projects, experiments, links, and notes.";
+  "ShadowNine's cozy corner for projects, experiments, links, and notes.";
 const canonicalBaseUrl = Astro.site ?? Astro.url;
 const canonicalUrl =
   canonical ?? canonicalUrlForPath(Astro.url.pathname, canonicalBaseUrl);
