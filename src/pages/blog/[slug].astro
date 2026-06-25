@@ -43,32 +43,32 @@ const descriptionTransitionName = `blog-description-${post.id}`;
   title={post.data.title}
   description={post.data.description}
   canonical={canonicalUrl}
-  openGraph={ogImageUrl
-    ? {
-        basic: {
-          title: post.data.title,
-          type: "article",
-          image: ogImageUrl,
-          url: canonicalUrl,
-        },
-        optional: {
-          description: post.data.description,
-          siteName: "ShadowNine",
-          locale: "en_US",
-        },
-        image: {
-          secureUrl: ogImageUrl,
-          type: ogImage.type,
-          width: ogImage.width,
-          height: ogImage.height,
-          alt: imageAlt,
-        },
-        article: {
-          publishedTime: post.data.date.toISOString(),
-          authors: [post.data.author],
-        },
-      }
-    : undefined}
+  openGraph={{
+    basic: {
+      title: post.data.title,
+      type: "article",
+      image: ogImageUrl,
+      url: canonicalUrl,
+    },
+    optional: {
+      description: post.data.description,
+      siteName: "ShadowNine",
+      locale: "en_US",
+    },
+    ...(ogImageUrl && {
+      image: {
+        secureUrl: ogImageUrl,
+        type: ogImage.type,
+        width: ogImage.width,
+        height: ogImage.height,
+        alt: imageAlt,
+      },
+    }),
+    article: {
+      publishedTime: post.data.date.toISOString(),
+      authors: [post.data.author],
+    },
+  }}
   twitter={ogImageUrl
     ? {
         card: "summary_large_image",
@@ -98,7 +98,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
             {formattedDate}
           </time>
           <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-          <span>@{post.data.author}</span>
+          <span class="normal-case">@{post.data.author}</span>
           <span class="h-1 w-1 rounded-full bg-primary/70"></span>
           <span>Workbench note</span>
         </div>

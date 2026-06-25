@@ -106,7 +106,7 @@ const formatDate = (date: Date) =>
                         {formatDate(featuredPost.data.date)}
                       </time>
                       <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-                      <span>@{featuredPost.data.author}</span>
+                      <span class="normal-case">@{featuredPost.data.author}</span>
                       <span class="h-1 w-1 rounded-full bg-primary/70"></span>
                       <span>Fresh note</span>
                     </div>
@@ -196,7 +196,7 @@ const formatDate = (date: Date) =>
                       <div class="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                         <time>{formatDate(post.data.date)}</time>
                         <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-                        <span>@{post.data.author}</span>
+                        <span class="normal-case">@{post.data.author}</span>
                       </div>
                       <h3 class="mt-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
                         {post.data.title}
