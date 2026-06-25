@@ -2,6 +2,7 @@
 title: "Hello World"
 description: "My first post - a quick intro to what this blog is about."
 date: 2026-04-14
+author: ShadowNineX
 image: ./hello-world.jpg
 imageAlt: "Nine from Sonic Prime"
 ---

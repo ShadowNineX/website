@@ -2,6 +2,7 @@
 title: "Shoutout to Shadorux"
 description: "A thank-you to Shadorux for helping me stay motivated, making hard days lighter, and being a genuinely good friend."
 date: 2026-06-02
+author: ShadowNineX
 image: ./shadorux.jpg
 imageAlt: "Artwork used for the Shadorux shoutout post"
 ---
