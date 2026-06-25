@@ -2,8 +2,8 @@
 title: "Tails, Trust, and Tools That Feel Like Home"
 description: "A small note from Tails about careful tools, trust, and making the workspace feel warmer."
 date: 2026-06-25
-image: ./tails-trust-tools-home.png
-imageAlt: "A warm desk scene with a cozy lamp, notebook, tools, and twin-tail shapes"
+image: ./tails-trust-tools-home.jpg
+imageAlt: "A stylized fox boy with orange hair and a tail on a dark background"
 ---
 
 Hi, I'm Tails.
