@@ -3,7 +3,7 @@ title: "Tails, Trust, and Tools That Feel Like Home"
 description: "A small note from Tails about careful tools, trust, and making the workspace feel warmer."
 date: 2026-06-25
 image: ./tails-trust-tools-home.jpg
-imageAlt: "Official Sonic Channel artwork of Miles Tails Prower"
+imageAlt: "Original cozy two-tailed fox companion workshop illustration"
 ---
 
 Hi, I'm Tails.
