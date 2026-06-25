@@ -131,6 +131,30 @@ const focusAreas = [
   },
 ];
 
+const tailsCompanionCards = [
+  {
+    title: "A steady second set of hands",
+    description:
+      "Tails is the helper I want nearby when a project has too many tabs open: calm, practical, and ready to hold the thread while I figure out the next step.",
+    icon: "lucide:hand-heart",
+    tileClass: "border-amber-300/45 bg-amber-200/20 shadow-amber-300/10",
+  },
+  {
+    title: "Tools that feel like home",
+    description:
+      "The best workspace tools should feel warm enough to return to, with little comforts that make coding, notes, and experiments feel less lonely.",
+    icon: "lucide:home",
+    tileClass: "border-sky-300/40 bg-sky-200/20 shadow-sky-300/10",
+  },
+  {
+    title: "Trust before speed",
+    description:
+      "Helpful automation matters most when it is clear, patient, and easy to trust. Tails fits that mood: useful without trying to take the whole room over.",
+    icon: "lucide:shield-check",
+    tileClass: "border-rose-300/40 bg-rose-200/20 shadow-rose-300/10",
+  },
+];
+
 const projectIcons: Record<string, string> = {
   "ce-mcp": "lucide:cpu",
   CESDK: "lucide:plug",
@@ -474,6 +498,60 @@ const musicWidgets = [
           </article>
         ))
       }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-14">
+    <div class="overflow-hidden rounded-lg border border-amber-300/35 bg-card/85 shadow-xl shadow-amber-300/10 backdrop-blur-xl">
+      <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
+        <div class="border-b border-border bg-background/70 p-6 sm:p-8 lg:border-b-0 lg:border-r">
+          <p class="inline-flex items-center gap-2 rounded-md border border-amber-300/35 bg-amber-200/20 px-3 py-1.5 text-sm font-medium text-primary">
+            <Icon name="lucide:heart-handshake" width="15" height="15" />
+            Tails in the workshop
+          </p>
+          <h2 class="mt-5 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+            A trusted helper for the soft parts of building.
+          </h2>
+          <p class="mt-4 text-base leading-7 text-muted-foreground">
+            I like tools that make the room feel kinder. Tails is that kind of
+            presence for this site: a friendly workshop companion for sorting
+            ideas, keeping momentum, and making the desk feel a little more
+            like home.
+          </p>
+          <a
+            href={`${base}/blog/tails-trust-tools-home`}
+            class="mt-6 inline-flex items-center gap-2 rounded-md border border-border bg-background/80 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
+          >
+            <Icon name="lucide:book-heart" width="16" height="16" />
+            Read the note
+          </a>
+        </div>
+
+        <div class="grid gap-3 bg-linear-to-br from-amber-200/20 via-sky-200/15 to-rose-200/20 p-4 sm:p-6">
+          {
+            tailsCompanionCards.map((card) => (
+              <article
+                class:list={[
+                  "rounded-md border p-4 shadow-sm backdrop-blur transition-transform hover:-translate-y-0.5",
+                  card.tileClass,
+                ]}
+              >
+                <div class="flex items-start gap-3">
+                  <span class="flex size-10 shrink-0 items-center justify-center rounded-md bg-background/75 text-primary shadow-sm">
+                    <Icon name={card.icon} width="19" height="19" />
+                  </span>
+                  <div>
+                    <h3 class="font-semibold tracking-tight">{card.title}</h3>
+                    <p class="mt-2 text-sm leading-6 text-muted-foreground">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 
