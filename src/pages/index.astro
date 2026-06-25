@@ -576,7 +576,10 @@ const musicWidgets = [
 
         <a
           href={`${base}/blog/${latestBlogPost.id}`}
-          class="group mt-8 grid overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10 md:grid-cols-[0.95fr_1.05fr]"
+          class:list={[
+            "group mt-8 grid overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10",
+            latestBlogPost.data.image && "md:grid-cols-[0.95fr_1.05fr]",
+          ]}
         >
           {latestBlogPost.data.image && (
             <div class="overflow-hidden border-b border-border bg-muted md:border-b-0 md:border-r">
