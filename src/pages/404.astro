@@ -13,9 +13,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   <section class="mx-auto flex min-h-[calc(100vh-11rem)] max-w-5xl items-center px-6 py-16">
     <div class="grid w-full gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
       <div class="relative aspect-square max-w-xs">
-        <div class="absolute inset-0 rounded-lg border border-primary/25 bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur-xl">
+        <div class="tails-neon-card absolute inset-0 overflow-hidden rounded-lg border border-yellow-300/70 bg-card/80 shadow-2xl shadow-yellow-300/45 ring-2 ring-yellow-200/45 backdrop-blur-xl dark:border-yellow-200/45 dark:ring-yellow-200/25">
         </div>
-        <div class="absolute inset-x-8 top-8 h-2 rounded-full bg-linear-to-r from-cyan-300 via-primary to-amber-300">
+        <div class="absolute inset-x-8 top-8 h-2 rounded-full bg-linear-to-r from-yellow-300 via-amber-300 to-orange-300">
         </div>
         <div class="absolute left-8 top-20 flex gap-2">
           <span class="size-3 rounded-full bg-red-400"></span>
@@ -61,7 +61,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
             class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
           >
             <Icon name="lucide:book-open" width="16" height="16" />
-            Blog
+            Notes
           </a>
         </div>
       </div>

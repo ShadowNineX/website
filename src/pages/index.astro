@@ -89,8 +89,8 @@ const profileStats = [
     value: githubUser.public_repos.toString(),
     icon: "lucide:folder-git-2",
     tileClass:
-      "border-sky-300/35 bg-sky-300/10 shadow-sky-300/10 hover:border-sky-300/55",
-    iconClass: "text-sky-500 dark:text-sky-300",
+      "border-yellow-300/40 bg-yellow-300/12 shadow-yellow-300/10 hover:border-yellow-300/65",
+    iconClass: "text-yellow-600 dark:text-yellow-200",
   },
   {
     label: "GitHub stars",
@@ -144,7 +144,7 @@ const tailsCompanionCards = [
     description:
       "A good tool can still have a soft light on it: clear labels, honest behavior, and enough color to make the desk feel lived in.",
     icon: "lucide:home",
-    tileClass: "border-sky-300/40 bg-sky-200/20 shadow-sky-300/10",
+    tileClass: "border-yellow-300/45 bg-yellow-200/20 shadow-yellow-300/15",
   },
   {
     title: "Fix things carefully",
@@ -252,16 +252,6 @@ const links = [
     href: githubProfileUrl,
     icon: "simple-icons:github",
   },
-  {
-    label: "Links",
-    href: `${base}/linktree`,
-    icon: "lucide:link",
-  },
-  {
-    label: "Blog",
-    href: `${base}/blog`,
-    icon: "lucide:book-open",
-  },
 ];
 
 const musicWidgets = [
@@ -286,7 +276,7 @@ const musicWidgets = [
 
 <Layout
   title={displayName}
-  description={`${displayName}'s cozy personal site for projects, tools, links, and notes.`}
+  description={`${displayName}'s cozy personal site for projects, tools, and small notes.`}
 >
   <section
     class="mx-auto grid max-w-5xl gap-10 px-6 py-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-20"
@@ -308,7 +298,7 @@ const musicWidgets = [
         experiments, cozy web pages, and odd ideas that need a place to live.
         I keep the projects here close to the stuff I care about: practical
         tools, playful experiments, game systems, music, and small notes from
-        whatever I am building next.
+        the things I want to keep nearby.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         {
@@ -327,7 +317,7 @@ const musicWidgets = [
 
     <div class="relative">
       <div
-        class="absolute inset-0 rounded-lg border border-primary/15 bg-card/35"
+        class="tails-neon-card absolute inset-0 overflow-hidden rounded-lg border border-yellow-300/70 bg-card/35 ring-2 ring-yellow-200/50 dark:border-yellow-200/50 dark:ring-yellow-200/30"
       >
       </div>
       <div class="group/card h-170 perspective-[1400px] sm:h-180">
@@ -343,7 +333,7 @@ const musicWidgets = [
           >
           </div>
           <div
-            class="absolute left-0 top-0 h-3 w-full origin-top bg-cyan-300/25 transform-[translateZ(6px)_rotateX(-90deg)]"
+            class="absolute left-0 top-0 h-3 w-full origin-top bg-yellow-300/30 transform-[translateZ(6px)_rotateX(-90deg)]"
           >
           </div>
           <div
@@ -353,7 +343,7 @@ const musicWidgets = [
           <div
             class="absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
           >
-            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-sky-300 via-primary to-rose-300"></div>
+            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-yellow-300 via-amber-300 to-orange-300"></div>
             <Image
               src={avatar}
               alt="ShadowNine avatar"
@@ -369,7 +359,7 @@ const musicWidgets = [
                     GitHub profile
                   </p>
                   <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    <span class="bg-linear-to-r from-amber-500 via-rose-400 to-sky-500 bg-clip-text text-transparent dark:from-amber-200 dark:via-orange-100 dark:to-sky-200">
+                    <span class="bg-linear-to-r from-yellow-500 via-amber-400 to-orange-400 bg-clip-text text-transparent dark:from-yellow-100 dark:via-amber-200 dark:to-orange-200">
                       {displayName}
                     </span>
                   </h2>
@@ -502,7 +492,7 @@ const musicWidgets = [
   </section>
 
   <section class="mx-auto max-w-5xl px-6 py-14">
-    <div class="overflow-hidden rounded-lg border border-amber-300/35 bg-card/85 shadow-xl shadow-amber-300/10 backdrop-blur-xl">
+    <div class="tails-neon-card overflow-hidden rounded-lg border border-yellow-300/70 bg-card/85 shadow-xl shadow-yellow-300/40 ring-2 ring-yellow-200/45 backdrop-blur-xl dark:border-yellow-200/45 dark:ring-yellow-200/25">
       <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
         <div class="border-b border-border bg-background/70 p-6 sm:p-8 lg:border-b-0 lg:border-r">
           <p class="inline-flex items-center gap-2 rounded-md border border-amber-300/35 bg-amber-200/20 px-3 py-1.5 text-sm font-medium text-primary">
@@ -528,7 +518,7 @@ const musicWidgets = [
           </a>
         </div>
 
-        <div class="grid gap-3 bg-linear-to-br from-amber-200/20 via-sky-200/15 to-rose-200/20 p-4 sm:p-6">
+        <div class="grid gap-3 bg-linear-to-br from-yellow-200/24 via-amber-200/18 to-orange-200/18 p-4 sm:p-6">
           {
             tailsCompanionCards.map((card) => (
               <article
@@ -561,16 +551,16 @@ const musicWidgets = [
       <section class="mx-auto max-w-5xl px-6 py-14">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p class="text-sm font-medium text-primary">Latest note</p>
+            <p class="text-sm font-medium text-primary">Notebook</p>
             <h2 class="mt-2 text-3xl font-bold tracking-tight">
-              Fresh from the workbench
+              A small note from the shelf
             </h2>
           </div>
           <a
             href={`${base}/blog`}
             class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            View all notes
+            Open notes shelf
             <Icon name="lucide:arrow-up-right" width="15" height="15" />
           </a>
         </div>
@@ -578,7 +568,7 @@ const musicWidgets = [
         <a
           href={`${base}/blog/${latestBlogPost.id}`}
           class:list={[
-            "group mt-8 grid overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10",
+            "tails-neon-card group mt-8 grid overflow-hidden rounded-lg border border-yellow-300/60 bg-card shadow-sm ring-1 ring-yellow-200/40 transition-all hover:-translate-y-0.5 hover:border-yellow-300 dark:border-yellow-200/40 dark:ring-yellow-200/25",
             latestBlogPost.data.image && "md:grid-cols-[0.95fr_1.05fr]",
           ]}
         >
@@ -604,7 +594,7 @@ const musicWidgets = [
                 {formatBlogDate(latestBlogPost.data.date)}
               </time>
               <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-              <span>Fresh note</span>
+              <span>Shelf note</span>
             </div>
             <h3
               transition:name={`blog-title-${latestBlogPost.id}`}
@@ -621,7 +611,7 @@ const musicWidgets = [
               {latestBlogPost.data.description}
             </p>
             <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-              Read post
+              Read note
               <Icon
                 name="lucide:arrow-up-right"
                 width="15"

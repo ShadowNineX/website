@@ -1,46 +1,31 @@
-# Astro Starter Kit: Basics
+# ShadowNine.dev
+
+A quiet personal Astro site for ShadowNine's projects, notes, music corner, and small web experiments.
+
+The site is intentionally static and lightweight. It keeps the public surface focused on project work and a few cozy notes, while avoiding the feel of a broad social hub.
+
+## Stack
+
+- Astro 6
+- Tailwind CSS 4
+- TypeScript strict mode
+- Bun
+
+## Local Commands
 
 ```sh
-bun create astro@latest -- --template basics
+bun run dev
+bun run astro check
+bun run build
+bun run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+`bun run build` writes the static production output to `dist/`.
 
-## 🚀 Project Structure
+## Structure
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.png
-├── src
-│   ├── assets
-│   │   └── linktree-background-avatar.gif
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/` contains Astro routes.
+- `src/layouts/Layout.astro` wraps the shared page chrome and SEO head.
+- `src/components/` contains shared Astro components.
+- `src/content/blog/` stores the note posts.
+- `src/lib/` contains shared route and SEO helpers.

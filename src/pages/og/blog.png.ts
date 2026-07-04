@@ -62,7 +62,7 @@ const fallbackImage = async () =>
         input: Buffer.from(`
           <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
             <rect width="1200" height="630" fill="#0f1720"/>
-            <text x="80" y="330" font-family="Arial, sans-serif" font-size="92" font-weight="700" fill="#e8feff">ShadowNine Blog</text>
+            <text x="80" y="330" font-family="Arial, sans-serif" font-size="92" font-weight="700" fill="#e8feff">ShadowNine Notes</text>
           </svg>
         `),
         left: 0,

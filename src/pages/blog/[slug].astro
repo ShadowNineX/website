@@ -28,6 +28,7 @@ const ogImage = await getSeoImage({
   height: 630,
 });
 const ogImageUrl = ogImage?.url;
+const fallbackOgImageUrl = "https://github.com/ShadowNineX.png?size=512";
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
@@ -47,8 +48,8 @@ const descriptionTransitionName = `blog-description-${post.id}`;
     basic: {
       title: post.data.title,
       type: "article",
-      image: ogImageUrl,
       url: canonicalUrl,
+      image: ogImageUrl ?? fallbackOgImageUrl,
     },
     optional: {
       description: post.data.description,
@@ -100,7 +101,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
           <span class="h-1 w-1 rounded-full bg-primary/70"></span>
           <span class="normal-case">@{post.data.author}</span>
           <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-          <span>Workbench note</span>
+          <span>Shelf note</span>
         </div>
         <h1
           transition:name={titleTransitionName}
@@ -155,7 +156,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
         </div>
       </aside>
 
-      <div class="rounded-md border border-border bg-card/90 p-5 shadow-xl shadow-background/25 backdrop-blur-xl sm:p-7">
+      <div class="tails-neon-card overflow-hidden rounded-md border border-yellow-300/60 bg-card/90 p-5 shadow-xl shadow-yellow-300/30 ring-1 ring-yellow-200/40 backdrop-blur-xl sm:p-7 dark:border-yellow-200/40 dark:ring-yellow-200/25">
         <div class="blog-prose prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline prose-img:rounded-md prose-p:text-foreground/85 dark:prose-p:text-foreground/88 prose-li:text-foreground/85 dark:prose-li:text-foreground/88">
           <Content />
         </div>

@@ -37,8 +37,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const pathname = Astro.url.pathname;
 const navLinks = [
   { href: `${base}/`, label: "Home", icon: "lucide:house" },
-  { href: `${base}/blog`, label: "Blog", icon: "lucide:book-open" },
-  { href: `${base}/linktree`, label: "Links", icon: "lucide:sparkles" },
+  { href: `${base}/blog`, label: "Notes", icon: "lucide:book-open" },
+  { href: `${base}/linktree`, label: "Corners", icon: "lucide:sparkles" },
 ];
 
 const home = normalizeRoutePath(`${base}/`);

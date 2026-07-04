@@ -8,7 +8,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const blogDescription = "Project notes, cozy updates, and little field reports.";
+const blogDescription = "Quiet project notes and small field reports.";
 const blogOgImageOrigin = import.meta.env.DEV
   ? Astro.url.origin
   : (Astro.site?.origin ?? Astro.url.origin);
@@ -28,11 +28,11 @@ const formatDate = (date: Date) =>
 ---
 
 <Layout
-  title="Blog"
+  title="Notes"
   description={blogDescription}
   openGraph={{
     basic: {
-      title: "Blog",
+      title: "Notes",
       type: "website",
       image: blogOgImageUrl,
       url: new URL(`${base}/blog`, blogOgImageOrigin).href,
@@ -47,20 +47,20 @@ const formatDate = (date: Date) =>
       type: "image/png",
       width: 1200,
       height: 630,
-      alt: "Latest ShadowNine blog post images",
+      alt: "ShadowNine notes shelf images",
     },
   }}
   twitter={{
     card: "summary_large_image",
-    title: "Blog",
+    title: "Notes",
     description: blogDescription,
     image: blogOgImageUrl,
-    imageAlt: "Latest ShadowNine blog post images",
+    imageAlt: "ShadowNine notes shelf images",
   }}
 >
   <section class="mx-auto max-w-5xl px-6 py-14 sm:py-20">
     <header class="max-w-3xl">
-      <p class="text-sm font-medium text-primary">Blog</p>
+      <p class="text-sm font-medium text-primary">Notes</p>
       <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
         Notes from the project shelf.
       </h1>
@@ -73,7 +73,9 @@ const formatDate = (date: Date) =>
     {
       posts.length === 0 ? (
         <div class="mt-12 rounded-md border border-border bg-card px-5 py-8">
-          <p class="text-sm text-muted-foreground">No posts yet. Check back soon.</p>
+          <p class="text-sm text-muted-foreground">
+            No notes on the shelf yet.
+          </p>
         </div>
       ) : (
         <>
@@ -82,7 +84,7 @@ const formatDate = (date: Date) =>
               <article>
                 <a
                   href={`${base}/blog/${featuredPost.id}`}
-                  class="group block overflow-hidden rounded-md border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-xl hover:shadow-primary/10"
+                  class="tails-neon-card group block overflow-hidden rounded-md border border-yellow-300/60 bg-card shadow-sm ring-1 ring-yellow-200/40 transition-all duration-300 hover:-translate-y-0.5 hover:border-yellow-300 dark:border-yellow-200/40 dark:ring-yellow-200/25"
                 >
                   {featuredPost.data.image && (
                     <div class="overflow-hidden border-b border-border bg-muted">
@@ -94,6 +96,7 @@ const formatDate = (date: Date) =>
                         transition:name={imageTransitionName(featuredPost.id)}
                         transition:animate="initial"
                         class="aspect-video w-full object-cover"
+                        loading="eager"
                       />
                     </div>
                   )}
@@ -105,10 +108,12 @@ const formatDate = (date: Date) =>
                       >
                         {formatDate(featuredPost.data.date)}
                       </time>
-                      <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-                      <span class="normal-case">@{featuredPost.data.author}</span>
-                      <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-                      <span>Fresh note</span>
+                      <span class="h-1 w-1 rounded-full bg-primary/70" />
+                      <span class="normal-case">
+                        @{featuredPost.data.author}
+                      </span>
+                      <span class="h-1 w-1 rounded-full bg-primary/70" />
+                      <span>Shelf note</span>
                     </div>
                     <h2
                       transition:name={titleTransitionName(featuredPost.id)}
@@ -118,14 +123,16 @@ const formatDate = (date: Date) =>
                       {featuredPost.data.title}
                     </h2>
                     <p
-                      transition:name={descriptionTransitionName(featuredPost.id)}
+                      transition:name={descriptionTransitionName(
+                        featuredPost.id,
+                      )}
                       transition:animate="initial"
                       class="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base"
                     >
                       {featuredPost.data.description}
                     </p>
                     <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-                      Read post
+                      Read note
                       <Icon
                         name="lucide:arrow-up-right"
                         width="15"
@@ -144,7 +151,7 @@ const formatDate = (date: Date) =>
                   Shelf
                 </h2>
                 <span class="text-sm text-muted-foreground">
-                  {posts.length} {posts.length === 1 ? "post" : "posts"}
+                  {posts.length} {posts.length === 1 ? "note" : "notes"}
                 </span>
               </div>
               <div class="mt-5 space-y-4">
@@ -195,7 +202,7 @@ const formatDate = (date: Date) =>
                     >
                       <div class="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                         <time>{formatDate(post.data.date)}</time>
-                        <span class="h-1 w-1 rounded-full bg-primary/70"></span>
+                        <span class="h-1 w-1 rounded-full bg-primary/70" />
                         <span class="normal-case">@{post.data.author}</span>
                       </div>
                       <h3 class="mt-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
