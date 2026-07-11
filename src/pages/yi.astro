@@ -1,13 +1,17 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-iconify";
 import Layout from "@/layouts/Layout.astro";
 import { canonicalUrlForPath } from "@/lib/routes";
 import { getSeoImage } from "@/lib/seo-image";
 import yiImage from "@/assets/yi.jpg";
 
-const title = "Yi";
-const description = "A dedicated Yi page on ShadowNine.";
-const imageAlt = "Yi";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const title = "Yi Mode";
+const description =
+  "A tiny glowing tribute page for Yi, the workshop's most serious little guardian.";
+const imageAlt =
+  "White cat-like Yi character wearing a yellow coat with a glowing green chest ring.";
 const themeColor = "#facc15";
 const canonicalUrl = canonicalUrlForPath(
   Astro.url.pathname,
@@ -19,6 +23,14 @@ const seoImage = await getSeoImage({
   site: Astro.site,
 });
 const imageUrl = seoImage?.url ?? new URL(yiImage.src, Astro.url).href;
+
+const statusCards = [
+  { label: "Signal", value: "Locked", icon: "lucide:radar" },
+  { label: "Mood", value: "Judging", icon: "lucide:eye" },
+  { label: "Coat", value: "Maximum", icon: "lucide:sparkles" },
+];
+
+const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
 ---
 
 <Layout
@@ -52,16 +64,162 @@ const imageUrl = seoImage?.url ?? new URL(yiImage.src, Astro.url).href;
     title,
     description,
     image: imageUrl,
-    imageAlt: imageAlt,
+    imageAlt,
   }}
 >
-  <section class="grid min-h-screen place-items-center p-4">
-    <Image
-      src={yiImage}
-      alt={imageAlt}
-      width={900}
-      loading="eager"
-      class="max-h-[calc(100vh-2rem)] w-auto max-w-full rounded-lg object-contain shadow-2xl shadow-primary/10"
-    />
+  <section class="yi-stage relative isolate min-h-screen overflow-hidden bg-[#120b05] px-4 py-6 text-yellow-50 sm:px-6 lg:px-8">
+    <div class="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_20%_15%,rgba(250,204,21,0.32),transparent_28%),radial-gradient(circle_at_85%_20%,rgba(34,197,94,0.18),transparent_26%),linear-gradient(135deg,#120b05,#2b1607_48%,#090604)]">
+    </div>
+    <div class="yi-grid pointer-events-none absolute inset-0 -z-10 opacity-35"></div>
+    <div class="yi-scanline pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-linear-to-b from-yellow-200/18 to-transparent">
+    </div>
+
+    <div class="mx-auto grid min-h-[calc(100vh-3rem)] max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div class="order-2 lg:order-1">
+        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <a
+            href={`${base}/`}
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-yellow-300/25 bg-yellow-300/10 px-3 py-2 text-sm font-medium text-yellow-100 shadow-sm shadow-yellow-300/10 transition-colors hover:bg-yellow-300/18 sm:w-auto sm:justify-start sm:py-1.5"
+          >
+            <Icon name="lucide:arrow-left" width="15" height="15" />
+            Back to workshop
+          </a>
+
+          <p class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100 sm:w-auto sm:py-1.5 sm:tracking-[0.25em]">
+            <span class="size-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.95)]"></span>
+            Guardian online
+          </p>
+        </div>
+
+        <h1 class="mt-6 max-w-3xl text-5xl font-black tracking-tight text-balance sm:text-7xl">
+          Yi has entered the workshop.
+        </h1>
+        <p class="mt-5 max-w-2xl text-base leading-7 text-yellow-50/78 sm:text-lg sm:leading-8">
+          Small frame. Huge coat. Zero patience for boring pages. This corner now
+          runs on warm neon, tiny boss energy, and one very serious green core.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-2">
+          {
+            tags.map((tag) => (
+              <span class="rounded-full border border-yellow-200/20 bg-white/7 px-3 py-1 text-sm text-yellow-50/82 shadow-sm shadow-black/20 backdrop-blur">
+                #{tag}
+              </span>
+            ))
+          }
+        </div>
+
+        <div class="mt-8 grid gap-3 sm:grid-cols-3">
+          {
+            statusCards.map((card) => (
+              <div class="rounded-2xl border border-yellow-200/18 bg-yellow-50/8 p-4 shadow-xl shadow-black/20 backdrop-blur-md">
+                <Icon
+                  name={card.icon}
+                  width="20"
+                  height="20"
+                  class="text-yellow-200"
+                />
+                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-50/55">
+                  {card.label}
+                </p>
+                <p class="mt-1 text-xl font-bold text-yellow-50">
+                  {card.value}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <div class="yi-card relative mx-auto max-w-xl rounded-[2rem] border border-yellow-200/28 bg-yellow-50/10 p-3 shadow-[0_0_80px_rgba(250,204,21,0.28)] backdrop-blur-xl sm:p-4">
+          <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-yellow-300/24 via-emerald-300/10 to-orange-500/20 blur-2xl"></div>
+          <div class="absolute -left-5 top-12 hidden size-24 rounded-full border border-yellow-200/25 sm:block"></div>
+          <div class="absolute -right-8 bottom-16 hidden size-32 rounded-full border border-emerald-200/20 sm:block"></div>
+
+          <div class="relative overflow-hidden rounded-[1.5rem] border border-yellow-100/20 bg-black/35">
+            <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-yellow-100/15 bg-black/35 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-50/65 backdrop-blur">
+              <span>Yi cam</span>
+              <span class="inline-flex items-center gap-1.5 text-emerald-200">
+                <span class="size-1.5 rounded-full bg-emerald-300"></span>
+                live
+              </span>
+            </div>
+
+            <Image
+              src={yiImage}
+              alt={imageAlt}
+              width={900}
+              loading="eager"
+              class="aspect-square w-full object-cover"
+            />
+
+            <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/35 to-transparent p-5 pt-24">
+              <div class="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p class="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-200">
+                    Threat level
+                  </p>
+                  <p class="mt-1 text-3xl font-black text-yellow-50">
+                    Adorable menace
+                  </p>
+                </div>
+                <div class="rounded-full border border-emerald-200/30 bg-emerald-300/12 px-4 py-2 text-sm font-bold text-emerald-100 shadow-[0_0_28px_rgba(110,231,183,0.22)]">
+                  core: stable
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </Layout>
+
+<style>
+  .yi-grid {
+    background-image:
+      linear-gradient(rgba(250, 204, 21, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(250, 204, 21, 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(circle at center, black, transparent 78%);
+  }
+
+  .yi-scanline {
+    animation: yi-scan 5.5s ease-in-out infinite;
+  }
+
+  .yi-card {
+    animation: yi-float 4.8s ease-in-out infinite;
+  }
+
+  @keyframes yi-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-0.5deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(0.5deg);
+    }
+  }
+
+  @keyframes yi-scan {
+    0%,
+    100% {
+      transform: translateY(-70%);
+      opacity: 0.1;
+    }
+    45%,
+    55% {
+      transform: translateY(75vh);
+      opacity: 0.34;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .yi-card,
+    .yi-scanline {
+      animation: none;
+    }
+  }
+</style>

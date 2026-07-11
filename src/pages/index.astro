@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { Icon } from "astro-iconify";
-import avatar from "@/content/blog/hello-world.jpg";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const githubUsername = "ShadowNineX";
 const githubProfileUrl = `https://github.com/${githubUsername}`;
+const githubAvatarUrl = `${githubProfileUrl}.png?size=512`;
 const blogPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
@@ -272,6 +272,45 @@ const musicWidgets = [
     alt: "Last.fm recently played",
   },
 ];
+
+const nearbyItems = [
+  {
+    label: "Music",
+    detail: "Comfort tracks on the side while things compile.",
+    icon: "lucide:music-4",
+    tileClass: "border-emerald-300/35 bg-emerald-200/12 text-emerald-600 dark:text-emerald-200",
+  },
+  {
+    label: "Minecraft",
+    detail: "A quiet blocky place to reset between builds.",
+    icon: "lucide:pickaxe",
+    tileClass: "border-sky-300/35 bg-sky-200/12 text-sky-600 dark:text-sky-200",
+  },
+  {
+    label: "OpenClaw",
+    detail: "Poking at old-game tools and small engine curiosities.",
+    icon: "lucide:gamepad-2",
+    tileClass: "border-orange-300/40 bg-orange-200/14 text-orange-600 dark:text-orange-200",
+  },
+];
+
+const comfortShelf = [
+  "Sonic",
+  "Shadow",
+  "Tails",
+  "Nine",
+  "music",
+  "games",
+  "warm little experiments",
+  "good-hearted people only",
+];
+
+const workshopLog = [
+  "softened the neon glow",
+  "made the room feel less museum-like",
+  "kept the useful bits close",
+  "built slowly, kept close",
+];
 ---
 
 <Layout
@@ -279,7 +318,7 @@ const musicWidgets = [
   description={`${displayName}'s cozy personal site for projects, tools, and small notes.`}
 >
   <section
-    class="mx-auto grid max-w-5xl gap-10 px-6 py-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-20"
+    class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:py-20"
   >
     <div>
       <p
@@ -289,23 +328,22 @@ const musicWidgets = [
         cozy project workshop
       </p>
       <h1
-        class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-6xl"
+        class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
       >
         ShadowNine's warm little workshop for code, games, and ideas.
       </h1>
-      <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+      <p class="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
         I'm {displayName}, a developer who likes building tools, modding
         experiments, cozy web pages, and odd ideas that need a place to live.
-        I keep the projects here close to the stuff I care about: practical
-        tools, playful experiments, game systems, music, and small notes from
-        the things I want to keep nearby.
+        This is meant to feel like a warm room: no drama, just home, good
+        tools, music nearby, and small experiments kept close.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         {
           links.map((link) => (
             <a
               href={link.href}
-            class="inline-flex items-center gap-2 rounded-md border border-border bg-card/90 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
+              class="inline-flex items-center gap-2 rounded-md border border-border bg-card/90 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
             >
               <Icon name={link.icon} width="16" height="16" />
               {link.label}
@@ -315,42 +353,42 @@ const musicWidgets = [
       </div>
     </div>
 
-    <div class="relative">
+    <div class="relative mx-auto w-full max-w-md lg:max-w-none">
       <div
-        class="tails-neon-card absolute inset-0 overflow-hidden rounded-lg border border-yellow-300/70 bg-card/35 ring-2 ring-yellow-200/50 dark:border-yellow-200/50 dark:ring-yellow-200/30"
+        class="tails-neon-card hidden absolute inset-0 overflow-hidden rounded-lg border border-yellow-300/70 bg-card/35 ring-2 ring-yellow-200/50 md:block dark:border-yellow-200/50 dark:ring-yellow-200/30"
       >
       </div>
-      <div class="group/card h-170 perspective-[1400px] sm:h-180">
+      <div class="profile-card-shell group/card h-auto perspective-[1400px] md:h-170 lg:h-180">
         <div
-          class="relative h-full rounded-lg animate-profile-card-spin transform-3d group-hover/card:paused group-focus-within/card:paused motion-reduce:animate-none"
+          class="profile-card-motion relative h-full rounded-lg animate-profile-card-spin transform-3d group-hover/card:paused group-focus-within/card:paused motion-reduce:animate-none"
         >
           <div
-            class="absolute left-0 top-0 h-full w-3 origin-left bg-primary/30 shadow-lg shadow-primary/20 transform-[translateZ(6px)_rotateY(90deg)]"
+            class="profile-card-edge absolute left-0 top-0 h-full w-3 origin-left bg-primary/30 shadow-lg shadow-primary/20 transform-[translateZ(6px)_rotateY(90deg)]"
           >
           </div>
           <div
-            class="absolute right-0 top-0 h-full w-3 origin-right bg-amber-300/25 shadow-lg shadow-amber-300/10 transform-[translateZ(6px)_rotateY(-90deg)]"
+            class="profile-card-edge absolute right-0 top-0 h-full w-3 origin-right bg-amber-300/25 shadow-lg shadow-amber-300/10 transform-[translateZ(6px)_rotateY(-90deg)]"
           >
           </div>
           <div
-            class="absolute left-0 top-0 h-3 w-full origin-top bg-yellow-300/30 transform-[translateZ(6px)_rotateX(-90deg)]"
+            class="profile-card-edge absolute left-0 top-0 h-3 w-full origin-top bg-yellow-300/30 transform-[translateZ(6px)_rotateX(-90deg)]"
           >
           </div>
           <div
-            class="absolute bottom-0 left-0 h-3 w-full origin-bottom bg-primary/20 transform-[translateZ(6px)_rotateX(90deg)]"
+            class="profile-card-edge absolute bottom-0 left-0 h-3 w-full origin-bottom bg-primary/20 transform-[translateZ(6px)_rotateX(90deg)]"
           >
           </div>
           <div
-            class="absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
+            class="profile-card-front absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
           >
             <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-yellow-300 via-amber-300 to-orange-300"></div>
             <Image
-              src={avatar}
-              alt="ShadowNine avatar"
+              src={githubAvatarUrl}
+              alt={`${displayName} GitHub avatar`}
               width={512}
               height={512}
               loading="eager"
-              class="h-107.5 w-full object-cover sm:h-117.5"
+              class="h-64 w-full object-cover sm:h-80 lg:h-117.5"
             />
             <div class="relative border-t border-border p-5">
               <div class="flex items-start justify-between gap-4">
@@ -374,7 +412,7 @@ const musicWidgets = [
                   </p>
                 </div>
               </div>
-              <dl class="mt-5 grid grid-cols-3 gap-3">
+              <dl class="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
                 {
                   profileStats.map((stat) => (
                     <div
@@ -383,7 +421,7 @@ const musicWidgets = [
                         stat.tileClass,
                       ]}
                     >
-                      <dt class="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+                      <dt class="flex min-h-8 items-center justify-center gap-1.5 text-center text-[10px] leading-tight text-muted-foreground sm:text-[11px]">
                         <Icon
                           name={stat.icon}
                           width="13"
@@ -392,7 +430,7 @@ const musicWidgets = [
                         />
                         {stat.label}
                       </dt>
-                      <dd class="mt-2 text-center text-lg font-bold text-foreground">
+                      <dd class="mt-2 text-center text-base font-bold text-foreground sm:text-lg">
                         {stat.value}
                       </dd>
                     </div>
@@ -403,7 +441,7 @@ const musicWidgets = [
           </div>
 
           <div
-            class="isolate absolute inset-0 overflow-hidden border border-border bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[rotateY(180deg)_translateZ(6px)]"
+            class="profile-card-back isolate absolute inset-0 overflow-hidden border border-border bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[rotateY(180deg)_translateZ(6px)]"
           >
             <div class="absolute inset-0 -z-10 bg-card"></div>
 
@@ -469,7 +507,7 @@ const musicWidgets = [
   </section>
 
   <section class="border-y border-border bg-card/55">
-    <div class="mx-auto grid max-w-5xl gap-4 px-6 py-8 md:grid-cols-3">
+    <div class="mx-auto grid max-w-6xl gap-4 px-4 py-8 sm:px-6 md:grid-cols-3">
       {
         focusAreas.map((area) => (
           <article class="rounded-lg border border-border bg-background/75 p-5 shadow-sm">
@@ -491,7 +529,83 @@ const musicWidgets = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-6 py-14">
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+    <div class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <article class="rounded-lg border border-emerald-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
+        <p class="inline-flex items-center gap-2 rounded-md border border-emerald-300/25 bg-emerald-200/12 px-3 py-1.5 text-sm font-medium text-emerald-600 dark:text-emerald-200">
+          <Icon name="lucide:radio" width="15" height="15" />
+          Tails is nearby
+        </p>
+        <h2 class="mt-4 text-2xl font-bold tracking-tight">
+          Tinkering, resting, keeping the workshop warm.
+        </h2>
+        <p class="mt-3 text-sm leading-6 text-muted-foreground">
+          A tiny status light for the room: if the site feels calm, the lamp is
+          on, the notebook is open, and nobody is grabbing the wheel.
+        </p>
+      </article>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="rounded-lg border border-sky-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
+          <p class="text-sm font-medium text-sky-600 dark:text-sky-200">
+            Currently nearby
+          </p>
+          <div class="mt-4 grid gap-3">
+            {
+              nearbyItems.map((item) => (
+                <div
+                  class:list={[
+                    "rounded-md border bg-background/60 p-3",
+                    item.tileClass,
+                  ]}
+                >
+                  <div class="flex items-start gap-3">
+                    <Icon name={item.icon} width="18" height="18" class="mt-0.5 shrink-0" />
+                    <div>
+                      <h3 class="font-semibold text-foreground">{item.label}</h3>
+                      <p class="mt-1 text-sm leading-5 text-muted-foreground">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="rounded-lg border border-orange-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
+          <p class="text-sm font-medium text-orange-600 dark:text-orange-200">
+            Comfort shelf
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {
+              comfortShelf.map((item) => (
+                <span class="rounded-full border border-border bg-background/70 px-3 py-1 text-sm text-muted-foreground">
+                  {item}
+                </span>
+              ))
+            }
+          </div>
+          <div class="mt-5 border-t border-border pt-4">
+            <p class="text-sm font-medium text-primary">Workshop log</p>
+            <ul class="mt-3 space-y-2">
+              {
+                workshopLog.map((entry) => (
+                  <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span class="size-1.5 rounded-full bg-primary/70"></span>
+                    {entry}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
     <div class="tails-neon-card overflow-hidden rounded-lg border border-yellow-300/70 bg-card/85 shadow-xl shadow-yellow-300/40 ring-2 ring-yellow-200/45 backdrop-blur-xl dark:border-yellow-200/45 dark:ring-yellow-200/25">
       <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
         <div class="border-b border-border bg-background/70 p-6 sm:p-8 lg:border-b-0 lg:border-r">
@@ -548,7 +662,7 @@ const musicWidgets = [
 
   {
     latestBlogPost && (
-      <section class="mx-auto max-w-5xl px-6 py-14">
+      <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="text-sm font-medium text-primary">Notebook</p>
@@ -625,7 +739,7 @@ const musicWidgets = [
     )
   }
 
-  <section class="mx-auto max-w-5xl px-6 py-14">
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
     <div
       class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
     >
@@ -644,7 +758,7 @@ const musicWidgets = [
       </a>
     </div>
 
-    <div class="mt-8 grid gap-4 md:grid-cols-2">
+    <div class="mt-8 grid gap-4 lg:grid-cols-2">
       {
         projects.map((project) => (
           <a
@@ -679,8 +793,8 @@ const musicWidgets = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-6 pb-20">
-    <div class="grid gap-4 md:grid-cols-[0.85fr_1.15fr]">
+  <section class="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16">
+    <div class="grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
       <div class="rounded-lg border border-border bg-card p-6">
         <p class="text-sm font-medium text-primary">Now-ish</p>
         <h2 class="mt-2 text-2xl font-bold tracking-tight">Current pattern</h2>
@@ -694,7 +808,7 @@ const musicWidgets = [
 
       <div class="rounded-lg border border-border bg-card p-6">
         <p class="text-sm font-medium text-primary">Tech stack</p>
-        <div class="mt-5 grid gap-5 sm:grid-cols-3">
+        <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {
             stackGroups.map((group) => (
               <div>
@@ -721,7 +835,34 @@ const musicWidgets = [
   </section>
 </Layout>
 
+
 <style>
+  @media (max-width: 767px) {
+    .profile-card-shell {
+      perspective: none;
+    }
+
+    .profile-card-motion {
+      animation: none;
+      transform-style: flat;
+    }
+
+    .profile-card-edge {
+      display: none;
+    }
+
+    .profile-card-front,
+    .profile-card-back {
+      position: relative;
+      inset: auto;
+      transform: none;
+    }
+
+    .profile-card-back {
+      display: none;
+    }
+  }
+
   .tech-icon {
     color: var(--tech-color);
     box-shadow: inset 0 0 0 1px

@@ -68,14 +68,14 @@ const isActive = (href: string) => {
     <ClientRouter />
     <slot name="head" />
   </Head>
-  <body class="bg-background text-foreground min-h-screen flex flex-col">
+  <body class="bg-background text-foreground min-h-screen flex flex-col overflow-x-hidden">
     {showChrome && <CustomCursor />}
     {showChrome && <ThreeBackground />}
     {
       showChrome && (
         <header class="sticky top-0 z-50 border-b border-border/70 bg-background/80 shadow-sm shadow-primary/10 backdrop-blur-xl">
           <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/55 via-45% to-accent/45" />
-          <nav class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <nav class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
             <a
               href={`${base}/`}
               class="group flex min-w-0 items-center gap-3 rounded-md border border-border/80 bg-card/80 px-3 py-2 text-sm font-semibold shadow-sm transition-all hover:border-primary/50 hover:bg-card"
@@ -120,7 +120,7 @@ const isActive = (href: string) => {
         </header>
       )
     }
-    <main class="flex-1">
+    <main class="relative z-0 flex-1">
       <slot />
     </main>
     {showChrome && <Footer />}

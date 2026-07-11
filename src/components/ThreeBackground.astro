@@ -1,7 +1,7 @@
 <canvas
   id="three-bg"
   transition:persist="three-background"
-  class="fixed inset-0 -z-10 h-screen w-screen pointer-events-none"></canvas>
+  class="pointer-events-none fixed inset-0 -z-10 h-screen w-screen opacity-90"></canvas>
 
 <script>
   import * as THREE from "three";
@@ -52,16 +52,32 @@
   const world = new THREE.Group();
   scene.add(world);
 
-  const softLine = new THREE.LineBasicMaterial({
-    color: 0x4fa8dc,
-    transparent: true,
-    opacity: 0.18,
-  });
-  const warmLine = new THREE.LineBasicMaterial({
-    color: 0xf3a53f,
-    transparent: true,
-    opacity: 0.22,
-  });
+  const railMaterials = {
+    warm: new THREE.MeshBasicMaterial({
+      color: 0xffd36b,
+      transparent: true,
+      opacity: 0.34,
+      depthWrite: false,
+    }),
+    warmGlow: new THREE.MeshBasicMaterial({
+      color: 0xffa62b,
+      transparent: true,
+      opacity: 0.08,
+      depthWrite: false,
+    }),
+    sky: new THREE.MeshBasicMaterial({
+      color: 0x7dd3fc,
+      transparent: true,
+      opacity: 0.26,
+      depthWrite: false,
+    }),
+    skyGlow: new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.07,
+      depthWrite: false,
+    }),
+  };
 
   const createBadgeTexture = () => {
     const size = 512;
@@ -201,18 +217,58 @@
   );
 
   const rails = new THREE.Group();
-  for (let i = 0; i < 8; i++) {
-    const y = -4.6 + i * 1.25;
+  const railNodes: Array<{
+    object: THREE.Mesh;
+    originX: number;
+    speed: number;
+  }> = [];
+
+  for (let i = 0; i < 10; i++) {
+    const y = -5.4 + i * 1.16;
+    const z = -7.4 - i * 0.24;
     const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-14, y, -8 - i * 0.34),
-      new THREE.Vector3(-5.4, y + Math.sin(i) * 0.72, -9.2),
-      new THREE.Vector3(4.4, y - Math.cos(i) * 0.62, -8.5),
-      new THREE.Vector3(14, y + Math.sin(i * 1.3) * 0.5, -10.4),
+      new THREE.Vector3(-30, y - 0.2, z - 0.8),
+      new THREE.Vector3(-14, y + Math.sin(i * 0.8) * 0.82, z - 0.45),
+      new THREE.Vector3(0, y - Math.cos(i * 0.9) * 0.72, z),
+      new THREE.Vector3(14, y + Math.sin(i * 1.2) * 0.7, z - 0.35),
+      new THREE.Vector3(30, y + Math.cos(i * 0.7) * 0.58, z - 0.8),
     ]);
-    const geometry = new THREE.BufferGeometry().setFromPoints(
-      curve.getPoints(90),
+    const points = curve.getPoints(180);
+    const lineMaterial = i % 2 ? railMaterials.sky : railMaterials.warm;
+    const glowMaterial = i % 2 ? railMaterials.skyGlow : railMaterials.warmGlow;
+
+    rails.add(
+      new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 180, 0.018, 8, false),
+        lineMaterial,
+      ),
     );
-    rails.add(new THREE.Line(geometry, i % 2 ? softLine : warmLine));
+    rails.add(
+      new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 180, 0.064, 10, false),
+        glowMaterial,
+      ),
+    );
+
+    if (i % 2 === 0) {
+      const point = points[Math.floor(points.length * 0.58)];
+      const node = new THREE.Mesh(
+        new THREE.SphereGeometry(0.075, 16, 16),
+        new THREE.MeshBasicMaterial({
+          color: 0xfff1ad,
+          transparent: true,
+          opacity: 0.7,
+          depthWrite: false,
+        }),
+      );
+      node.position.copy(point);
+      rails.add(node);
+      railNodes.push({
+        object: node,
+        originX: node.position.x,
+        speed: 0.18 + i * 0.018,
+      });
+    }
   }
   scene.add(rails);
 
@@ -232,8 +288,8 @@
     camera.position.z = aspect < 0.85 ? 11.6 : 10.4;
     camera.updateProjectionMatrix();
 
-    rails.scale.x = Math.max(1, aspect / 1.3);
-    rails.scale.y = aspect < 0.85 ? 1.16 : 1;
+    rails.scale.x = aspect < 0.85 ? 1.42 : Math.max(1.12, aspect / 1.08);
+    rails.scale.y = aspect < 0.85 ? 1.22 : 1.04;
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height, false);
@@ -256,7 +312,7 @@
       (mouse.y * 0.055 - world.rotation.x) * 0.018 * motionScale;
     world.rotation.y +=
       (mouse.x * 0.08 - world.rotation.y) * 0.018 * motionScale;
-    rails.rotation.z = Math.sin(elapsed * 0.08) * 0.025;
+    rails.rotation.z = Math.sin(elapsed * 0.08) * 0.018;
 
     badge.rotation.z = Math.sin(elapsed * 0.42) * 0.05;
     for (const floater of floaters) {
@@ -266,6 +322,12 @@
       floater.object.position.y =
         floater.originY + Math.sin(elapsed * floater.drift) * 0.12;
     }
+    for (const node of railNodes) {
+      node.object.position.x =
+        node.originX + Math.sin(elapsed * node.speed) * 0.46;
+      node.object.scale.setScalar(1 + Math.sin(elapsed * node.speed * 2.2) * 0.18);
+    }
+
 
     honeyLight.position.x = Math.sin(elapsed * 0.28) * 4.5;
     skyLight.position.y = 2.5 + Math.cos(elapsed * 0.22) * 1.4;
