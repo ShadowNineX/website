@@ -22,6 +22,10 @@ bun run preview
 
 `bun run build` writes the static production output to `dist/`.
 
+## Deployment
+
+Pushes to `main` automatically deploy the site to Coolify through the configured GitHub webhook.
+
 ## Structure
 
 - `src/pages/` contains Astro routes.
