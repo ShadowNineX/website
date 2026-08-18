@@ -67,11 +67,11 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
     imageAlt,
   }}
 >
-  <section class="yi-stage relative isolate min-h-screen overflow-hidden bg-[#120b05] px-4 py-6 text-yellow-50 sm:px-6 lg:px-8">
+  <section class="yi-stage relative isolate min-h-screen overflow-hidden bg-[#120b05] px-4 py-6 text-foreground sm:px-6 lg:px-8">
     <div class="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_20%_15%,rgba(250,204,21,0.32),transparent_28%),radial-gradient(circle_at_85%_20%,rgba(34,197,94,0.18),transparent_26%),linear-gradient(135deg,#120b05,#2b1607_48%,#090604)]">
     </div>
     <div class="yi-grid pointer-events-none absolute inset-0 -z-10 opacity-35"></div>
-    <div class="yi-scanline pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-linear-to-b from-yellow-200/18 to-transparent">
+    <div class="yi-scanline pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-linear-to-b from-primary/18 to-transparent">
     </div>
 
     <div class="mx-auto grid min-h-[calc(100vh-3rem)] max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
@@ -79,14 +79,14 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
         <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <a
             href={`${base}/`}
-            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-yellow-300/25 bg-yellow-300/10 px-3 py-2 text-sm font-medium text-yellow-100 shadow-sm shadow-yellow-300/10 transition-colors hover:bg-yellow-300/18 sm:w-auto sm:justify-start sm:py-1.5"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-2 text-sm font-medium text-solar shadow-sm shadow-primary/10 transition-colors hover:bg-primary/18 sm:w-auto sm:justify-start sm:py-1.5"
           >
             <Icon name="lucide:arrow-left" width="15" height="15" />
             Back to workshop
           </a>
 
-          <p class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100 sm:w-auto sm:py-1.5 sm:tracking-[0.25em]">
-            <span class="size-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.95)]"></span>
+          <p class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-neon-cyan sm:w-auto sm:py-1.5 sm:tracking-[0.25em]">
+            <span class="size-2 rounded-full bg-neon-cyan shadow-[0_0_18px_rgba(110,231,183,0.95)]"></span>
             Guardian online
           </p>
         </div>
@@ -94,7 +94,7 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
         <h1 class="mt-6 max-w-3xl text-5xl font-black tracking-tight text-balance sm:text-7xl">
           Yi has entered the workshop.
         </h1>
-        <p class="mt-5 max-w-2xl text-base leading-7 text-yellow-50/78 sm:text-lg sm:leading-8">
+        <p class="mt-5 max-w-2xl text-base leading-7 text-foreground/78 sm:text-lg sm:leading-8">
           Small frame. Huge coat. Zero patience for boring pages. This corner now
           runs on warm neon, tiny boss energy, and one very serious green core.
         </p>
@@ -102,7 +102,7 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
         <div class="mt-7 flex flex-wrap gap-2">
           {
             tags.map((tag) => (
-              <span class="rounded-full border border-yellow-200/20 bg-white/7 px-3 py-1 text-sm text-yellow-50/82 shadow-sm shadow-black/20 backdrop-blur">
+              <span class="rounded-full border border-solar/20 bg-white/7 px-3 py-1 text-sm text-foreground/82 shadow-sm shadow-black/20 backdrop-blur">
                 #{tag}
               </span>
             ))
@@ -112,17 +112,17 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
         <div class="mt-8 grid gap-3 sm:grid-cols-3">
           {
             statusCards.map((card) => (
-              <div class="rounded-2xl border border-yellow-200/18 bg-yellow-50/8 p-4 shadow-xl shadow-black/20 backdrop-blur-md">
+              <div class="rounded-2xl border border-solar/18 bg-solar/8 p-4 shadow-xl shadow-black/20 backdrop-blur-md">
                 <Icon
                   name={card.icon}
                   width="20"
                   height="20"
-                  class="text-yellow-200"
+                  class="text-solar"
                 />
-                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-50/55">
+                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/55">
                   {card.label}
                 </p>
-                <p class="mt-1 text-xl font-bold text-yellow-50">
+                <p class="mt-1 text-xl font-bold text-foreground">
                   {card.value}
                 </p>
               </div>
@@ -132,16 +132,16 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
       </div>
 
       <div class="order-1 lg:order-2">
-        <div class="yi-card relative mx-auto max-w-xl rounded-[2rem] border border-yellow-200/28 bg-yellow-50/10 p-3 shadow-[0_0_80px_rgba(250,204,21,0.28)] backdrop-blur-xl sm:p-4">
-          <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-yellow-300/24 via-emerald-300/10 to-orange-500/20 blur-2xl"></div>
-          <div class="absolute -left-5 top-12 hidden size-24 rounded-full border border-yellow-200/25 sm:block"></div>
-          <div class="absolute -right-8 bottom-16 hidden size-32 rounded-full border border-emerald-200/20 sm:block"></div>
+        <div class="yi-card relative mx-auto max-w-xl rounded-[2rem] border border-solar/28 bg-solar/10 p-3 shadow-[0_0_80px_rgba(250,204,21,0.28)] backdrop-blur-xl sm:p-4">
+          <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-neon-cyan/24 via-emerald-300/10 to-solar/20 blur-2xl"></div>
+          <div class="absolute -left-5 top-12 hidden size-24 rounded-full border border-solar/25 sm:block"></div>
+          <div class="absolute -right-8 bottom-16 hidden size-32 rounded-full border border-neon-cyan/20 sm:block"></div>
 
-          <div class="relative overflow-hidden rounded-[1.5rem] border border-yellow-100/20 bg-black/35">
-            <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-yellow-100/15 bg-black/35 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-50/65 backdrop-blur">
+          <div class="relative overflow-hidden rounded-[1.5rem] border border-solar/20 bg-black/35">
+            <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-solar/15 bg-black/35 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/65 backdrop-blur">
               <span>Yi cam</span>
-              <span class="inline-flex items-center gap-1.5 text-emerald-200">
-                <span class="size-1.5 rounded-full bg-emerald-300"></span>
+              <span class="inline-flex items-center gap-1.5 text-neon-cyan">
+                <span class="size-1.5 rounded-full bg-neon-cyan"></span>
                 live
               </span>
             </div>
@@ -157,14 +157,14 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
             <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/35 to-transparent p-5 pt-24">
               <div class="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p class="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-200">
+                  <p class="text-sm font-semibold uppercase tracking-[0.22em] text-neon-cyan">
                     Threat level
                   </p>
-                  <p class="mt-1 text-3xl font-black text-yellow-50">
+                  <p class="mt-1 text-3xl font-black text-foreground">
                     Adorable menace
                   </p>
                 </div>
-                <div class="rounded-full border border-emerald-200/30 bg-emerald-300/12 px-4 py-2 text-sm font-bold text-emerald-100 shadow-[0_0_28px_rgba(110,231,183,0.22)]">
+                <div class="rounded-full border border-neon-cyan/30 bg-neon-cyan/12 px-4 py-2 text-sm font-bold text-neon-cyan shadow-[0_0_28px_rgba(110,231,183,0.22)]">
                   core: stable
                 </div>
               </div>

@@ -1,336 +1,222 @@
-<canvas
-  id="three-bg"
-  transition:persist="three-background"
-  class="pointer-events-none fixed inset-0 -z-10 h-screen w-screen opacity-90"></canvas>
+<div id="synthscape" class="synthscape" aria-hidden="true" transition:persist="synthscape">
+  <div class="synthscape__aurora synthscape__aurora--cyan"></div>
+  <div class="synthscape__aurora synthscape__aurora--pink"></div>
+  <div class="synthscape__stars synthscape__stars--far"></div>
+  <div class="synthscape__stars synthscape__stars--near"></div>
+  <div class="synthscape__sun"><span></span></div>
+  <div class="synthscape__horizon"></div>
+  <div class="synthscape__grid"></div>
+  <div class="synthscape__beam"></div>
+  <div class="synthscape__vignette"></div>
+</div>
+
+<style>
+  .synthscape {
+    --pointer-x: 0;
+    --pointer-y: 0;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(103, 28, 158, 0.2), transparent 28%),
+      linear-gradient(180deg, #070815 0%, #0b0922 50%, #12082a 64%, #050711 100%);
+    isolation: isolate;
+  }
+
+  .synthscape__aurora {
+    position: absolute;
+    width: 62vw;
+    height: 62vw;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.16;
+    transform: translate3d(calc(var(--pointer-x) * 20px), calc(var(--pointer-y) * 14px), 0);
+    transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: aurora-breathe 9s ease-in-out infinite alternate;
+  }
+
+  .synthscape__aurora--cyan {
+    left: -28vw;
+    top: -24vw;
+    background: #00e7ff;
+  }
+
+  .synthscape__aurora--pink {
+    right: -30vw;
+    top: 5vh;
+    background: #ff3dbf;
+    animation-delay: -4.5s;
+  }
+
+  .synthscape__stars {
+    position: absolute;
+    inset: -10%;
+    transform: translate3d(calc(var(--pointer-x) * -9px), calc(var(--pointer-y) * -6px), 0);
+    background-image:
+      radial-gradient(circle at 8% 16%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 22% 42%, rgba(104, 238, 255, 0.85) 0 1px, transparent 1.7px),
+      radial-gradient(circle at 48% 13%, rgba(255, 101, 208, 0.8) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 72% 35%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 91% 19%, rgba(255, 228, 113, 0.85) 0 1px, transparent 1.7px);
+    background-size: 420px 330px;
+    opacity: 0.5;
+    transition: transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .synthscape__stars--near {
+    inset: -14%;
+    transform: translate3d(calc(var(--pointer-x) * -18px), calc(var(--pointer-y) * -12px), 0);
+    background-size: 690px 510px;
+    background-position: 113px 71px;
+    opacity: 0.35;
+    filter: drop-shadow(0 0 4px rgba(0, 231, 255, 0.65));
+  }
+
+  .synthscape__sun {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: clamp(13rem, 27vw, 28rem);
+    aspect-ratio: 1;
+    transform: translate3d(calc(-50% + var(--pointer-x) * 10px), calc(-50% + var(--pointer-y) * 5px), 0);
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fff4a1 0%, #ff9f45 38%, #ff3dab 77%, #d827ff 100%);
+    box-shadow:
+      0 0 30px rgba(255, 80, 185, 0.38),
+      0 0 100px rgba(255, 48, 180, 0.2),
+      0 0 200px rgba(128, 42, 255, 0.16);
+    opacity: 0.58;
+    transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    mask-image: linear-gradient(to bottom, black 0 62%, transparent 94%);
+  }
+
+  .synthscape__sun::after {
+    content: "";
+    position: absolute;
+    inset: 40% 0 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 8px,
+      #080817 9px 13px
+    );
+  }
+
+  .synthscape__sun span {
+    position: absolute;
+    inset: 8%;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+  }
+
+  .synthscape__horizon {
+    position: absolute;
+    inset: 61% 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00e7ff 18%, #ff3dbf 50%, #ffe46f 82%, transparent);
+    box-shadow:
+      0 0 14px rgba(0, 231, 255, 0.75),
+      0 0 28px rgba(255, 61, 191, 0.55);
+    opacity: 0.7;
+  }
+
+  .synthscape__grid {
+    position: absolute;
+    left: -55%;
+    right: -55%;
+    top: 61%;
+    height: 72%;
+    transform-origin: 50% 0;
+    transform: perspective(420px) rotateX(63deg) translateY(-2px);
+    background-image:
+      linear-gradient(rgba(0, 231, 255, 0.24) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 61, 191, 0.23) 1px, transparent 1px);
+    background-size: 70px 46px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), transparent 88%);
+    animation: grid-drive 2.8s linear infinite;
+  }
+
+  .synthscape__beam {
+    position: absolute;
+    left: 50%;
+    top: 61%;
+    width: min(56rem, 78vw);
+    height: 46vh;
+    transform: translateX(-50%);
+    clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 61, 191, 0.08), rgba(0, 231, 255, 0.1), transparent);
+    filter: blur(2px);
+  }
+
+  .synthscape__vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(5, 7, 17, 0.06), transparent 52%, rgba(5, 7, 17, 0.74)),
+      radial-gradient(ellipse at center, transparent 34%, rgba(4, 5, 14, 0.64) 100%);
+  }
+
+  @keyframes grid-drive {
+    to { background-position: 0 46px, 0 0; }
+  }
+
+  @keyframes aurora-breathe {
+    from { opacity: 0.11; scale: 0.92; }
+    to { opacity: 0.2; scale: 1.08; }
+  }
+
+  @media (max-width: 640px) {
+    .synthscape__sun { top: 48%; width: 13rem; opacity: 0.34; }
+    .synthscape__horizon,
+    .synthscape__grid,
+    .synthscape__beam { top: 59%; }
+    .synthscape__grid { background-size: 54px 38px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .synthscape__aurora,
+    .synthscape__grid { animation: none; }
+  }
+</style>
 
 <script>
-  import * as THREE from "three";
+  interface SynthscapeState {
+    initialized: boolean;
+    scene?: HTMLElement;
+  }
 
-  const canvas = document.getElementById("three-bg") as HTMLCanvasElement;
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  );
-
-  const viewportSize = () => ({
-    width: Math.max(window.innerWidth, 1),
-    height: Math.max(window.innerHeight, 1),
-  });
-  const initialViewport = viewportSize();
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    56,
-    initialViewport.width / initialViewport.height,
-    0.1,
-    100,
-  );
-  camera.position.set(0, 0, 10.4);
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(initialViewport.width, initialViewport.height, false);
-  renderer.setClearColor(0xfff7df, 0);
-
-  scene.add(new THREE.AmbientLight(0xfff4cf, 1.45));
-
-  const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-  sun.position.set(5, 6, 7);
-  scene.add(sun);
-
-  const skyLight = new THREE.PointLight(0x5bb7f0, 1.6, 28);
-  skyLight.position.set(-5, 3, 5);
-  scene.add(skyLight);
-
-  const honeyLight = new THREE.PointLight(0xffb23f, 1.8, 24);
-  honeyLight.position.set(5, -2.4, 4);
-  scene.add(honeyLight);
-
-  const world = new THREE.Group();
-  scene.add(world);
-
-  const railMaterials = {
-    warm: new THREE.MeshBasicMaterial({
-      color: 0xffd36b,
-      transparent: true,
-      opacity: 0.34,
-      depthWrite: false,
-    }),
-    warmGlow: new THREE.MeshBasicMaterial({
-      color: 0xffa62b,
-      transparent: true,
-      opacity: 0.08,
-      depthWrite: false,
-    }),
-    sky: new THREE.MeshBasicMaterial({
-      color: 0x7dd3fc,
-      transparent: true,
-      opacity: 0.26,
-      depthWrite: false,
-    }),
-    skyGlow: new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.07,
-      depthWrite: false,
-    }),
-  };
-
-  const createBadgeTexture = () => {
-    const size = 512;
-    const textureCanvas = document.createElement("canvas");
-    textureCanvas.width = size;
-    textureCanvas.height = size;
-
-    const context = textureCanvas.getContext("2d");
-    if (!context) return null;
-
-    const gradient = context.createLinearGradient(0, 0, size, size);
-    gradient.addColorStop(0, "#fff1ad");
-    gradient.addColorStop(0.52, "#ffbf58");
-    gradient.addColorStop(1, "#65b7e8");
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, size, size);
-
-    context.fillStyle = "rgba(255, 255, 255, 0.58)";
-    context.beginPath();
-    context.ellipse(254, 262, 168, 118, -0.56, 0, Math.PI * 2);
-    context.fill();
-    context.beginPath();
-    context.ellipse(300, 272, 168, 118, 0.56, 0, Math.PI * 2);
-    context.fill();
-
-    context.strokeStyle = "rgba(126, 75, 23, 0.42)";
-    context.lineWidth = 16;
-    context.beginPath();
-    context.moveTo(122, 322);
-    context.quadraticCurveTo(236, 198, 386, 176);
-    context.stroke();
-    context.beginPath();
-    context.moveTo(388, 322);
-    context.quadraticCurveTo(280, 200, 126, 176);
-    context.stroke();
-
-    context.fillStyle = "#3f2618";
-    context.font =
-      "700 58px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif";
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillText("ShadowNine", 256, 104);
-
-    const texture = new THREE.CanvasTexture(textureCanvas);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 4;
-    return texture;
-  };
-
-  const badge = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.35, 1.35, 0.16, 96),
-    [
-      new THREE.MeshStandardMaterial({
-        color: 0xf7a943,
-        roughness: 0.38,
-        metalness: 0.08,
-      }),
-      new THREE.MeshStandardMaterial({
-        map: createBadgeTexture(),
-        roughness: 0.3,
-        metalness: 0.04,
-      }),
-      new THREE.MeshStandardMaterial({
-        map: createBadgeTexture(),
-        roughness: 0.3,
-        metalness: 0.04,
-      }),
-    ],
-  );
-  badge.position.set(2.75, 2.1, -4.35);
-  badge.rotation.set(0.28, -0.34, 0.08);
-  world.add(badge);
-
-  const floaters: Array<{
-    object: THREE.Object3D;
-    spin: THREE.Vector3;
-    drift: number;
-    originY: number;
-  }> = [];
-
-  const addFloater = (
-    object: THREE.Object3D,
-    position: THREE.Vector3,
-    scale: number,
-    spin: THREE.Vector3,
-    drift: number,
-  ) => {
-    object.position.copy(position);
-    object.scale.setScalar(scale);
-    world.add(object);
-    floaters.push({ object, spin, drift, originY: position.y });
-  };
-
-  const materials = {
-    honey: new THREE.MeshStandardMaterial({
-      color: 0xffb84d,
-      roughness: 0.42,
-      metalness: 0.1,
-      transparent: true,
-      opacity: 0.72,
-    }),
-    sky: new THREE.MeshStandardMaterial({
-      color: 0x75c7ef,
-      roughness: 0.4,
-      metalness: 0.08,
-      transparent: true,
-      opacity: 0.64,
-      wireframe: true,
-    }),
-    cream: new THREE.MeshStandardMaterial({
-      color: 0xfff4d6,
-      roughness: 0.55,
-      metalness: 0.04,
-    }),
-  };
-
-  addFloater(
-    new THREE.Mesh(new THREE.TorusGeometry(1.12, 0.055, 12, 96), materials.honey),
-    new THREE.Vector3(-4.55, 2.2, -5.7),
-    1,
-    new THREE.Vector3(0.001, 0.0018, 0.0007),
-    0.6,
-  );
-  addFloater(
-    new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 1), materials.sky),
-    new THREE.Vector3(4.25, -2.7, -6.05),
-    0.86,
-    new THREE.Vector3(-0.0014, 0.001, 0.0017),
-    0.72,
-  );
-  addFloater(
-    new THREE.Mesh(new THREE.BoxGeometry(1.55, 1.55, 1.55), materials.cream),
-    new THREE.Vector3(-2.2, -3.25, -6.55),
-    0.6,
-    new THREE.Vector3(0.0012, -0.001, 0.0015),
-    0.42,
-  );
-
-  const rails = new THREE.Group();
-  const railNodes: Array<{
-    object: THREE.Mesh;
-    originX: number;
-    speed: number;
-  }> = [];
-
-  for (let i = 0; i < 10; i++) {
-    const y = -5.4 + i * 1.16;
-    const z = -7.4 - i * 0.24;
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-30, y - 0.2, z - 0.8),
-      new THREE.Vector3(-14, y + Math.sin(i * 0.8) * 0.82, z - 0.45),
-      new THREE.Vector3(0, y - Math.cos(i * 0.9) * 0.72, z),
-      new THREE.Vector3(14, y + Math.sin(i * 1.2) * 0.7, z - 0.35),
-      new THREE.Vector3(30, y + Math.cos(i * 0.7) * 0.58, z - 0.8),
-    ]);
-    const points = curve.getPoints(180);
-    const lineMaterial = i % 2 ? railMaterials.sky : railMaterials.warm;
-    const glowMaterial = i % 2 ? railMaterials.skyGlow : railMaterials.warmGlow;
-
-    rails.add(
-      new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 180, 0.018, 8, false),
-        lineMaterial,
-      ),
-    );
-    rails.add(
-      new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 180, 0.064, 10, false),
-        glowMaterial,
-      ),
-    );
-
-    if (i % 2 === 0) {
-      const point = points[Math.floor(points.length * 0.58)];
-      const node = new THREE.Mesh(
-        new THREE.SphereGeometry(0.075, 16, 16),
-        new THREE.MeshBasicMaterial({
-          color: 0xfff1ad,
-          transparent: true,
-          opacity: 0.7,
-          depthWrite: false,
-        }),
-      );
-      node.position.copy(point);
-      rails.add(node);
-      railNodes.push({
-        object: node,
-        originX: node.position.x,
-        speed: 0.18 + i * 0.018,
-      });
+  declare global {
+    interface Window {
+      __shadowNineSynthscape?: SynthscapeState;
     }
   }
-  scene.add(rails);
 
-  const mouse = new THREE.Vector2(0, 0);
+  const setupSynthscape = () => {
+    const scene = document.getElementById("synthscape") as HTMLElement | null;
+    if (!scene) return;
 
-  const onPointerMove = (event: PointerEvent) => {
-    mouse.x = (event.clientX / window.innerWidth - 0.5) * 2;
-    mouse.y = (event.clientY / window.innerHeight - 0.5) * 2;
+    const state = (window.__shadowNineSynthscape ??= { initialized: false });
+    state.scene = scene;
+    if (state.initialized) return;
+
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    window.addEventListener(
+      "pointermove",
+      (event) => {
+        if (!finePointer.matches || !state.scene) return;
+        const x = event.clientX / Math.max(window.innerWidth, 1) - 0.5;
+        const y = event.clientY / Math.max(window.innerHeight, 1) - 0.5;
+        state.scene.style.setProperty("--pointer-x", x.toFixed(3));
+        state.scene.style.setProperty("--pointer-y", y.toFixed(3));
+      },
+      { passive: true },
+    );
+
+    state.initialized = true;
   };
 
-  const onResize = () => {
-    const { width, height } = viewportSize();
-    const aspect = width / height;
-
-    camera.aspect = aspect;
-    camera.fov = aspect < 0.85 ? 64 : 56;
-    camera.position.z = aspect < 0.85 ? 11.6 : 10.4;
-    camera.updateProjectionMatrix();
-
-    rails.scale.x = aspect < 0.85 ? 1.42 : Math.max(1.12, aspect / 1.08);
-    rails.scale.y = aspect < 0.85 ? 1.22 : 1.04;
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(width, height, false);
-  };
-
-  onResize();
-
-  window.addEventListener("pointermove", onPointerMove, { passive: true });
-  window.addEventListener("resize", onResize);
-  document.addEventListener("astro:after-swap", onResize);
-  document.addEventListener("astro:page-load", onResize);
-
-  const startedAt = performance.now();
-  (function animate() {
-    requestAnimationFrame(animate);
-    const elapsed = (performance.now() - startedAt) / 1000;
-    const motionScale = prefersReducedMotion.matches ? 0.22 : 1;
-
-    world.rotation.x +=
-      (mouse.y * 0.055 - world.rotation.x) * 0.018 * motionScale;
-    world.rotation.y +=
-      (mouse.x * 0.08 - world.rotation.y) * 0.018 * motionScale;
-    rails.rotation.z = Math.sin(elapsed * 0.08) * 0.018;
-
-    badge.rotation.z = Math.sin(elapsed * 0.42) * 0.05;
-    for (const floater of floaters) {
-      floater.object.rotation.x += floater.spin.x * motionScale;
-      floater.object.rotation.y += floater.spin.y * motionScale;
-      floater.object.rotation.z += floater.spin.z * motionScale;
-      floater.object.position.y =
-        floater.originY + Math.sin(elapsed * floater.drift) * 0.12;
-    }
-    for (const node of railNodes) {
-      node.object.position.x =
-        node.originX + Math.sin(elapsed * node.speed) * 0.46;
-      node.object.scale.setScalar(1 + Math.sin(elapsed * node.speed * 2.2) * 0.18);
-    }
-
-
-    honeyLight.position.x = Math.sin(elapsed * 0.28) * 4.5;
-    skyLight.position.y = 2.5 + Math.cos(elapsed * 0.22) * 1.4;
-    renderer.render(scene, camera);
-  })();
+  setupSynthscape();
+  document.addEventListener("astro:page-load", setupSynthscape);
 </script>

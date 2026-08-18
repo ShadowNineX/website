@@ -83,7 +83,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
   <article class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
     <a
       href={`${base}/blog`}
-      class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      class="ghost-button"
     >
       <Icon name="lucide:arrow-left" width="15" height="15" />
       Back to notes
@@ -106,7 +106,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
         <h1
           transition:name={titleTransitionName}
           transition:animate="initial"
-          class="mt-4 text-3xl font-bold tracking-tight text-balance sm:text-5xl"
+          class="text-neon-gradient mt-4 text-4xl font-black leading-[1.02] tracking-[-0.045em] text-balance sm:text-6xl"
         >
           {post.data.title}
         </h1>
@@ -137,7 +137,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
 
     <div class="mt-10 grid gap-8 lg:grid-cols-[13rem_1fr]">
       <aside class="hidden lg:block">
-        <div class="sticky top-28 rounded-md border border-border bg-card/85 p-4 shadow-lg shadow-background/20 backdrop-blur-xl">
+        <div class="neon-panel sticky top-28 p-4">
           <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Published
           </p>
@@ -156,7 +156,7 @@ const descriptionTransitionName = `blog-description-${post.id}`;
         </div>
       </aside>
 
-      <div class="tails-neon-card overflow-hidden rounded-md border border-yellow-300/60 bg-card/90 p-4 shadow-xl shadow-yellow-300/30 ring-1 ring-yellow-200/40 backdrop-blur-xl sm:p-7 dark:border-yellow-200/40 dark:ring-yellow-200/25">
+      <div class="neon-panel-strong overflow-hidden rounded-md border border-primary/60 bg-card/90 p-4 shadow-xl shadow-primary/30 ring-1 ring-primary/40 backdrop-blur-xl sm:p-7 dark:border-solar/40 dark:ring-primary/25">
         <div class="blog-prose prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline prose-img:rounded-md prose-p:text-foreground/85 dark:prose-p:text-foreground/88 prose-li:text-foreground/85 dark:prose-li:text-foreground/88">
           <Content />
         </div>

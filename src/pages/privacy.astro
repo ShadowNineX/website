@@ -31,14 +31,14 @@ const sections = [
   title="Privacy"
   description="Privacy information for ShadowNine's personal website."
 >
-  <section class="mx-auto max-w-3xl px-6 py-14 sm:py-20">
+  <section class="section-beam mx-auto max-w-3xl px-6 py-14 sm:py-20">
     <header>
-      <p class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
+      <p class="kicker">
         <Icon name="lucide:shield-check" width="15" height="15" />
         Privacy
       </p>
-      <h1 class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
-        Privacy policy
+      <h1 class="mt-5 text-5xl font-black tracking-[-0.05em] text-balance sm:text-7xl">
+        Privacy, <span class="text-neon-gradient">plain and simple.</span>
       </h1>
       <p class="mt-4 text-base leading-7 text-muted-foreground">
         A short, plain note about what this personal site does and does not
@@ -46,11 +46,11 @@ const sections = [
       </p>
     </header>
 
-    <div class="tails-neon-card mt-10 overflow-hidden rounded-lg border border-yellow-300/50 bg-card/55 p-3 shadow-xl shadow-yellow-300/25 ring-1 ring-yellow-200/35 dark:border-yellow-200/35 dark:ring-yellow-200/20">
+    <div class="neon-panel-strong mt-10 overflow-hidden rounded-lg border border-primary/50 bg-card/55 p-3 shadow-xl shadow-primary/25 ring-1 ring-primary/35 dark:border-solar/35 dark:ring-primary/20">
       <div class="space-y-5">
       {
         sections.map((section) => (
-          <section class="rounded-md border border-border bg-card/85 p-5 shadow-sm">
+          <section class="synth-card p-5">
             <h2 class="text-lg font-semibold tracking-tight">
               {section.title}
             </h2>

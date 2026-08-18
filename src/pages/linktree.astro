@@ -55,8 +55,8 @@ const groupOrder = ["Code", "Music"];
   title="Corners"
   description={`A small shelf of ${displayName}'s project and music links.`}
 >
-  <section class="mx-auto max-w-2xl px-4 pb-20 pt-8 sm:px-6 sm:pt-12">
-    <header class="tails-neon-card relative overflow-hidden rounded-lg border border-yellow-300 bg-card/85 shadow-2xl shadow-yellow-300/70 ring-2 ring-yellow-200/70 dark:border-yellow-200 dark:shadow-yellow-200/45 dark:ring-yellow-200/45">
+  <section class="section-beam mx-auto max-w-2xl px-4 pb-20 pt-8 sm:px-6 sm:pt-12">
+    <header class="neon-panel-strong relative overflow-hidden rounded-lg border border-primary bg-card/85 shadow-2xl shadow-primary/70 ring-2 ring-primary/70 dark:border-solar dark:shadow-solar/45 dark:ring-primary/45">
       <Image
         src={backgroundAvatar}
         alt=""
@@ -76,16 +76,16 @@ const groupOrder = ["Code", "Music"];
             width="112"
             height="112"
             loading="eager"
-            class="size-24 rounded-lg border-4 border-yellow-300 bg-background object-cover shadow-xl shadow-yellow-300/25 dark:border-yellow-200"
+            class="size-24 rounded-lg border-4 border-primary bg-background object-cover shadow-xl shadow-primary/25 dark:border-solar"
           />
 
           <div class="pb-1">
-            <p class="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-amber-600 dark:text-amber-200">
-              <span class="size-1.5 rounded-full bg-amber-300 shadow-sm shadow-amber-300/70"></span>
+            <p class="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-accent dark:text-accent">
+              <span class="size-1.5 rounded-full bg-accent shadow-sm shadow-accent/70"></span>
               @{githubUsername}
             </p>
-            <h1 class="mt-1 text-3xl font-bold tracking-tight text-amber-500 drop-shadow-sm dark:text-amber-200">
-              <span class="bg-linear-to-r from-amber-300 via-yellow-400 to-orange-300 bg-clip-text text-transparent dark:from-amber-100 dark:via-yellow-200 dark:to-orange-200">
+            <h1 class="mt-1 text-4xl font-black tracking-[-0.045em] drop-shadow-sm">
+              <span class="text-neon-gradient">
                 {displayName}
               </span>
             </h1>
@@ -124,7 +124,7 @@ const groupOrder = ["Code", "Music"];
                       target="_blank"
                       rel="noopener noreferrer"
                       class:list={[
-                        "link-card group relative flex w-full flex-col overflow-hidden rounded-lg border border-border bg-card/90 shadow-sm transition-colors duration-200 hover:border-primary/35 hover:bg-card",
+                        "link-card synth-card group relative flex w-full flex-col",
                         link.featured ? "featured-link" : "",
                       ]}
                       style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}

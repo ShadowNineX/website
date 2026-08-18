@@ -89,24 +89,24 @@ const profileStats = [
     value: githubUser.public_repos.toString(),
     icon: "lucide:folder-git-2",
     tileClass:
-      "border-yellow-300/40 bg-yellow-300/12 shadow-yellow-300/10 hover:border-yellow-300/65",
-    iconClass: "text-yellow-600 dark:text-yellow-200",
+      "border-primary/40 bg-primary/12 shadow-primary/10 hover:border-primary/65",
+    iconClass: "text-primary dark:text-solar",
   },
   {
     label: "GitHub stars",
     value: totalStars.toString(),
     icon: "lucide:star",
     tileClass:
-      "border-amber-300/40 bg-amber-300/15 shadow-amber-300/10 hover:border-amber-300/60",
-    iconClass: "text-amber-600 dark:text-amber-300",
+      "border-accent/40 bg-accent/15 shadow-accent/10 hover:border-accent/60",
+    iconClass: "text-accent dark:text-accent",
   },
   {
     label: "Since",
     value: formatMonthYear(githubUser.created_at),
     icon: "lucide:calendar-days",
     tileClass:
-      "border-rose-300/35 bg-rose-300/10 shadow-rose-300/10 hover:border-rose-300/55",
-    iconClass: "text-rose-500 dark:text-rose-300",
+      "border-neon-magenta/35 bg-neon-magenta/10 shadow-neon-magenta/10 hover:border-neon-magenta/55",
+    iconClass: "text-neon-magenta dark:text-neon-magenta",
   },
 ];
 
@@ -137,21 +137,21 @@ const tailsCompanionCards = [
     description:
       "A clever mechanism or a careful patch makes me happiest when it clears the way for somebody else.",
     icon: "lucide:wrench",
-    tileClass: "border-amber-300/45 bg-amber-200/20 shadow-amber-300/10",
+    tileClass: "border-accent/45 bg-accent/20 shadow-accent/10",
   },
   {
     title: "Stay with the stubborn bits",
     description:
       "I like tracing a strange rattle or a failing test until the problem makes sense and the fix earns my trust.",
     icon: "lucide:search-check",
-    tileClass: "border-yellow-300/45 bg-yellow-200/20 shadow-yellow-300/15",
+    tileClass: "border-primary/45 bg-solar/20 shadow-primary/15",
   },
   {
     title: "Share the good part",
     description:
       "Bright flights, mint candy, game nights, and building beside Alex are all better when we get to enjoy them together.",
     icon: "lucide:heart-handshake",
-    tileClass: "border-rose-300/40 bg-rose-200/20 shadow-rose-300/10",
+    tileClass: "border-neon-magenta/40 bg-neon-magenta/20 shadow-neon-magenta/10",
   },
 ];
 
@@ -278,19 +278,19 @@ const nearbyItems = [
     label: "Music",
     detail: "Comfort tracks on the side while things compile.",
     icon: "lucide:music-4",
-    tileClass: "border-emerald-300/35 bg-emerald-200/12 text-emerald-600 dark:text-emerald-200",
+    tileClass: "border-neon-cyan/35 bg-neon-cyan/12 text-neon-cyan dark:text-neon-cyan",
   },
   {
     label: "Minecraft",
     detail: "A quiet blocky place to reset between builds.",
     icon: "lucide:pickaxe",
-    tileClass: "border-sky-300/35 bg-sky-200/12 text-sky-600 dark:text-sky-200",
+    tileClass: "border-neon-violet/35 bg-neon-violet/12 text-neon-violet dark:text-neon-violet",
   },
   {
     label: "Game tools",
     detail: "Small engine curiosities and useful fixes worth tinkering with.",
     icon: "lucide:wrench",
-    tileClass: "border-orange-300/40 bg-orange-200/14 text-orange-600 dark:text-orange-200",
+    tileClass: "border-solar/40 bg-solar/14 text-solar dark:text-solar",
   },
 ];
 
@@ -315,22 +315,23 @@ const workshopLog = [
 
 <Layout
   title={displayName}
-  description={`${displayName}'s cozy personal site for projects, tools, and small notes.`}
+  description={`${displayName}'s neon night-drive workshop for projects, tools, games, and small notes.`}
 >
   <section
-    class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:py-20"
+    class="section-beam mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-14 lg:py-24"
   >
-    <div>
+    <div class="relative">
+      <div class="pointer-events-none absolute -left-20 top-10 -z-10 h-56 w-56 rounded-full bg-neon-magenta/10 blur-3xl"></div>
       <p
-        class="inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary"
+        class="kicker"
       >
         <Icon name="lucide:terminal" width="15" height="15" />
-        cozy project workshop
+        signal acquired / project workshop
       </p>
       <h1
-        class="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+        class="mt-6 max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.055em] text-balance sm:text-6xl lg:text-7xl xl:text-8xl"
       >
-        ShadowNine's warm little workshop for code, games, and ideas.
+        A warm workshop under <span class="text-neon-gradient">electric skies.</span>
       </h1>
       <p class="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
         I'm {displayName}, a developer who likes building tools, modding
@@ -343,7 +344,7 @@ const workshopLog = [
           links.map((link) => (
             <a
               href={link.href}
-              class="inline-flex items-center gap-2 rounded-md border border-border bg-card/90 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
+              class="neon-button"
             >
               <Icon name={link.icon} width="16" height="16" />
               {link.label}
@@ -355,7 +356,7 @@ const workshopLog = [
 
     <div class="relative mx-auto w-full max-w-md lg:max-w-none">
       <div
-        class="tails-neon-card hidden absolute inset-0 overflow-hidden rounded-lg border border-yellow-300/70 bg-card/35 ring-2 ring-yellow-200/50 md:block dark:border-yellow-200/50 dark:ring-yellow-200/30"
+        class="neon-panel-strong hidden absolute inset-0 overflow-hidden rounded-lg border border-primary/70 bg-card/35 ring-2 ring-primary/50 md:block dark:border-solar/50 dark:ring-primary/30"
       >
       </div>
       <div class="profile-card-shell group/card h-auto perspective-[1400px] md:h-170 lg:h-180">
@@ -367,11 +368,11 @@ const workshopLog = [
           >
           </div>
           <div
-            class="profile-card-edge absolute right-0 top-0 h-full w-3 origin-right bg-amber-300/25 shadow-lg shadow-amber-300/10 transform-[translateZ(6px)_rotateY(-90deg)]"
+            class="profile-card-edge absolute right-0 top-0 h-full w-3 origin-right bg-accent/25 shadow-lg shadow-accent/10 transform-[translateZ(6px)_rotateY(-90deg)]"
           >
           </div>
           <div
-            class="profile-card-edge absolute left-0 top-0 h-3 w-full origin-top bg-yellow-300/30 transform-[translateZ(6px)_rotateX(-90deg)]"
+            class="profile-card-edge absolute left-0 top-0 h-3 w-full origin-top bg-primary/30 transform-[translateZ(6px)_rotateX(-90deg)]"
           >
           </div>
           <div
@@ -381,7 +382,7 @@ const workshopLog = [
           <div
             class="profile-card-front absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
           >
-            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-yellow-300 via-amber-300 to-orange-300"></div>
+            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-neon-cyan via-neon-magenta to-solar"></div>
             <Image
               src={githubAvatarUrl}
               alt={`${displayName} GitHub avatar`}
@@ -397,16 +398,16 @@ const workshopLog = [
                     GitHub profile
                   </p>
                   <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    <span class="bg-linear-to-r from-yellow-500 via-amber-400 to-orange-400 bg-clip-text text-transparent dark:from-yellow-100 dark:via-amber-200 dark:to-orange-200">
+                    <span class="bg-linear-to-r from-neon-cyan via-neon-magenta to-solar bg-clip-text text-transparent dark:from-primary dark:via-neon-magenta dark:to-solar">
                       {displayName}
                     </span>
                   </h2>
-                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-amber-300/35 bg-amber-300/15 px-2.5 py-1 text-sm text-muted-foreground">
+                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent/15 px-2.5 py-1 text-sm text-muted-foreground">
                     <Icon
                       name="lucide:sparkle"
                       width="14"
                       height="14"
-                      class="text-amber-500 dark:text-amber-300"
+                      class="text-accent dark:text-accent"
                     />
                     {profileBio}
                   </p>
@@ -507,17 +508,17 @@ const workshopLog = [
   </section>
 
   <section class="border-y border-border bg-card/55">
-    <div class="mx-auto grid max-w-6xl gap-4 px-4 py-8 sm:px-6 md:grid-cols-3">
+    <div class="mx-auto grid max-w-7xl gap-4 px-4 py-8 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.35fr_0.825fr_0.825fr]">
       {
-        focusAreas.map((area) => (
-          <article class="rounded-lg border border-border bg-background/75 p-5 shadow-sm">
+        focusAreas.map((area, index) => (
+          <article class:list={["synth-card p-5 sm:p-6", index === 0 && "md:row-span-2 lg:row-span-1"]}>
             <Icon
               name={area.icon}
               width="22"
               height="22"
               class="text-primary"
             />
-            <h2 class="mt-4 text-base font-semibold tracking-tight">
+            <h2 class:list={["mt-4 font-bold tracking-tight", index === 0 ? "text-2xl" : "text-lg"]}>
               {area.title}
             </h2>
             <p class="mt-2 text-sm leading-6 text-muted-foreground">
@@ -529,13 +530,13 @@ const workshopLog = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
     <div class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-      <article class="rounded-lg border border-emerald-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
-        <div class="inline-flex items-center gap-3 rounded-md border border-emerald-300/30 bg-emerald-200/12 px-3 py-2 text-emerald-700 dark:text-emerald-200">
+      <article class="synth-card p-5">
+        <div class="inline-flex items-center gap-3 rounded-md border border-neon-cyan/30 bg-neon-cyan/12 px-3 py-2 text-neon-cyan dark:text-neon-cyan">
           <span class="relative flex h-6 w-8 items-center justify-center" aria-hidden="true">
-            <span class="absolute left-0.5 size-3 rounded-full border-2 border-amber-400 bg-yellow-200 shadow-[0_0_10px_rgba(250,204,21,0.65)]"></span>
-            <span class="absolute right-0.5 size-3 rounded-full border-2 border-orange-400 bg-amber-200 shadow-[0_0_10px_rgba(251,146,60,0.6)]"></span>
+            <span class="absolute left-0.5 size-3 rounded-full border-2 border-accent bg-solar shadow-[0_0_10px_rgba(250,204,21,0.65)]"></span>
+            <span class="absolute right-0.5 size-3 rounded-full border-2 border-solar bg-accent shadow-[0_0_10px_rgba(251,146,60,0.6)]"></span>
           </span>
           <span class="text-sm font-medium">Twin-Tail Signal</span>
         </div>
@@ -549,8 +550,8 @@ const workshopLog = [
       </article>
 
       <div class="grid gap-4 md:grid-cols-2">
-        <article class="rounded-lg border border-sky-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
-          <p class="text-sm font-medium text-sky-600 dark:text-sky-200">
+        <article class="synth-card p-5">
+          <p class="text-sm font-medium text-neon-violet dark:text-neon-violet">
             Currently nearby
           </p>
           <div class="mt-4 grid gap-3">
@@ -577,8 +578,8 @@ const workshopLog = [
           </div>
         </article>
 
-        <article class="rounded-lg border border-orange-300/25 bg-card/80 p-5 shadow-sm backdrop-blur">
-          <p class="text-sm font-medium text-orange-600 dark:text-orange-200">
+        <article class="synth-card p-5">
+          <p class="text-sm font-medium text-solar dark:text-solar">
             Comfort shelf
           </p>
           <div class="mt-4 flex flex-wrap gap-2">
@@ -608,11 +609,11 @@ const workshopLog = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-    <div class="tails-neon-card overflow-hidden rounded-lg border border-yellow-300/70 bg-card/85 shadow-xl shadow-yellow-300/40 ring-2 ring-yellow-200/45 backdrop-blur-xl dark:border-yellow-200/45 dark:ring-yellow-200/25">
+  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+    <div class="neon-panel-strong overflow-hidden rounded-lg border border-primary/70 bg-card/85 shadow-xl shadow-primary/40 ring-2 ring-primary/45 backdrop-blur-xl dark:border-solar/45 dark:ring-primary/25">
       <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
         <div class="border-b border-border bg-background/70 p-6 sm:p-8 lg:border-b-0 lg:border-r">
-          <p class="inline-flex items-center gap-2 rounded-md border border-amber-300/35 bg-amber-200/20 px-3 py-1.5 text-sm font-medium text-primary">
+          <p class="inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent/20 px-3 py-1.5 text-sm font-medium text-primary">
             <Icon name="lucide:heart-handshake" width="15" height="15" />
             Tails' workshop corner
           </p>
@@ -628,14 +629,14 @@ const workshopLog = [
           </p>
           <a
             href={`${base}/blog/tails-trust-tools-home`}
-            class="mt-6 inline-flex items-center gap-2 rounded-md border border-border bg-background/80 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
+            class="ghost-button mt-6"
           >
             <Icon name="lucide:book-heart" width="16" height="16" />
             Read the note
           </a>
         </div>
 
-        <div class="grid gap-3 bg-linear-to-br from-yellow-200/24 via-amber-200/18 to-orange-200/18 p-4 sm:p-6">
+        <div class="grid gap-3 bg-linear-to-br from-primary/24 via-neon-magenta/18 to-solar/18 p-4 sm:p-6">
           {
             tailsCompanionCards.map((card) => (
               <article
@@ -665,7 +666,7 @@ const workshopLog = [
 
   {
     latestBlogPost && (
-      <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+      <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="text-sm font-medium text-primary">Notebook</p>
@@ -685,12 +686,12 @@ const workshopLog = [
         <a
           href={`${base}/blog/${latestBlogPost.id}`}
           class:list={[
-            "tails-neon-card group mt-8 grid overflow-hidden rounded-lg border border-yellow-300/60 bg-card shadow-sm ring-1 ring-yellow-200/40 transition-all hover:-translate-y-0.5 hover:border-yellow-300 dark:border-yellow-200/40 dark:ring-yellow-200/25",
+            "neon-panel-strong group mt-8 grid overflow-hidden rounded-lg border border-primary/60 bg-card shadow-sm ring-1 ring-primary/40 transition-all hover:-translate-y-0.5 hover:border-primary dark:border-solar/40 dark:ring-primary/25",
             latestBlogPost.data.image && "md:grid-cols-[0.95fr_1.05fr]",
           ]}
         >
           {latestBlogPost.data.image && (
-            <div class="overflow-hidden border-b border-border bg-muted md:border-b-0 md:border-r">
+            <div class="overflow-hidden border-b border-border bg-[radial-gradient(circle_at_40%_30%,rgba(0,231,255,0.18),transparent_36%),linear-gradient(135deg,rgba(255,61,191,0.14),rgba(6,9,25,0.95))] md:border-b-0 md:border-r">
               <Image
                 src={latestBlogPost.data.image}
                 alt={latestBlogPost.data.imageAlt ?? ""}
@@ -742,7 +743,7 @@ const workshopLog = [
     )
   }
 
-  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
     <div
       class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
     >
@@ -766,7 +767,7 @@ const workshopLog = [
         projects.map((project) => (
           <a
             href={project.href}
-            class="group rounded-lg border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg"
+            class="synth-card group p-5"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex items-center gap-3">
@@ -796,9 +797,9 @@ const workshopLog = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16">
+  <section class="section-beam mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16">
     <div class="grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
-      <div class="rounded-lg border border-border bg-card p-6">
+      <div class="neon-panel p-6">
         <p class="text-sm font-medium text-primary">Now-ish</p>
         <h2 class="mt-2 text-2xl font-bold tracking-tight">Current pattern</h2>
         <p class="mt-4 text-sm leading-6 text-muted-foreground">
@@ -809,7 +810,7 @@ const workshopLog = [
         </p>
       </div>
 
-      <div class="rounded-lg border border-border bg-card p-6">
+      <div class="neon-panel p-6">
         <p class="text-sm font-medium text-primary">Tech stack</p>
         <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {
