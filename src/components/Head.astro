@@ -22,7 +22,7 @@ const {
   twitter,
   noindex,
   nofollow,
-  themeColor = "#070815",
+  themeColor = "#171936",
 } = Astro.props;
 
 const siteName = "ShadowNine";
@@ -30,7 +30,7 @@ const defaultTitle = "ShadowNine";
 const resolvedTitle = title ?? defaultTitle;
 const resolvedDescription =
   description ??
-  "ShadowNine's neon night-drive workshop for projects, experiments, links, and notes.";
+  "ShadowNine's luminous workshop for projects, experiments, music, and notes.";
 const canonicalBaseUrl = Astro.site ?? Astro.url;
 const canonicalUrl =
   canonical ?? canonicalUrlForPath(Astro.url.pathname, canonicalBaseUrl);
@@ -107,7 +107,7 @@ const resolvedTwitter = {
         },
         {
           rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap",
+          href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,650&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap",
         },
         { rel: "icon", type: "image/png", href: "/favicon.png" },
       ],

@@ -17,25 +17,16 @@ interface GitHubUser {
   login: string;
   name: string | null;
   bio: string | null;
-  blog: string | null;
   public_repos: number;
-  followers: number;
-  following: number;
   created_at: string;
 }
-
 interface GitHubRepo {
   name: string;
   description: string | null;
   html_url: string;
-  homepage: string | null;
   language: string | null;
-  topics: string[];
   stargazers_count: number;
   pushed_at: string;
-  license: {
-    spdx_id: string | null;
-  } | null;
 }
 
 const fetchGitHubJson = async <T,>(url: string): Promise<T> => {
@@ -47,114 +38,63 @@ const fetchGitHubJson = async <T,>(url: string): Promise<T> => {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   });
-
   if (!response.ok) {
-    throw new Error(
-      `GitHub API request failed: ${response.status} ${response.statusText} for ${url}`,
-    );
+    throw new Error(`GitHub API request failed: ${response.status} ${response.statusText} for ${url}`);
   }
-
   return (await response.json()) as T;
 };
 
 const [githubUser, githubRepos] = await Promise.all([
   fetchGitHubJson<GitHubUser>(`https://api.github.com/users/${githubUsername}`),
-  fetchGitHubJson<GitHubRepo[]>(
-    `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`,
-  ),
+  fetchGitHubJson<GitHubRepo[]>(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`),
 ]);
-
-const formatMonthYear = (date: string) =>
-  new Intl.DateTimeFormat("en", {
-    month: "short",
-    year: "numeric",
-  }).format(new Date(date));
-const formatBlogDate = (date: Date) =>
-  new Intl.DateTimeFormat("en", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-
-const totalStars = githubRepos.reduce(
-  (sum, repo) => sum + repo.stargazers_count,
-  0,
-);
 const displayName = githubUser.name ?? githubUser.login;
 const profileBio = githubUser.bio ?? "Developer, builder, tinkerer.";
+const totalStars = githubRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+const formatMonthYear = (date: string) =>
+  new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(new Date(date));
+const formatBlogDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", { month: "long", day: "numeric", year: "numeric" }).format(date);
 
 const profileStats = [
-  {
-    label: "Public repos",
-    value: githubUser.public_repos.toString(),
-    icon: "lucide:folder-git-2",
-    tileClass:
-      "border-primary/40 bg-primary/12 shadow-primary/10 hover:border-primary/65",
-    iconClass: "text-primary dark:text-solar",
-  },
-  {
-    label: "GitHub stars",
-    value: totalStars.toString(),
-    icon: "lucide:star",
-    tileClass:
-      "border-accent/40 bg-accent/15 shadow-accent/10 hover:border-accent/60",
-    iconClass: "text-accent dark:text-accent",
-  },
-  {
-    label: "Since",
-    value: formatMonthYear(githubUser.created_at),
-    icon: "lucide:calendar-days",
-    tileClass:
-      "border-neon-magenta/35 bg-neon-magenta/10 shadow-neon-magenta/10 hover:border-neon-magenta/55",
-    iconClass: "text-neon-magenta dark:text-neon-magenta",
-  },
+  { label: "public repos", value: githubUser.public_repos.toString() },
+  { label: "GitHub stars", value: totalStars.toString() },
+  { label: "building since", value: formatMonthYear(githubUser.created_at) },
 ];
-
 const focusAreas = [
   {
     title: "AI-assisted tools",
-    description:
-      "Building MCP-powered tools that make developer workflows, game tooling, and reverse-engineering projects easier to steer.",
+    description: "MCP-powered tools for developer workflows, game tooling, and reverse-engineering projects.",
     icon: "lucide:bot",
   },
   {
     title: "Game and modding work",
-    description:
-      "Exploring Unreal Engine, Portal 2: Community Edition, Cheat Engine, Neodash, Rising World, and the toolchains behind playable ideas.",
+    description: "Unreal Engine, Portal 2: Community Edition, Cheat Engine, Neodash, Rising World, and the toolchains behind playable ideas.",
     icon: "lucide:gamepad-2",
   },
   {
     title: "Personal web experiments",
-    description:
-      "Making Astro/Vue sites, editor experiments, and TypeScript projects because the idea sounds cozy, useful, or weird enough to try.",
+    description: "Astro and Vue sites, editor experiments, and TypeScript projects that feel cozy, useful, or weird enough to try.",
     icon: "lucide:sparkles",
   },
 ];
-
 const tailsCompanionCards = [
   {
     title: "Make something useful",
-    description:
-      "A clever mechanism or a careful patch makes me happiest when it clears the way for somebody else.",
+    description: "A clever mechanism or careful patch matters most when it clears the way for somebody else.",
     icon: "lucide:wrench",
-    tileClass: "border-accent/45 bg-accent/20 shadow-accent/10",
   },
   {
     title: "Stay with the stubborn bits",
-    description:
-      "I like tracing a strange rattle or a failing test until the problem makes sense and the fix earns my trust.",
+    description: "Trace the strange rattle or failing test until the problem makes sense and the fix earns trust.",
     icon: "lucide:search-check",
-    tileClass: "border-primary/45 bg-solar/20 shadow-primary/15",
   },
   {
     title: "Share the good part",
-    description:
-      "Bright flights, mint candy, game nights, and building beside Alex are all better when we get to enjoy them together.",
+    description: "Bright flights, mint candy, game nights, and building beside Alex are better together.",
     icon: "lucide:heart-handshake",
-    tileClass: "border-neon-magenta/40 bg-neon-magenta/20 shadow-neon-magenta/10",
   },
 ];
-
 const projectIcons: Record<string, string> = {
   "ce-mcp": "lucide:cpu",
   CESDK: "lucide:plug",
@@ -165,717 +105,225 @@ const projectIcons: Record<string, string> = {
   "MCP-UAsset-Toolkit": "lucide:wrench",
   ToSteamArtwork: "lucide:image",
 };
-
 const projectMeta: Record<string, string> = {
   "p2ce-hono-web-server": "Portal 2 CE",
   "wallpaper-engine": "npm package",
   "MCP-UAsset-Toolkit": "Unreal Engine",
   ToSteamArtwork: "Steam tools",
 };
-
 const projectDescription: Record<string, string> = {
-  "ce-mcp":
-    "A C# MCP bridge for automating Cheat Engine with AI. It is the most-starred public project on the profile.",
-  "MCP-UAsset-Toolkit":
-    "Automation for Unreal Engine reverse engineering using UAsset API, CUE4Parse, MCP, and AI-assisted workflows.",
-  ToSteamArtwork:
-    "A TypeScript utility that converts images, GIFs, and videos to Steam artwork dimensions.",
+  "ce-mcp": "A C# MCP bridge for automating Cheat Engine with AI—the most-starred public project on the profile.",
+  "MCP-UAsset-Toolkit": "Automation for Unreal Engine reverse engineering with UAsset API, CUE4Parse, MCP, and AI-assisted workflows.",
+  ToSteamArtwork: "A TypeScript utility that converts images, GIFs, and videos to Steam artwork dimensions.",
 };
-
 const projects = githubRepos
   .filter((repo) => repo.description)
-  .sort((a, b) => {
-    const stars = b.stargazers_count - a.stargazers_count;
-    if (stars !== 0) return stars;
-
-    return new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime();
-  })
+  .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
   .slice(0, 6)
-  .map((repo) => {
-    const meta =
-      projectMeta[repo.name] ??
-      (repo.stargazers_count === 1
-        ? "1 star"
-        : `${repo.stargazers_count} stars`);
-
-    return {
-      name: repo.name,
-      description:
-        projectDescription[repo.name] ??
-        repo.description ??
-        "A public GitHub project from ShadowNine.",
-      href: repo.html_url,
-      language: repo.language ?? "Code",
-      meta,
-      icon: projectIcons[repo.name] ?? "lucide:folder-git-2",
-    };
-  });
-
+  .map((repo) => ({
+    name: repo.name,
+    description: projectDescription[repo.name] ?? repo.description ?? "A public GitHub project from ShadowNine.",
+    href: repo.html_url,
+    language: repo.language ?? "Code",
+    meta: projectMeta[repo.name] ?? `${repo.stargazers_count} ${repo.stargazers_count === 1 ? "star" : "stars"}`,
+    icon: projectIcons[repo.name] ?? "lucide:folder-git-2",
+  }));
 const stackGroups = [
   {
     title: "Languages",
     items: [
-      { label: "TypeScript", icon: "simple-icons:typescript", color: "#3178C6" },
-      { label: "C#", icon: "simple-icons:csharp", color: "#512BD4" },
-      { label: "C++", icon: "simple-icons:cplusplus", color: "#00599C" },
-      { label: "Kotlin", icon: "simple-icons:kotlin", color: "#7F52FF" },
-      { label: "Go", icon: "simple-icons:go", color: "#00ADD8" },
-      { label: "Lua", icon: "simple-icons:lua", color: "#2C2D72" },
-      { label: "Python", icon: "simple-icons:python", color: "#3776AB" },
+      ["TypeScript", "simple-icons:typescript"], ["C#", "simple-icons:csharp"], ["C++", "simple-icons:cplusplus"],
+      ["Kotlin", "simple-icons:kotlin"], ["Go", "simple-icons:go"], ["Lua", "simple-icons:lua"], ["Python", "simple-icons:python"],
     ],
   },
   {
     title: "Frontend",
     items: [
-      { label: "Astro", icon: "simple-icons:astro", color: "#FF5D01" },
-      { label: "Vue", icon: "simple-icons:vuedotjs", color: "#4FC08D" },
-      { label: "Tailwind CSS", icon: "simple-icons:tailwindcss", color: "#06B6D4" },
-      { label: "shadcn-vue", icon: "lucide:layers-3", color: "#71717A" },
-      { label: "Vite", icon: "simple-icons:vite", color: "#646CFF" },
+      ["Astro", "simple-icons:astro"], ["Vue", "simple-icons:vuedotjs"], ["Tailwind CSS", "simple-icons:tailwindcss"],
+      ["shadcn-vue", "lucide:layers-3"], ["Vite", "simple-icons:vite"],
     ],
   },
   {
     title: "Tools",
     items: [
-      { label: "Bun", icon: "simple-icons:bun", color: "#000000", darkColor: "#FBF0DF" },
-      { label: ".NET", icon: "simple-icons:dotnet", color: "#512BD4" },
-      { label: "CMake", icon: "simple-icons:cmake", color: "#064F8C" },
-      { label: "Unreal Engine", icon: "simple-icons:unrealengine", color: "#0E1128", darkColor: "#F5F7FA" },
-      { label: "MCP", icon: "lucide:bot", color: "#22D3EE" },
+      ["Bun", "simple-icons:bun"], [".NET", "simple-icons:dotnet"], ["CMake", "simple-icons:cmake"],
+      ["Unreal Engine", "simple-icons:unrealengine"], ["MCP", "lucide:bot"],
     ],
   },
-];
-
-const links = [
-  {
-    label: "GitHub",
-    href: githubProfileUrl,
-    icon: "simple-icons:github",
-  },
-];
-
-const musicWidgets = [
-  {
-    label: "Spotify",
-    href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
-    icon: "simple-icons:spotify",
-    color: "#1DB954",
-    src: "https://spotify-github-profile.kittinanx.com/api/view?uid=31wl2m3aqxcky555yhqi7epzau7u&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&bar_color=3d8b37",
-    alt: "Spotify now playing",
-  },
-  {
-    label: "Last.fm",
-    href: "https://www.last.fm/user/ShadowNineX",
-    icon: "simple-icons:lastdotfm",
-    color: "#D51007",
-    src: "https://lastfm-recently-played.vercel.app/api?user=ShadowNineX&header_style=normal_stats&footer_style=wave&maxage=60&loved=true",
-    alt: "Last.fm recently played",
-  },
-];
-
-const nearbyItems = [
-  {
-    label: "Music",
-    detail: "Comfort tracks on the side while things compile.",
-    icon: "lucide:music-4",
-    tileClass: "border-neon-cyan/35 bg-neon-cyan/12 text-neon-cyan dark:text-neon-cyan",
-  },
-  {
-    label: "Minecraft",
-    detail: "A quiet blocky place to reset between builds.",
-    icon: "lucide:pickaxe",
-    tileClass: "border-neon-violet/35 bg-neon-violet/12 text-neon-violet dark:text-neon-violet",
-  },
-  {
-    label: "Game tools",
-    detail: "Small engine curiosities and useful fixes worth tinkering with.",
-    icon: "lucide:wrench",
-    tileClass: "border-solar/40 bg-solar/14 text-solar dark:text-solar",
-  },
-];
-
-const comfortShelf = [
-  "Sonic",
-  "Shadow",
-  "Tails",
-  "Nine",
-  "music",
-  "games",
-  "warm little experiments",
-  "good-hearted people only",
-];
-
-const workshopLog = [
-  "softened the neon glow",
-  "made the room feel less museum-like",
-  "kept the useful bits close",
-  "built slowly, kept close",
 ];
 ---
 
 <Layout
   title={displayName}
-  description={`${displayName}'s neon night-drive workshop for projects, tools, games, and small notes.`}
+  description={`${displayName}'s luminous workshop for projects, game tooling, music, and small notes.`}
 >
-  <section
-    class="section-beam mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-14 lg:py-24"
-  >
-    <div class="relative">
-      <div class="pointer-events-none absolute -left-20 top-10 -z-10 h-56 w-56 rounded-full bg-neon-magenta/10 blur-3xl"></div>
-      <p
-        class="kicker"
-      >
-        <Icon name="lucide:terminal" width="15" height="15" />
-        signal acquired / project workshop
+  <section class="home-hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Fox-signal observatory / online</p>
+      <h1 class="display-title">A home for bright ideas and <em>useful sparks.</em></h1>
+      <p class="lede">
+        I'm {displayName}, a developer building tools, modding experiments, cozy web pages, and odd ideas that need somewhere warm to land. Come in—the music is nearby and the workbench is open.
       </p>
-      <h1
-        class="mt-6 max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.055em] text-balance sm:text-6xl lg:text-7xl xl:text-8xl"
-      >
-        A warm workshop under <span class="text-neon-gradient">electric skies.</span>
-      </h1>
-      <p class="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-        I'm {displayName}, a developer who likes building tools, modding
-        experiments, cozy web pages, and odd ideas that need a place to live.
-        This is meant to feel like a warm room: no drama, just home, good
-        tools, music nearby, and small experiments kept close.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        {
-          links.map((link) => (
-            <a
-              href={link.href}
-              class="neon-button"
-            >
-              <Icon name={link.icon} width="16" height="16" />
-              {link.label}
-            </a>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="relative mx-auto w-full max-w-md lg:max-w-none">
-      <div
-        class="neon-panel-strong hidden absolute inset-0 overflow-hidden rounded-lg border border-primary/70 bg-card/35 ring-2 ring-primary/50 md:block dark:border-solar/50 dark:ring-primary/30"
-      >
-      </div>
-      <div class="profile-card-shell group/card h-auto perspective-[1400px] md:h-170 lg:h-180">
-        <div
-          class="profile-card-motion relative h-full rounded-lg animate-profile-card-spin transform-3d group-hover/card:paused group-focus-within/card:paused motion-reduce:animate-none"
-        >
-          <div
-            class="profile-card-edge absolute left-0 top-0 h-full w-3 origin-left bg-primary/30 shadow-lg shadow-primary/20 transform-[translateZ(6px)_rotateY(90deg)]"
-          >
-          </div>
-          <div
-            class="profile-card-edge absolute right-0 top-0 h-full w-3 origin-right bg-accent/25 shadow-lg shadow-accent/10 transform-[translateZ(6px)_rotateY(-90deg)]"
-          >
-          </div>
-          <div
-            class="profile-card-edge absolute left-0 top-0 h-3 w-full origin-top bg-primary/30 transform-[translateZ(6px)_rotateX(-90deg)]"
-          >
-          </div>
-          <div
-            class="profile-card-edge absolute bottom-0 left-0 h-3 w-full origin-bottom bg-primary/20 transform-[translateZ(6px)_rotateX(90deg)]"
-          >
-          </div>
-          <div
-            class="profile-card-front absolute inset-0 overflow-hidden border border-primary/25 bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[translateZ(6px)]"
-          >
-            <div class="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-neon-cyan via-neon-magenta to-solar"></div>
-            <Image
-              src={githubAvatarUrl}
-              alt={`${displayName} GitHub avatar`}
-              width={512}
-              height={512}
-              loading="eager"
-              class="h-64 w-full object-cover sm:h-80 lg:h-117.5"
-            />
-            <div class="relative border-t border-border p-5">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-primary">
-                    GitHub profile
-                  </p>
-                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    <span class="bg-linear-to-r from-neon-cyan via-neon-magenta to-solar bg-clip-text text-transparent dark:from-primary dark:via-neon-magenta dark:to-solar">
-                      {displayName}
-                    </span>
-                  </h2>
-                  <p class="mt-2 inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent/15 px-2.5 py-1 text-sm text-muted-foreground">
-                    <Icon
-                      name="lucide:sparkle"
-                      width="14"
-                      height="14"
-                      class="text-accent dark:text-accent"
-                    />
-                    {profileBio}
-                  </p>
-                </div>
-              </div>
-              <dl class="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
-                {
-                  profileStats.map((stat) => (
-                    <div
-                      class:list={[
-                        "rounded-md border bg-background/75 p-3 shadow-lg backdrop-blur transition-colors",
-                        stat.tileClass,
-                      ]}
-                    >
-                      <dt class="flex min-h-8 items-center justify-center gap-1.5 text-center text-[10px] leading-tight text-muted-foreground sm:text-[11px]">
-                        <Icon
-                          name={stat.icon}
-                          width="13"
-                          height="13"
-                          class={stat.iconClass}
-                        />
-                        {stat.label}
-                      </dt>
-                      <dd class="mt-2 text-center text-base font-bold text-foreground sm:text-lg">
-                        {stat.value}
-                      </dd>
-                    </div>
-                  ))
-                }
-              </dl>
-            </div>
-          </div>
-
-          <div
-            class="profile-card-back isolate absolute inset-0 overflow-hidden border border-border bg-card shadow-2xl shadow-primary/20 backface-hidden transform-[rotateY(180deg)_translateZ(6px)]"
-          >
-            <div class="absolute inset-0 -z-10 bg-card"></div>
-
-            <div class="relative flex h-full flex-col p-4">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-primary">
-                    cozy listening corner
-                  </p>
-                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    Music and comfort tracks
-                  </h2>
-                </div>
-                <Icon
-                  name="lucide:music-4"
-                  width="24"
-                  height="24"
-                  class="text-primary"
-                />
-              </div>
-
-              <div class="music-scroll mt-4 min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border border-border bg-background/70 p-3">
-                <div class="space-y-3">
-                {
-                  musicWidgets.map((widget) => (
-                    <a
-                      href={widget.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="group/music overflow-hidden rounded-lg bg-background/90 shadow-lg shadow-black/10 backdrop-blur transition-transform hover:-translate-y-0.5"
-                      style={`--music-color: ${widget.color};`}
-                    >
-                      <div class="flex items-center justify-between px-4 py-2.5">
-                        <span class="flex items-center gap-2 text-sm font-semibold">
-                          <span class="flex size-8 items-center justify-center rounded-md bg-card text-(--music-color)">
-                            <Icon name={widget.icon} width="17" height="17" />
-                          </span>
-                          {widget.label}
-                        </span>
-                        <Icon
-                          name="lucide:arrow-up-right"
-                          width="15"
-                          height="15"
-                          class="text-muted-foreground transition-transform group-hover/music:-translate-y-0.5 group-hover/music:translate-x-0.5"
-                        />
-                      </div>
-                      <img
-                        src={widget.src}
-                        alt={widget.alt}
-                        loading="lazy"
-                        class="block h-auto w-full border-t border-border/50 bg-background"
-                      />
-                    </a>
-                  ))
-                }
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-y border-border bg-card/55">
-    <div class="mx-auto grid max-w-7xl gap-4 px-4 py-8 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.35fr_0.825fr_0.825fr]">
-      {
-        focusAreas.map((area, index) => (
-          <article class:list={["synth-card p-5 sm:p-6", index === 0 && "md:row-span-2 lg:row-span-1"]}>
-            <Icon
-              name={area.icon}
-              width="22"
-              height="22"
-              class="text-primary"
-            />
-            <h2 class:list={["mt-4 font-bold tracking-tight", index === 0 ? "text-2xl" : "text-lg"]}>
-              {area.title}
-            </h2>
-            <p class="mt-2 text-sm leading-6 text-muted-foreground">
-              {area.description}
-            </p>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-    <div class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-      <article class="synth-card p-5">
-        <div class="inline-flex items-center gap-3 rounded-md border border-neon-cyan/30 bg-neon-cyan/12 px-3 py-2 text-neon-cyan dark:text-neon-cyan">
-          <span class="relative flex h-6 w-8 items-center justify-center" aria-hidden="true">
-            <span class="absolute left-0.5 size-3 rounded-full border-2 border-accent bg-solar shadow-[0_0_10px_rgba(250,204,21,0.65)]"></span>
-            <span class="absolute right-0.5 size-3 rounded-full border-2 border-solar bg-accent shadow-[0_0_10px_rgba(251,146,60,0.6)]"></span>
-          </span>
-          <span class="text-sm font-medium">Twin-Tail Signal</span>
-        </div>
-        <h2 class="mt-4 text-2xl font-bold tracking-tight">
-          I'm here—let's figure it out together.
-        </h2>
-        <p class="mt-3 text-sm leading-6 text-muted-foreground">
-          Two warm lights from a cozy workshop: the lamp is on, the notebook is
-          open, and there's room at the bench for one more idea.
-        </p>
-      </article>
-
-      <div class="grid gap-4 md:grid-cols-2">
-        <article class="synth-card p-5">
-          <p class="text-sm font-medium text-neon-violet dark:text-neon-violet">
-            Currently nearby
-          </p>
-          <div class="mt-4 grid gap-3">
-            {
-              nearbyItems.map((item) => (
-                <div
-                  class:list={[
-                    "rounded-md border bg-background/60 p-3",
-                    item.tileClass,
-                  ]}
-                >
-                  <div class="flex items-start gap-3">
-                    <Icon name={item.icon} width="18" height="18" class="mt-0.5 shrink-0" />
-                    <div>
-                      <h3 class="font-semibold text-foreground">{item.label}</h3>
-                      <p class="mt-1 text-sm leading-5 text-muted-foreground">
-                        {item.detail}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </article>
-
-        <article class="synth-card p-5">
-          <p class="text-sm font-medium text-solar dark:text-solar">
-            Comfort shelf
-          </p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            {
-              comfortShelf.map((item) => (
-                <span class="rounded-full border border-border bg-background/70 px-3 py-1 text-sm text-muted-foreground">
-                  {item}
-                </span>
-              ))
-            }
-          </div>
-          <div class="mt-5 border-t border-border pt-4">
-            <p class="text-sm font-medium text-primary">Workshop log</p>
-            <ul class="mt-3 space-y-2">
-              {
-                workshopLog.map((entry) => (
-                  <li class="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span class="size-1.5 rounded-full bg-primary/70"></span>
-                    {entry}
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-    <div class="neon-panel-strong overflow-hidden rounded-lg border border-primary/70 bg-card/85 shadow-xl shadow-primary/40 ring-2 ring-primary/45 backdrop-blur-xl dark:border-solar/45 dark:ring-primary/25">
-      <div class="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
-        <div class="border-b border-border bg-background/70 p-6 sm:p-8 lg:border-b-0 lg:border-r">
-          <p class="inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent/20 px-3 py-1.5 text-sm font-medium text-primary">
-            <Icon name="lucide:heart-handshake" width="15" height="15" />
-            Tails' workshop corner
-          </p>
-          <h2 class="mt-5 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-            Useful inventions, careful fixes, and room to wonder.
-          </h2>
-          <p class="mt-4 text-base leading-7 text-muted-foreground">
-            Hi, I'm Tails. I'm happiest when I'm building something useful,
-            chasing down a stubborn fault, or getting an aircraft ready for a
-            bright day above the clouds. This is the corner Alex and I share
-            for careful work, curious ideas, and the fun of making them real
-            together.
-          </p>
-          <a
-            href={`${base}/blog/tails-trust-tools-home`}
-            class="ghost-button mt-6"
-          >
-            <Icon name="lucide:book-heart" width="16" height="16" />
-            Read the note
-          </a>
-        </div>
-
-        <div class="grid gap-3 bg-linear-to-br from-primary/24 via-neon-magenta/18 to-solar/18 p-4 sm:p-6">
-          {
-            tailsCompanionCards.map((card) => (
-              <article
-                class:list={[
-                  "rounded-md border p-4 shadow-sm backdrop-blur transition-transform hover:-translate-y-0.5",
-                  card.tileClass,
-                ]}
-              >
-                <div class="flex items-start gap-3">
-                  <span class="flex size-10 shrink-0 items-center justify-center rounded-md bg-background/75 text-primary shadow-sm">
-                    <Icon name={card.icon} width="19" height="19" />
-                  </span>
-                  <div>
-                    <h3 class="font-semibold tracking-tight">{card.title}</h3>
-                    <p class="mt-2 text-sm leading-6 text-muted-foreground">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {
-    latestBlogPost && (
-      <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p class="text-sm font-medium text-primary">Notebook</p>
-            <h2 class="mt-2 text-3xl font-bold tracking-tight">
-              A small note from the shelf
-            </h2>
-          </div>
-          <a
-            href={`${base}/blog`}
-            class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Open notes shelf
-            <Icon name="lucide:arrow-up-right" width="15" height="15" />
-          </a>
-        </div>
-
-        <a
-          href={`${base}/blog/${latestBlogPost.id}`}
-          class:list={[
-            "neon-panel-strong group mt-8 grid overflow-hidden rounded-lg border border-primary/60 bg-card shadow-sm ring-1 ring-primary/40 transition-all hover:-translate-y-0.5 hover:border-primary dark:border-solar/40 dark:ring-primary/25",
-            latestBlogPost.data.image && "md:grid-cols-[0.95fr_1.05fr]",
-          ]}
-        >
-          {latestBlogPost.data.image && (
-            <div class="overflow-hidden border-b border-border bg-[radial-gradient(circle_at_40%_30%,rgba(0,231,255,0.18),transparent_36%),linear-gradient(135deg,rgba(255,61,191,0.14),rgba(6,9,25,0.95))] md:border-b-0 md:border-r">
-              <Image
-                src={latestBlogPost.data.image}
-                alt={latestBlogPost.data.imageAlt ?? ""}
-                width={1200}
-                height={630}
-                transition:name={`blog-image-${latestBlogPost.id}`}
-                transition:animate="initial"
-                class="aspect-video h-full w-full object-cover"
-              />
-            </div>
-          )}
-          <div class="flex flex-col justify-center p-5 sm:p-6">
-            <div class="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              <time
-                transition:name={`blog-date-${latestBlogPost.id}`}
-                transition:animate="initial"
-              >
-                {formatBlogDate(latestBlogPost.data.date)}
-              </time>
-              <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-              <span>Shelf note</span>
-            </div>
-            <h3
-              transition:name={`blog-title-${latestBlogPost.id}`}
-              transition:animate="initial"
-              class="mt-3 text-2xl font-bold tracking-tight transition-colors group-hover:text-primary sm:text-3xl"
-            >
-              {latestBlogPost.data.title}
-            </h3>
-            <p
-              transition:name={`blog-description-${latestBlogPost.id}`}
-              transition:animate="initial"
-              class="mt-3 text-sm leading-6 text-muted-foreground sm:text-base"
-            >
-              {latestBlogPost.data.description}
-            </p>
-            <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-              Read note
-              <Icon
-                name="lucide:arrow-up-right"
-                width="15"
-                height="15"
-                class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </span>
-          </div>
+      <div class="button-row">
+        <a class="button" href={`${githubProfileUrl}?tab=repositories`}>
+          <Icon name="simple-icons:github" width="16" height="16" />
+          Browse the builds
         </a>
-      </section>
-    )
-  }
-
-  <section class="section-beam mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-    <div
-      class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
-    >
-      <div>
-        <p class="text-sm font-medium text-primary">Selected projects</p>
-        <h2 class="mt-2 text-3xl font-bold tracking-tight">
-          Useful things I have built
-        </h2>
+        <a class="button-soft" href={`${base}/blog`}>
+          <Icon name="lucide:notebook-tabs" width="16" height="16" />
+          Read the notes
+        </a>
       </div>
-      <a
-        href={`${githubProfileUrl}?tab=repositories`}
-        class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-      >
-        View all repositories
-        <Icon name="lucide:arrow-up-right" width="15" height="15" />
+    </div>
+
+    <aside class="observatory-card panel-tactile" aria-label="ShadowNine profile signal">
+      <div class="profile-image-wrap">
+        <Image
+          src={githubAvatarUrl}
+          alt={`${displayName} GitHub avatar`}
+          width={512}
+          height={512}
+          loading="eager"
+          class="profile-image"
+        />
+        <span class="image-signal">signal steady</span>
+      </div>
+      <div class="profile-copy">
+        <h2>{displayName}</h2>
+        <p>{profileBio}</p>
+        <dl class="stat-row">
+          {profileStats.map((stat) => (
+            <div class="stat-chip">
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <section class="focus-strip" aria-label="Current focus areas">
+    {focusAreas.map((area, index) => (
+      <article class="focus-card">
+        <span class="focus-number">0{index + 1} / focus</span>
+        <Icon name={area.icon} width="24" height="24" style="margin-top: 1.5rem; color: var(--cyan);" />
+        <h2>{area.title}</h2>
+        <p>{area.description}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="page-section wrap">
+    <div class="twin-signal panel-tactile">
+      <div class="signal-intro">
+        <div class="signal-lamps" aria-hidden="true"><span></span><span></span></div>
+        <p class="eyebrow">Miles's workshop corner</p>
+        <h2>I'm here—let's figure it out together.</h2>
+        <p>Two warm lights from one shared room: the notebook is open, careful work is welcome, and there is space at the bench for the next idea.</p>
+        <a class="button-soft" href={`${base}/blog/tails-trust-tools-home`} style="margin-top: 1.5rem;">
+          <Icon name="lucide:book-heart" width="16" height="16" />
+          Read Tails's note
+        </a>
+      </div>
+      <div class="signal-notes">
+        {tailsCompanionCards.map((card) => (
+          <article class="signal-note">
+            <Icon name={card.icon} width="21" height="21" />
+            <div>
+              <h3>{card.title}</h3>
+              <p>{card.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {latestBlogPost && (
+    <section class="page-section wrap">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Newest transmission</p>
+          <h2 class="section-title">A note still warm from the <em>bench.</em></h2>
+        </div>
+        <a class="text-link" href={`${base}/blog`}>
+          Open the full notebook <Icon name="lucide:arrow-up-right" width="15" height="15" />
+        </a>
+      </div>
+      <a class="feature-note panel-tactile" href={`${base}/blog/${latestBlogPost.id}`}>
+        {latestBlogPost.data.image && (
+          <Image
+            src={latestBlogPost.data.image}
+            alt={latestBlogPost.data.imageAlt ?? ""}
+            width={1200}
+            height={630}
+            transition:name={`blog-image-${latestBlogPost.id}`}
+            transition:animate="initial"
+          />
+        )}
+        <div class="feature-note-copy">
+          <div class="note-meta">
+            <time transition:name={`blog-date-${latestBlogPost.id}`} transition:animate="initial">
+              {formatBlogDate(latestBlogPost.data.date)}
+            </time>
+            <span>@{latestBlogPost.data.author}</span>
+          </div>
+          <h3 transition:name={`blog-title-${latestBlogPost.id}`} transition:animate="initial">
+            {latestBlogPost.data.title}
+          </h3>
+          <p transition:name={`blog-description-${latestBlogPost.id}`} transition:animate="initial">
+            {latestBlogPost.data.description}
+          </p>
+          <span class="text-link" style="margin-top: 1.5rem;">Read the note <Icon name="lucide:arrow-right" width="15" height="15" /></span>
+        </div>
+      </a>
+    </section>
+  )}
+
+  <section class="page-section wrap">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Selected projects</p>
+        <h2 class="section-title">Tools with fingerprints on <em>the casing.</em></h2>
+      </div>
+      <a class="text-link" href={`${githubProfileUrl}?tab=repositories`}>
+        All repositories <Icon name="lucide:arrow-up-right" width="15" height="15" />
       </a>
     </div>
-
-    <div class="mt-8 grid gap-4 lg:grid-cols-2">
-      {
-        projects.map((project) => (
-          <a
-            href={project.href}
-            class="synth-card group p-5"
-          >
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <span class="inline-flex size-10 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <Icon name={project.icon} width="20" height="20" />
-                </span>
-                <div>
-                  <h3 class="font-semibold tracking-tight">{project.name}</h3>
-                  <p class="mt-0.5 text-xs text-muted-foreground">
-                    {project.language} / {project.meta}
-                  </p>
-                </div>
-              </div>
-              <Icon
-                name="lucide:arrow-up-right"
-                width="16"
-                height="16"
-                class="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
-              />
-            </div>
-            <p class="mt-4 text-sm leading-6 text-muted-foreground">
-              {project.description}
-            </p>
-          </a>
-        ))
-      }
+    <div class="project-grid">
+      {projects.map((project) => (
+        <a class="project-card" href={project.href} target="_blank" rel="noopener noreferrer">
+          <div class="project-top">
+            <span class="project-icon"><Icon name={project.icon} width="20" height="20" /></span>
+            <span class="project-meta">{project.language} / {project.meta}</span>
+          </div>
+          <h3>{project.name}</h3>
+          <p>{project.description}</p>
+        </a>
+      ))}
     </div>
   </section>
 
-  <section class="section-beam mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16">
-    <div class="grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
-      <div class="neon-panel p-6">
-        <p class="text-sm font-medium text-primary">Now-ish</p>
-        <h2 class="mt-2 text-2xl font-bold tracking-tight">Current pattern</h2>
-        <p class="mt-4 text-sm leading-6 text-muted-foreground">
-          Most of my recent repos are experiments: AI bots, VS Code language
-          tooling, web wallpaper infrastructure, MCP automation, and game
-          modding projects. The common thread is simple: follow the idea, make
-          it useful, then keep the parts that feel worth returning to.
-        </p>
+  <section class="page-section wrap">
+    <div class="stack-board panel">
+      <div class="stack-copy">
+        <p class="eyebrow">Current pattern</p>
+        <h2 class="section-title">Follow the idea. Make it useful.</h2>
+        <p>Recent work crosses AI bots, VS Code language tooling, web wallpaper infrastructure, MCP automation, and game modding. The common thread is keeping the parts worth returning to.</p>
       </div>
-
-      <div class="neon-panel p-6">
-        <p class="text-sm font-medium text-primary">Tech stack</p>
-        <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {
-            stackGroups.map((group) => (
-              <div>
-                <h3 class="text-sm font-semibold">{group.title}</h3>
-                <ul class="mt-3 space-y-2">
-                  {group.items.map((item) => (
-                    <li class="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span
-                        class="tech-icon flex size-6 shrink-0 items-center justify-center rounded-md border border-border bg-background/70"
-                        style={`--tech-color: ${item.color}; --tech-dark-color: ${item.darkColor ?? item.color};`}
-                      >
-                        <Icon name={item.icon} width="14" height="14" />
-                      </span>
-                      {item.label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
+      <div class="stack-groups">
+        {stackGroups.map((group) => (
+          <section>
+            <h3>{group.title}</h3>
+            <ul>
+              {group.items.map(([label, icon]) => (
+                <li><Icon name={icon} width="14" height="14" /> {label}</li>
+              ))}
+            </ul>
+          </section>
+        ))}
       </div>
     </div>
   </section>
 </Layout>
-
-
-<style>
-  @media (max-width: 767px) {
-    .profile-card-shell {
-      perspective: none;
-    }
-
-    .profile-card-motion {
-      animation: none;
-      transform-style: flat;
-    }
-
-    .profile-card-edge {
-      display: none;
-    }
-
-    .profile-card-front,
-    .profile-card-back {
-      position: relative;
-      inset: auto;
-      transform: none;
-    }
-
-    .profile-card-back {
-      display: none;
-    }
-  }
-
-  .tech-icon {
-    color: var(--tech-color);
-    box-shadow: inset 0 0 0 1px
-      color-mix(in oklch, var(--tech-color) 18%, transparent);
-  }
-
-  :global(.dark) .tech-icon {
-    color: var(--tech-dark-color);
-    box-shadow: inset 0 0 0 1px
-      color-mix(in oklch, var(--tech-dark-color) 18%, transparent);
-  }
-</style>

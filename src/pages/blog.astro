@@ -8,217 +8,105 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const blogDescription = "Quiet project notes and small field reports.";
-const blogOgImageOrigin = import.meta.env.DEV
-  ? Astro.url.origin
-  : (Astro.site?.origin ?? Astro.url.origin);
+const blogDescription = "Project notes, workshop letters, and small field reports from ShadowNine and Tails.";
+const blogOgImageOrigin = import.meta.env.DEV ? Astro.url.origin : (Astro.site?.origin ?? Astro.url.origin);
 const blogOgImageUrl = new URL(`${base}/og/blog.png`, blogOgImageOrigin).href;
 const featuredPost = posts[0];
 const archivePosts = posts.slice(1);
-const imageTransitionName = (id: string) => `blog-image-${id}`;
-const titleTransitionName = (id: string) => `blog-title-${id}`;
-const dateTransitionName = (id: string) => `blog-date-${id}`;
-const descriptionTransitionName = (id: string) => `blog-description-${id}`;
 const formatDate = (date: Date) =>
-  date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 ---
 
 <Layout
   title="Notes"
   description={blogDescription}
   openGraph={{
-    basic: {
-      title: "Notes",
-      type: "website",
-      image: blogOgImageUrl,
-      url: new URL(`${base}/blog`, blogOgImageOrigin).href,
-    },
-    optional: {
-      description: blogDescription,
-      siteName: "ShadowNine",
-      locale: "en_US",
-    },
-    image: {
-      secureUrl: blogOgImageUrl,
-      type: "image/png",
-      width: 1200,
-      height: 630,
-      alt: "ShadowNine notes shelf images",
-    },
+    basic: { title: "Notes", type: "website", image: blogOgImageUrl, url: new URL(`${base}/blog`, blogOgImageOrigin).href },
+    optional: { description: blogDescription, siteName: "ShadowNine", locale: "en_US" },
+    image: { secureUrl: blogOgImageUrl, type: "image/png", width: 1200, height: 630, alt: "ShadowNine notes shelf images" },
   }}
-  twitter={{
-    card: "summary_large_image",
-    title: "Notes",
-    description: blogDescription,
-    image: blogOgImageUrl,
-    imageAlt: "ShadowNine notes shelf images",
-  }}
+  twitter={{ card: "summary_large_image", title: "Notes", description: blogDescription, image: blogOgImageUrl, imageAlt: "ShadowNine notes shelf images" }}
 >
-  <section class="section-beam mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20">
-    <header class="max-w-4xl">
-      <p class="kicker"><Icon name="lucide:radio-tower" width="15" height="15" /> Notes / transmission archive</p>
-      <h1 class="mt-5 text-5xl font-black leading-[0.98] tracking-[-0.05em] text-balance sm:text-7xl">
-        Field notes from the <span class="text-neon-gradient">midnight workshop.</span>
-      </h1>
-      <p class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-        Code, games, music, web experiments, and the ideas that were worth
-        writing down before they wandered off.
-      </p>
-    </header>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Workshop letters / transmission archive</p>
+    <h1 class="page-title">Notes made to be <em>left on the bench.</em></h1>
+    <p class="lede">Code, games, music, web experiments, friendship, and the ideas worth writing down before they wander off.</p>
+  </header>
 
-    {
-      posts.length === 0 ? (
-        <div class="mt-12 neon-panel px-5 py-8">
-          <p class="text-sm text-muted-foreground">
-            No notes on the shelf yet.
-          </p>
-        </div>
-      ) : (
-        <>
-          <div class="mt-10 grid gap-6 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
-            {featuredPost && (
-              <article>
-                <a
-                  href={`${base}/blog/${featuredPost.id}`}
-                  class="neon-panel-strong group block overflow-hidden rounded-md border border-primary/60 bg-card shadow-sm ring-1 ring-primary/40 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary dark:border-solar/40 dark:ring-primary/25"
-                >
-                  {featuredPost.data.image && (
-                    <div class="overflow-hidden border-b border-border bg-muted">
-                      <Image
-                        src={featuredPost.data.image}
-                        alt={featuredPost.data.imageAlt ?? ""}
-                        width={1200}
-                        height={630}
-                        transition:name={imageTransitionName(featuredPost.id)}
-                        transition:animate="initial"
-                        class="aspect-video w-full object-cover"
-                        loading="eager"
-                      />
-                    </div>
-                  )}
-                  <div class="p-5 sm:p-6">
-                    <div class="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      <time
-                        transition:name={dateTransitionName(featuredPost.id)}
-                        transition:animate="initial"
-                      >
-                        {formatDate(featuredPost.data.date)}
-                      </time>
-                      <span class="h-1 w-1 rounded-full bg-primary/70" />
-                      <span class="normal-case">
-                        @{featuredPost.data.author}
-                      </span>
-                      <span class="h-1 w-1 rounded-full bg-primary/70" />
-                      <span>Shelf note</span>
-                    </div>
-                    <h2
-                      transition:name={titleTransitionName(featuredPost.id)}
-                      transition:animate="initial"
-                      class="mt-3 text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-3xl"
-                    >
-                      {featuredPost.data.title}
-                    </h2>
-                    <p
-                      transition:name={descriptionTransitionName(
-                        featuredPost.id,
-                      )}
-                      transition:animate="initial"
-                      class="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base"
-                    >
-                      {featuredPost.data.description}
-                    </p>
-                    <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-                      Read note
-                      <Icon
-                        name="lucide:arrow-up-right"
-                        width="15"
-                        height="15"
-                        class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      />
-                    </span>
-                  </div>
-                </a>
-              </article>
-            )}
-
-            <aside class="neon-panel p-4 sm:p-5">
-              <div class="flex items-center justify-between gap-3">
-                <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  Shelf
-                </h2>
-                <span class="text-sm text-muted-foreground">
-                  {posts.length} {posts.length === 1 ? "note" : "notes"}
-                </span>
-              </div>
-              <div class="mt-5 space-y-4">
-                {posts.map((post) => (
-                  <a
-                    href={`${base}/blog/${post.id}`}
-                    class="group grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border border-transparent p-2 transition-colors hover:border-border hover:bg-background/70"
-                  >
-                    <span class="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
-                      <Icon name="lucide:file-text" width="16" height="16" />
-                    </span>
-                    <span class="min-w-0">
-                      <span class="block truncate text-sm font-medium">
-                        {post.data.title}
-                      </span>
-                      <span class="mt-0.5 block truncate text-xs text-muted-foreground">
-                        {formatDate(post.data.date)} - @{post.data.author}
-                      </span>
-                    </span>
-                    <Icon
-                      name="lucide:chevron-right"
-                      width="16"
-                      height="16"
-                      class="text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground"
-                    />
-                  </a>
-                ))}
-              </div>
-            </aside>
-          </div>
-
-          {archivePosts.length > 0 && (
-            <section class="mt-14">
-              <div class="mb-5 flex items-end justify-between gap-4">
-                <div>
-                  <p class="text-sm font-medium text-primary">Archive</p>
-                  <h2 class="mt-1 text-2xl font-bold tracking-tight">
-                    More notes
-                  </h2>
+  <section class="page-section wrap" aria-labelledby="latest-note-heading">
+    {posts.length === 0 ? (
+      <div class="panel" style="padding: 2rem;"><p>No notes on the shelf yet.</p></div>
+    ) : (
+      <>
+        <h2 id="latest-note-heading" class="sr-only">Latest note</h2>
+        <div class="notes-layout">
+          {featuredPost && (
+            <a class="notes-feature panel-tactile" href={`${base}/blog/${featuredPost.id}`}>
+              {featuredPost.data.image && (
+                <Image
+                  src={featuredPost.data.image}
+                  alt={featuredPost.data.imageAlt ?? ""}
+                  width={1200}
+                  height={630}
+                  loading="eager"
+                  transition:name={`blog-image-${featuredPost.id}`}
+                  transition:animate="initial"
+                />
+              )}
+              <div class="notes-feature-copy">
+                <div class="note-meta">
+                  <time transition:name={`blog-date-${featuredPost.id}`} transition:animate="initial">{formatDate(featuredPost.data.date)}</time>
+                  <span>@{featuredPost.data.author}</span>
+                  <span>newest note</span>
                 </div>
+                <h2 transition:name={`blog-title-${featuredPost.id}`} transition:animate="initial">{featuredPost.data.title}</h2>
+                <p transition:name={`blog-description-${featuredPost.id}`} transition:animate="initial">{featuredPost.data.description}</p>
+                <span class="text-link" style="margin-top: 1.4rem;">Read this note <Icon name="lucide:arrow-right" width="15" height="15" /></span>
               </div>
-              <ul class="grid gap-4 md:grid-cols-2">
-                {archivePosts.map((post) => (
-                  <li>
-                    <a
-                      href={`${base}/blog/${post.id}`}
-                      class="synth-card group block p-4"
-                    >
-                      <div class="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                        <time>{formatDate(post.data.date)}</time>
-                        <span class="h-1 w-1 rounded-full bg-primary/70" />
-                        <span class="normal-case">@{post.data.author}</span>
-                      </div>
-                      <h3 class="mt-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
-                        {post.data.title}
-                      </h3>
-                      <p class="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                        {post.data.description}
-                      </p>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            </a>
           )}
-        </>
-      )
-    }
+
+          <aside class="shelf-index panel" aria-label="Notes shelf index">
+            <div class="shelf-index-header"><span>Shelf index</span><span>{posts.length} notes</span></div>
+            <ul class="shelf-list">
+              {posts.map((post) => (
+                <li>
+                  <a class="shelf-link" href={`${base}/blog/${post.id}`}>
+                    <Icon name="lucide:file-text" width="16" height="16" />
+                    <span>
+                      <strong>{post.data.title}</strong>
+                      <small>{formatDate(post.data.date)} · @{post.data.author}</small>
+                    </span>
+                    <Icon name="lucide:chevron-right" width="15" height="15" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+
+        {archivePosts.length > 0 && (
+          <section class="page-section" aria-labelledby="archive-heading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">The archive</p>
+                <h2 id="archive-heading" class="section-title">Signals that still <em>carry.</em></h2>
+              </div>
+            </div>
+            <ul class="note-card-grid">
+              {archivePosts.map((post) => (
+                <li>
+                  <a class="note-card" href={`${base}/blog/${post.id}`}>
+                    <div class="note-meta"><time>{formatDate(post.data.date)}</time><span>@{post.data.author}</span></div>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </>
+    )}
   </section>
 </Layout>

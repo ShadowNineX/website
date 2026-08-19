@@ -1,69 +1,19 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Icon } from "astro-iconify";
-
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<Layout
-  title="Page Not Found"
-  description="The page you were looking for could not be found."
-  noindex
->
-  <section class="section-beam mx-auto flex min-h-[calc(100vh-11rem)] max-w-5xl items-center px-6 py-16">
-    <div class="grid w-full gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-      <div class="relative aspect-square max-w-xs">
-        <div class="neon-panel-strong absolute inset-0 overflow-hidden rounded-lg border border-primary/70 bg-card/80 shadow-2xl shadow-primary/45 ring-2 ring-primary/45 backdrop-blur-xl dark:border-solar/45 dark:ring-primary/25">
-        </div>
-        <div class="absolute inset-x-8 top-8 h-2 rounded-full bg-linear-to-r from-neon-cyan via-neon-magenta to-solar">
-        </div>
-        <div class="absolute left-8 top-20 flex gap-2">
-          <span class="size-3 rounded-full bg-red-400"></span>
-          <span class="size-3 rounded-full bg-accent"></span>
-          <span class="size-3 rounded-full bg-neon-cyan"></span>
-        </div>
-        <div class="absolute inset-x-8 bottom-8 top-32 rounded-md border border-border bg-background/80 p-5">
-          <div class="flex h-full flex-col justify-between">
-            <div class="space-y-3">
-              <div class="h-3 w-24 rounded-full bg-muted"></div>
-              <div class="h-3 w-36 rounded-full bg-muted"></div>
-              <div class="h-3 w-20 rounded-full bg-primary/45"></div>
-            </div>
-            <p class="text-7xl font-black tracking-tight text-primary/90">
-              404
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <p class="kicker">
-          <Icon name="lucide:map-pinned" width="15" height="15" />
-          Missing page
-        </p>
-        <h1 class="mt-5 max-w-2xl text-5xl font-black leading-[0.98] tracking-[-0.05em] text-balance sm:text-7xl">
-          Signal lost beyond the <span class="text-neon-gradient">horizon.</span>
-        </h1>
-        <p class="mt-4 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-          The link may be old, the URL may have a typo, or the page may have
-          moved while the workshop shelves were being rearranged.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a
-            href={`${base}/`}
-            class="ghost-button"
-          >
-            <Icon name="lucide:house" width="16" height="16" />
-            Home
-          </a>
-          <a
-            href={`${base}/blog`}
-            class="ghost-button"
-          >
-            <Icon name="lucide:book-open" width="16" height="16" />
-            Notes
-          </a>
-        </div>
+<Layout title="Page Not Found" description="The page you were looking for could not be found." noindex>
+  <section class="not-found wrap page-section">
+    <div class="error-dial" aria-hidden="true"><strong>404</strong></div>
+    <div>
+      <p class="eyebrow">No return signal</p>
+      <h1 class="page-title">This orbit came back <em>empty.</em></h1>
+      <p class="lede">The link may be old, the URL may have a typo, or the workshop shelves moved while nobody was looking. The useful rooms are still close.</p>
+      <div class="button-row">
+        <a class="button" href={`${base}/`}><Icon name="lucide:house" width="16" height="16" /> Return home</a>
+        <a class="button-soft" href={`${base}/blog`}><Icon name="lucide:notebook-tabs" width="16" height="16" /> Open notes</a>
       </div>
     </div>
   </section>

@@ -3,32 +3,29 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-iconify";
 import backgroundAvatar from "@/assets/linktree-background-avatar.gif";
 import Layout from "@/layouts/Layout.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const githubUsername = "ShadowNineX";
 const githubProfileUrl = `https://github.com/${githubUsername}`;
 const githubAvatarUrl = `${githubProfileUrl}.png?size=256`;
 const displayName = "ShadowNine";
 const profileBio = "A small shelf of project and music links.";
-
 const links = [
   {
     label: "GitHub",
     href: githubProfileUrl,
     description: "Repositories, experiments, and project source.",
     icon: "simple-icons:github",
-    color: "#181717",
-    darkColor: "#ffffff",
+    color: "#71e7ec",
     group: "Code",
-    featured: true,
   },
   {
     label: "Last.fm",
     href: "https://www.last.fm/user/ShadowNineX",
     description: "A quiet record of recently played music.",
     icon: "simple-icons:lastdotfm",
-    color: "#D51007",
+    color: "#ff8f70",
     group: "Music",
-    featured: true,
     widget: {
       src: "https://lastfm-recently-played.vercel.app/api?user=ShadowNineX&header_style=normal_stats&footer_style=wave&maxage=60&loved=true",
       alt: "Last.fm recently played",
@@ -39,7 +36,7 @@ const links = [
     href: "https://open.spotify.com/user/31wl2m3aqxcky555yhqi7epzau7u",
     description: "Comfort tracks and now playing.",
     icon: "simple-icons:spotify",
-    color: "#1DB954",
+    color: "#78e0ae",
     group: "Music",
     widget: {
       src: "https://spotify-github-profile.kittinanx.com/api/view?uid=31wl2m3aqxcky555yhqi7epzau7u&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&bar_color=3d8b37",
@@ -47,174 +44,55 @@ const links = [
     },
   },
 ];
-
 const groupOrder = ["Code", "Music"];
 ---
 
-<Layout
-  title="Corners"
-  description={`A small shelf of ${displayName}'s project and music links.`}
->
-  <section class="section-beam mx-auto max-w-2xl px-4 pb-20 pt-8 sm:px-6 sm:pt-12">
-    <header class="neon-panel-strong relative overflow-hidden rounded-lg border border-primary bg-card/85 shadow-2xl shadow-primary/70 ring-2 ring-primary/70 dark:border-solar dark:shadow-solar/45 dark:ring-primary/45">
-      <Image
-        src={backgroundAvatar}
-        alt=""
-        width={672}
-        height={240}
-        loading="eager"
-        class="h-40 w-full object-cover opacity-85 sm:h-48"
-      />
-      <div class="absolute inset-0 bg-linear-to-t from-card via-card/45 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 h-px bg-border"></div>
-
-      <div class="relative -mt-14 px-5 pb-6 sm:px-7">
-        <div class="flex items-end gap-4">
-          <Image
-            src={githubAvatarUrl}
-            alt={`${displayName} GitHub avatar`}
-            width="112"
-            height="112"
-            loading="eager"
-            class="size-24 rounded-lg border-4 border-primary bg-background object-cover shadow-xl shadow-primary/25 dark:border-solar"
-          />
-
-          <div class="pb-1">
-            <p class="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-accent dark:text-accent">
-              <span class="size-1.5 rounded-full bg-accent shadow-sm shadow-accent/70"></span>
-              @{githubUsername}
-            </p>
-            <h1 class="mt-1 text-4xl font-black tracking-[-0.045em] drop-shadow-sm">
-              <span class="text-neon-gradient">
-                {displayName}
-              </span>
-            </h1>
-          </div>
+<Layout title="Explore" description={`Project and music links from ${displayName}.`}>
+  <section class="page-section wrap">
+    <div class="explore-grid">
+      <header class="explore-profile panel-tactile">
+        <Image src={backgroundAvatar} alt="" width={672} height={240} loading="eager" class="explore-banner" />
+        <div class="explore-profile-copy">
+          <Image src={githubAvatarUrl} alt={`${displayName} GitHub avatar`} width="112" height="112" loading="eager" class="explore-avatar" />
+          <p class="eyebrow" style="margin-top: 1.2rem;">@{githubUsername}</p>
+          <h1>{displayName}</h1>
+          <p>{profileBio} Kept small on purpose: a project door, a listening corner, and enough quiet around both.</p>
+          <a class="button-soft" href={`${base}/`} style="margin-top: 1.2rem;">
+            <Icon name="lucide:arrow-left" width="15" height="15" /> Back home
+          </a>
         </div>
+      </header>
 
-        <p class="mt-5 max-w-lg text-sm leading-6 text-muted-foreground">
-          {profileBio} Kept small on purpose: a project door, a listening
-          corner, and enough quiet around both.
-        </p>
-      </div>
-    </header>
+      <div>
+        <p class="eyebrow">Open doors / listening rooms</p>
+        <h1 class="page-title">A few good corners of the <em>same sky.</em></h1>
+        <p class="lede">Follow the build trail, check what has been playing, or leave one of these little windows open while you look around.</p>
 
-    <div class="mt-8 space-y-8">
-      {
-        groupOrder.map((group) => {
-          const groupLinks = links.filter((link) => link.group === group);
-
-          return (
-            <section id={group.toLowerCase()} class="scroll-mt-24">
-              <div class="mb-3 flex items-center justify-between gap-4">
-                <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                  <span class="size-1.5 rounded-full bg-primary/70"></span>
-                  {group}
-                </h2>
-                <span class="text-xs text-muted-foreground">
-                  {groupLinks.length} {groupLinks.length === 1 ? "corner" : "corners"}
-                </span>
-              </div>
-
-              <ul class="space-y-3">
-                {groupLinks.map((link, index) => (
-                  <li style={`--i: ${index}`}>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class:list={[
-                        "link-card synth-card group relative flex w-full flex-col",
-                        link.featured ? "featured-link" : "",
-                      ]}
-                      style={`--lc: ${link.color}; --dc: ${link.darkColor ?? link.color}`}
-                    >
-                      <div class="flex items-center justify-between gap-4 px-5 py-4">
-                        <div class="flex min-w-0 items-center gap-3">
-                          <span class="icon-shell flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-background/70 transition-transform duration-300 group-hover:scale-105">
-                            <span class="icon-color">
-                              <Icon
-                                name={link.icon}
-                                class="shrink-0"
-                                width="20"
-                                height="20"
-                              />
-                            </span>
-                          </span>
-                          <div class="min-w-0">
-                            <span class="block truncate text-sm font-semibold">
-                              {link.label}
-                            </span>
-                            <p class="mt-0.5 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                              {link.description}
-                            </p>
-                          </div>
+        <div class="link-groups" style="margin-top: 3rem;">
+          {groupOrder.map((group) => {
+            const groupLinks = links.filter((link) => link.group === group);
+            return (
+              <section id={group.toLowerCase()}>
+                <h2 class="link-group-title"><span>{group}</span><span>{groupLinks.length} {groupLinks.length === 1 ? "corner" : "corners"}</span></h2>
+                <ul class="link-cards">
+                  {groupLinks.map((link) => (
+                    <li>
+                      <a class="link-card" href={link.href} target="_blank" rel="noopener noreferrer" style={`--link-color: ${link.color};`}>
+                        <div class="link-card-main">
+                          <span class="link-icon"><Icon name={link.icon} width="20" height="20" /></span>
+                          <span><strong>{link.label}</strong><small>{link.description}</small></span>
+                          <Icon name="lucide:arrow-up-right" width="16" height="16" />
                         </div>
-
-                        <Icon
-                          name="lucide:external-link"
-                          class="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-foreground"
-                          width="17"
-                          height="17"
-                        />
-                      </div>
-
-                      {link.widget && (
-                        <img
-                          src={link.widget.src}
-                          alt={link.widget.alt}
-                          loading="lazy"
-                          class="w-full border-t border-border/50 bg-background"
-                        />
-                      )}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })
-      }
+                        {link.widget && <img src={link.widget.src} alt={link.widget.alt} loading="lazy" class="link-widget" />}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            );
+          })}
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
-
-<style>
-  .icon-color {
-    color: var(--lc);
-  }
-
-  :global(.dark) .icon-color {
-    color: var(--dc);
-  }
-
-  .link-card {
-    animation: rise-in 460ms ease both;
-    animation-delay: calc(var(--i) * 45ms);
-  }
-
-  .featured-link {
-    box-shadow: 0 16px 48px color-mix(in oklch, var(--primary) 12%, transparent);
-  }
-
-  .icon-shell {
-    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--lc) 18%, transparent);
-  }
-
-  @keyframes rise-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .link-card {
-      animation: none;
-    }
-  }
-</style>

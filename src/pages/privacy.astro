@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Icon } from "astro-iconify";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const updatedAt = "June 13, 2026";
 const sections = [
@@ -22,44 +23,31 @@ const sections = [
   },
   {
     title: "Contact",
-    body: "If you have a privacy question about this site, the easiest way to reach me is through the project links on the Corners page.",
+    body: "If you have a privacy question about this site, the easiest way to reach me is through the project links on the Explore page.",
   },
 ];
 ---
 
-<Layout
-  title="Privacy"
-  description="Privacy information for ShadowNine's personal website."
->
-  <section class="section-beam mx-auto max-w-3xl px-6 py-14 sm:py-20">
-    <header>
-      <p class="kicker">
-        <Icon name="lucide:shield-check" width="15" height="15" />
-        Privacy
-      </p>
-      <h1 class="mt-5 text-5xl font-black tracking-[-0.05em] text-balance sm:text-7xl">
-        Privacy, <span class="text-neon-gradient">plain and simple.</span>
-      </h1>
-      <p class="mt-4 text-base leading-7 text-muted-foreground">
-        A short, plain note about what this personal site does and does not
-        collect. Last updated {updatedAt}.
-      </p>
-    </header>
+<Layout title="Privacy" description="Privacy information for ShadowNine's personal website.">
+  <section class="page-section wrap">
+    <div class="privacy-grid">
+      <header class="privacy-intro">
+        <p class="eyebrow"><Icon name="lucide:shield-check" width="15" height="15" /> Privacy / plain language</p>
+        <h1 class="page-title">A clear window, with <em>no hidden switches.</em></h1>
+        <p class="lede">A short note about what this personal site does and does not collect. Last updated {updatedAt}.</p>
+        <a class="button-soft" href={`${base}/linktree`} style="margin-top: 1.5rem;">
+          <Icon name="lucide:orbit" width="15" height="15" /> Explore page
+        </a>
+      </header>
 
-    <div class="neon-panel-strong mt-10 overflow-hidden rounded-lg border border-primary/50 bg-card/55 p-3 shadow-xl shadow-primary/25 ring-1 ring-primary/35 dark:border-solar/35 dark:ring-primary/20">
-      <div class="space-y-5">
-      {
-        sections.map((section) => (
-          <section class="synth-card p-5">
-            <h2 class="text-lg font-semibold tracking-tight">
-              {section.title}
-            </h2>
-            <p class="mt-3 text-sm leading-6 text-muted-foreground">
-              {section.body}
-            </p>
+      <div class="privacy-list panel-tactile">
+        {sections.map((section, index) => (
+          <section class="privacy-item">
+            <p class="eyebrow">0{index + 1}</p>
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
           </section>
-        ))
-      }
+        ))}
       </div>
     </div>
   </section>

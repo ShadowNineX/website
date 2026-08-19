@@ -14,30 +14,13 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const canonicalUrl = canonicalUrlForPath(
-  Astro.url.pathname,
-  Astro.site ?? Astro.url,
-);
+const canonicalUrl = canonicalUrlForPath(Astro.url.pathname, Astro.site ?? Astro.url);
 const postImage = post.data.image;
 const imageAlt = post.data.imageAlt ?? post.data.title;
-const ogImage = await getSeoImage({
-  image: postImage,
-  requestUrl: Astro.url,
-  site: Astro.site,
-  width: 1200,
-  height: 630,
-});
+const ogImage = await getSeoImage({ image: postImage, requestUrl: Astro.url, site: Astro.site, width: 1200, height: 630 });
 const ogImageUrl = ogImage?.url;
 const fallbackOgImageUrl = "https://github.com/ShadowNineX.png?size=512";
-const formattedDate = post.data.date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-const imageTransitionName = `blog-image-${post.id}`;
-const titleTransitionName = `blog-title-${post.id}`;
-const dateTransitionName = `blog-date-${post.id}`;
-const descriptionTransitionName = `blog-description-${post.id}`;
+const formattedDate = post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 ---
 
 <Layout
@@ -45,142 +28,56 @@ const descriptionTransitionName = `blog-description-${post.id}`;
   description={post.data.description}
   canonical={canonicalUrl}
   openGraph={{
-    basic: {
-      title: post.data.title,
-      type: "article",
-      url: canonicalUrl,
-      image: ogImageUrl ?? fallbackOgImageUrl,
-    },
-    optional: {
-      description: post.data.description,
-      siteName: "ShadowNine",
-      locale: "en_US",
-    },
-    ...(ogImageUrl && {
-      image: {
-        secureUrl: ogImageUrl,
-        type: ogImage.type,
-        width: ogImage.width,
-        height: ogImage.height,
-        alt: imageAlt,
-      },
-    }),
-    article: {
-      publishedTime: post.data.date.toISOString(),
-      authors: [post.data.author],
-    },
+    basic: { title: post.data.title, type: "article", url: canonicalUrl, image: ogImageUrl ?? fallbackOgImageUrl },
+    optional: { description: post.data.description, siteName: "ShadowNine", locale: "en_US" },
+    ...(ogImageUrl && { image: { secureUrl: ogImageUrl, type: ogImage.type, width: ogImage.width, height: ogImage.height, alt: imageAlt } }),
+    article: { publishedTime: post.data.date.toISOString(), authors: [post.data.author] },
   }}
-  twitter={ogImageUrl
-    ? {
-        card: "summary_large_image",
-        title: post.data.title,
-        description: post.data.description,
-        image: ogImageUrl,
-        imageAlt,
-      }
-    : undefined}
+  twitter={ogImageUrl ? { card: "summary_large_image", title: post.data.title, description: post.data.description, image: ogImageUrl, imageAlt } : undefined}
 >
-  <article class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
-    <a
-      href={`${base}/blog`}
-      class="ghost-button"
-    >
+  <article class="article-shell wrap">
+    <a class="button-soft" href={`${base}/blog`}>
       <Icon name="lucide:arrow-left" width="15" height="15" />
       Back to notes
     </a>
 
-    <header class="mt-8 grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+    <header class="article-header">
       <div>
-        <div class="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          <time
-            transition:name={dateTransitionName}
-            transition:animate="initial"
-          >
-            {formattedDate}
-          </time>
-          <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-          <span class="normal-case">@{post.data.author}</span>
-          <span class="h-1 w-1 rounded-full bg-primary/70"></span>
-          <span>Shelf note</span>
+        <div class="note-meta">
+          <time transition:name={`blog-date-${post.id}`} transition:animate="initial">{formattedDate}</time>
+          <span>@{post.data.author}</span>
+          <span>workshop note</span>
         </div>
-        <h1
-          transition:name={titleTransitionName}
-          transition:animate="initial"
-          class="text-neon-gradient mt-4 text-4xl font-black leading-[1.02] tracking-[-0.045em] text-balance sm:text-6xl"
-        >
-          {post.data.title}
-        </h1>
-        <p
-          transition:name={descriptionTransitionName}
-          transition:animate="initial"
-          class="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg"
-        >
-          {post.data.description}
-        </p>
+        <h1 class="article-title" transition:name={`blog-title-${post.id}`} transition:animate="initial">{post.data.title}</h1>
+        <p class="article-deck" transition:name={`blog-description-${post.id}`} transition:animate="initial">{post.data.description}</p>
       </div>
-
-      {
-        postImage && (
-          <Image
-            src={postImage}
-            alt={post.data.imageAlt ?? ""}
-            width={1200}
-            height={630}
-            loading="eager"
-            transition:name={imageTransitionName}
-            transition:animate="initial"
-            class="aspect-video w-full rounded-md border border-border object-cover shadow-xl shadow-primary/10"
-          />
-        )
-      }
+      {postImage && (
+        <Image
+          src={postImage}
+          alt={imageAlt}
+          width={1200}
+          height={630}
+          loading="eager"
+          transition:name={`blog-image-${post.id}`}
+          transition:animate="initial"
+          class="article-image"
+        />
+      )}
     </header>
 
-    <div class="mt-10 grid gap-8 lg:grid-cols-[13rem_1fr]">
-      <aside class="hidden lg:block">
-        <div class="neon-panel sticky top-28 p-4">
-          <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Published
-          </p>
-          <time class="mt-2 block text-sm font-medium">{formattedDate}</time>
-          <p class="mt-5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Author
-          </p>
-          <p class="mt-2 text-sm font-medium">@{post.data.author}</p>
-          <a
-            href={`${base}/blog`}
-            class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-foreground"
-          >
-            <Icon name="lucide:library" width="15" height="15" />
-            All notes
-          </a>
-        </div>
+    <div class="article-grid">
+      <aside class="article-aside" aria-label="Publication details">
+        <div>Published<strong>{formattedDate}</strong></div>
+        <div>Written by<strong>@{post.data.author}</strong></div>
       </aside>
-
-      <div class="neon-panel-strong overflow-hidden rounded-md border border-primary/60 bg-card/90 p-4 shadow-xl shadow-primary/30 ring-1 ring-primary/40 backdrop-blur-xl sm:p-7 dark:border-solar/40 dark:ring-primary/25">
-        <div class="blog-prose prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline prose-img:rounded-md prose-p:text-foreground/85 dark:prose-p:text-foreground/88 prose-li:text-foreground/85 dark:prose-li:text-foreground/88">
-          <Content />
-        </div>
-
-        <footer class="mt-14 border-t border-border pt-6">
-          <a
-            href={`${base}/blog`}
-            class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Icon name="lucide:arrow-left" width="15" height="15" />
-            Back to notes
+      <div class="article-prose">
+        <div class="blog-prose"><Content /></div>
+        <footer style="margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1.5rem;">
+          <a class="text-link" href={`${base}/blog`}>
+            <Icon name="lucide:arrow-left" width="15" height="15" /> All notes
           </a>
         </footer>
       </div>
     </div>
   </article>
 </Layout>
-
-<style>
-  .blog-prose :global(a) {
-    transition: color 150ms ease;
-  }
-
-  .blog-prose :global(a:hover) {
-    color: var(--foreground);
-  }
-</style>

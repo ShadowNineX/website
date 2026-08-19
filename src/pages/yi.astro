@@ -8,28 +8,17 @@ import yiImage from "@/assets/yi.jpg";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const title = "Yi Mode";
-const description =
-  "A tiny glowing tribute page for Yi, the workshop's most serious little guardian.";
-const imageAlt =
-  "White cat-like Yi character wearing a yellow coat with a glowing green chest ring.";
-const themeColor = "#facc15";
-const canonicalUrl = canonicalUrlForPath(
-  Astro.url.pathname,
-  Astro.site ?? Astro.url,
-);
-const seoImage = await getSeoImage({
-  image: yiImage,
-  requestUrl: Astro.url,
-  site: Astro.site,
-});
+const description = "A tiny glowing tribute page for Yi, the workshop's most serious little guardian.";
+const imageAlt = "White cat-like Yi character wearing a yellow coat with a glowing green chest ring.";
+const themeColor = "#ffd166";
+const canonicalUrl = canonicalUrlForPath(Astro.url.pathname, Astro.site ?? Astro.url);
+const seoImage = await getSeoImage({ image: yiImage, requestUrl: Astro.url, site: Astro.site });
 const imageUrl = seoImage?.url ?? new URL(yiImage.src, Astro.url).href;
-
 const statusCards = [
   { label: "Signal", value: "Locked", icon: "lucide:radar" },
   { label: "Mood", value: "Judging", icon: "lucide:eye" },
   { label: "Coat", value: "Maximum", icon: "lucide:sparkles" },
 ];
-
 const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
 ---
 
@@ -40,186 +29,258 @@ const tags = ["micro-boss", "gold jacket", "green core", "silent alarm"];
   {themeColor}
   showChrome={false}
   openGraph={{
-    basic: {
-      title,
-      type: "website",
-      image: imageUrl,
-      url: canonicalUrl,
-    },
-    optional: {
-      description,
-      siteName: "ShadowNine",
-      locale: "en_US",
-    },
-    image: {
-      secureUrl: imageUrl,
-      type: seoImage?.type ?? "image/jpeg",
-      width: seoImage?.width ?? yiImage.width,
-      height: seoImage?.height ?? yiImage.height,
-      alt: imageAlt,
-    },
+    basic: { title, type: "website", image: imageUrl, url: canonicalUrl },
+    optional: { description, siteName: "ShadowNine", locale: "en_US" },
+    image: { secureUrl: imageUrl, type: seoImage?.type ?? "image/jpeg", width: seoImage?.width ?? yiImage.width, height: seoImage?.height ?? yiImage.height, alt: imageAlt },
   }}
-  twitter={{
-    card: "summary_large_image",
-    title,
-    description,
-    image: imageUrl,
-    imageAlt,
-  }}
+  twitter={{ card: "summary_large_image", title, description, image: imageUrl, imageAlt }}
 >
-  <section class="yi-stage relative isolate min-h-screen overflow-hidden bg-[#120b05] px-4 py-6 text-foreground sm:px-6 lg:px-8">
-    <div class="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_20%_15%,rgba(250,204,21,0.32),transparent_28%),radial-gradient(circle_at_85%_20%,rgba(34,197,94,0.18),transparent_26%),linear-gradient(135deg,#120b05,#2b1607_48%,#090604)]">
-    </div>
-    <div class="yi-grid pointer-events-none absolute inset-0 -z-10 opacity-35"></div>
-    <div class="yi-scanline pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-linear-to-b from-primary/18 to-transparent">
-    </div>
-
-    <div class="mx-auto grid min-h-[calc(100vh-3rem)] max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-      <div class="order-2 lg:order-1">
-        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <a
-            href={`${base}/`}
-            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-2 text-sm font-medium text-solar shadow-sm shadow-primary/10 transition-colors hover:bg-primary/18 sm:w-auto sm:justify-start sm:py-1.5"
-          >
-            <Icon name="lucide:arrow-left" width="15" height="15" />
-            Back to workshop
-          </a>
-
-          <p class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-neon-cyan sm:w-auto sm:py-1.5 sm:tracking-[0.25em]">
-            <span class="size-2 rounded-full bg-neon-cyan shadow-[0_0_18px_rgba(110,231,183,0.95)]"></span>
-            Guardian online
-          </p>
+  <section class="yi-stage">
+    <div class="yi-stars" aria-hidden="true"></div>
+    <div class="yi-shell">
+      <div class="yi-copy">
+        <div class="yi-topline">
+          <a href={`${base}/`}><Icon name="lucide:arrow-left" width="15" height="15" /> Workshop</a>
+          <span><i></i> Guardian online</span>
         </div>
-
-        <h1 class="mt-6 max-w-3xl text-5xl font-black tracking-tight text-balance sm:text-7xl">
-          Yi has entered the workshop.
-        </h1>
-        <p class="mt-5 max-w-2xl text-base leading-7 text-foreground/78 sm:text-lg sm:leading-8">
-          Small frame. Huge coat. Zero patience for boring pages. This corner now
-          runs on warm neon, tiny boss energy, and one very serious green core.
-        </p>
-
-        <div class="mt-7 flex flex-wrap gap-2">
-          {
-            tags.map((tag) => (
-              <span class="rounded-full border border-solar/20 bg-white/7 px-3 py-1 text-sm text-foreground/82 shadow-sm shadow-black/20 backdrop-blur">
-                #{tag}
-              </span>
-            ))
-          }
+        <p class="yi-kicker">Special observatory channel / YI-01</p>
+        <h1>Yi has entered the workshop.</h1>
+        <p class="yi-lede">Small frame. Huge coat. Zero patience for boring pages. This corner runs on warm light, tiny boss energy, and one very serious green core.</p>
+        <div class="yi-tags">
+          {tags.map((tag) => <span>#{tag}</span>)}
         </div>
-
-        <div class="mt-8 grid gap-3 sm:grid-cols-3">
-          {
-            statusCards.map((card) => (
-              <div class="rounded-2xl border border-solar/18 bg-solar/8 p-4 shadow-xl shadow-black/20 backdrop-blur-md">
-                <Icon
-                  name={card.icon}
-                  width="20"
-                  height="20"
-                  class="text-solar"
-                />
-                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/55">
-                  {card.label}
-                </p>
-                <p class="mt-1 text-xl font-bold text-foreground">
-                  {card.value}
-                </p>
-              </div>
-            ))
-          }
-        </div>
+        <dl class="yi-status">
+          {statusCards.map((card) => (
+            <div>
+              <Icon name={card.icon} width="19" height="19" />
+              <dt>{card.label}</dt>
+              <dd>{card.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
-      <div class="order-1 lg:order-2">
-        <div class="yi-card relative mx-auto max-w-xl rounded-[2rem] border border-solar/28 bg-solar/10 p-3 shadow-[0_0_80px_rgba(250,204,21,0.28)] backdrop-blur-xl sm:p-4">
-          <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-neon-cyan/24 via-emerald-300/10 to-solar/20 blur-2xl"></div>
-          <div class="absolute -left-5 top-12 hidden size-24 rounded-full border border-solar/25 sm:block"></div>
-          <div class="absolute -right-8 bottom-16 hidden size-32 rounded-full border border-neon-cyan/20 sm:block"></div>
-
-          <div class="relative overflow-hidden rounded-[1.5rem] border border-solar/20 bg-black/35">
-            <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-solar/15 bg-black/35 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/65 backdrop-blur">
-              <span>Yi cam</span>
-              <span class="inline-flex items-center gap-1.5 text-neon-cyan">
-                <span class="size-1.5 rounded-full bg-neon-cyan"></span>
-                live
-              </span>
-            </div>
-
-            <Image
-              src={yiImage}
-              alt={imageAlt}
-              width={900}
-              loading="eager"
-              class="aspect-square w-full object-cover"
-            />
-
-            <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/35 to-transparent p-5 pt-24">
-              <div class="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                  <p class="text-sm font-semibold uppercase tracking-[0.22em] text-neon-cyan">
-                    Threat level
-                  </p>
-                  <p class="mt-1 text-3xl font-black text-foreground">
-                    Adorable menace
-                  </p>
-                </div>
-                <div class="rounded-full border border-neon-cyan/30 bg-neon-cyan/12 px-4 py-2 text-sm font-bold text-neon-cyan shadow-[0_0_28px_rgba(110,231,183,0.22)]">
-                  core: stable
-                </div>
-              </div>
-            </div>
-          </div>
+      <figure class="yi-portrait">
+        <div class="yi-orbit" aria-hidden="true"></div>
+        <div class="yi-camera">
+          <div class="yi-camera-bar"><span>Yi cam</span><span><i></i> live</span></div>
+          <Image src={yiImage} alt={imageAlt} width={900} loading="eager" />
+          <figcaption>
+            <span><small>Threat level</small><strong>Adorable menace</strong></span>
+            <b>core: stable</b>
+          </figcaption>
         </div>
-      </div>
+      </figure>
     </div>
   </section>
 </Layout>
 
 <style>
-  .yi-grid {
+  .yi-stage {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 82% 18%, rgb(120 224 174 / 0.18), transparent 28rem),
+      radial-gradient(circle at 10% 12%, rgb(255 209 102 / 0.24), transparent 32rem),
+      linear-gradient(145deg, #25150d, #171327 55%, #0d1327);
+    color: #fffaf0;
+  }
+
+  .yi-stars {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
     background-image:
-      linear-gradient(rgba(250, 204, 21, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(250, 204, 21, 0.08) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(circle at center, black, transparent 78%);
+      radial-gradient(circle at 20% 40%, #ffd166 0 1px, transparent 1.5px),
+      radial-gradient(circle at 72% 15%, #78e0ae 0 1px, transparent 1.5px),
+      radial-gradient(circle at 55% 80%, #fffaf0 0 1px, transparent 1.5px);
+    background-size: 240px 240px, 330px 330px, 430px 430px;
   }
 
-  .yi-scanline {
-    animation: yi-scan 5.5s ease-in-out infinite;
+  .yi-shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: min(100% - 2rem, 74rem);
+    min-height: 100svh;
+    grid-template-columns: minmax(0, 0.9fr) minmax(22rem, 1.1fr);
+    gap: clamp(2rem, 7vw, 6rem);
+    align-items: center;
+    margin-inline: auto;
+    padding-block: 3rem;
   }
 
-  .yi-card {
-    animation: yi-float 4.8s ease-in-out infinite;
+  .yi-topline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
   }
 
-  @keyframes yi-float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(-0.5deg);
-    }
-    50% {
-      transform: translateY(-10px) rotate(0.5deg);
-    }
+  .yi-topline a,
+  .yi-topline span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid rgb(255 250 240 / 0.2);
+    border-radius: 999px;
+    background: rgb(255 250 240 / 0.06);
+    padding: 0.55rem 0.8rem;
+    font-size: 0.76rem;
+    font-weight: 750;
+    text-decoration: none;
   }
 
-  @keyframes yi-scan {
-    0%,
-    100% {
-      transform: translateY(-70%);
-      opacity: 0.1;
-    }
-    45%,
-    55% {
-      transform: translateY(75vh);
-      opacity: 0.34;
-    }
+  .yi-topline span { color: #78e0ae; }
+  .yi-topline i,
+  .yi-camera-bar i {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 11px currentColor;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .yi-card,
-    .yi-scanline {
-      animation: none;
-    }
+  .yi-kicker {
+    margin: 2.5rem 0 0;
+    color: #ffd166;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .yi-copy h1 {
+    max-width: 10ch;
+    margin: 0.85rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    line-height: 0.88;
+  }
+
+  .yi-lede {
+    max-width: 40rem;
+    margin: 1.4rem 0 0;
+    color: rgb(255 250 240 / 0.72);
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .yi-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+  }
+
+  .yi-tags span {
+    border: 1px solid rgb(255 209 102 / 0.24);
+    border-radius: 999px;
+    background: rgb(255 209 102 / 0.07);
+    padding: 0.4rem 0.65rem;
+    color: rgb(255 250 240 / 0.78);
+    font-size: 0.76rem;
+  }
+
+  .yi-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+    margin: 2rem 0 0;
+  }
+
+  .yi-status div {
+    border: 1px solid rgb(255 209 102 / 0.2);
+    border-radius: 1rem;
+    background: rgb(255 209 102 / 0.07);
+    padding: 1rem;
+  }
+
+  .yi-status svg { color: #ffd166; }
+  .yi-status dt {
+    margin-top: 1rem;
+    color: rgb(255 250 240 / 0.55);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .yi-status dd { margin: 0.15rem 0 0; font-weight: 800; }
+
+  .yi-portrait { position: relative; margin: 0; }
+  .yi-orbit {
+    position: absolute;
+    inset: -8% -12%;
+    border: 1px solid rgb(255 209 102 / 0.3);
+    border-radius: 50%;
+    rotate: -13deg;
+  }
+
+  .yi-camera {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgb(255 209 102 / 0.42);
+    border-radius: 2rem 2rem 0.7rem 2rem;
+    background: #0e1125;
+    box-shadow: 10px 12px 0 rgb(120 224 174 / 0.13), 0 35px 100px rgb(0 0 0 / 0.45);
+  }
+
+  .yi-camera-bar {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(255 250 240 / 0.15);
+    background: rgb(8 10 26 / 0.72);
+    padding: 0.8rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+  }
+
+  .yi-camera-bar span:last-child { display: flex; align-items: center; gap: 0.4rem; color: #78e0ae; }
+  .yi-camera img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+  .yi-camera figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    background: linear-gradient(transparent, rgb(8 10 26 / 0.92));
+    padding: 7rem 1.2rem 1.2rem;
+  }
+  .yi-camera small,
+  .yi-camera strong { display: block; }
+  .yi-camera small { color: #78e0ae; font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; }
+  .yi-camera strong { margin-top: 0.25rem; font-family: var(--font-display); font-size: 1.8rem; line-height: 1; }
+  .yi-camera b { border: 1px solid rgb(120 224 174 / 0.35); border-radius: 999px; background: rgb(120 224 174 / 0.1); color: #78e0ae; padding: 0.55rem 0.7rem; font-size: 0.72rem; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .yi-portrait { animation: yi-float 5s ease-in-out infinite; }
+  }
+  @keyframes yi-float { 50% { translate: 0 -0.6rem; } }
+
+  @media (max-width: 850px) {
+    .yi-shell { grid-template-columns: 1fr; }
+    .yi-portrait { order: -1; width: min(100%, 32rem); margin-inline: auto; }
+    .yi-copy h1 { max-width: 12ch; }
+  }
+  @media (max-width: 520px) {
+    .yi-shell { width: min(100% - 1.25rem, 74rem); padding-block: 1rem 3rem; }
+    .yi-status { grid-template-columns: 1fr; }
+    .yi-camera { border-radius: 1.2rem; box-shadow: 5px 6px 0 rgb(120 224 174 / 0.13), 0 25px 70px rgb(0 0 0 / 0.4); }
+    .yi-camera figcaption { align-items: start; flex-direction: column; }
+    .yi-camera strong { font-size: 1.4rem; }
   }
 </style>
