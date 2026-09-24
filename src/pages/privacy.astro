@@ -32,7 +32,6 @@ const sections = [
   <section class="page-section wrap">
     <div class="privacy-grid">
       <header class="privacy-intro">
-        <p class="eyebrow"><Icon name="lucide:shield-check" width="15" height="15" /> Privacy / plain language</p>
         <h1 class="page-title">A clear window, with <em>no hidden switches.</em></h1>
         <p class="lede">A short note about what this personal site does and does not collect. Last updated {updatedAt}.</p>
         <a class="button-soft" href={`${base}/linktree`} style="margin-top: 1.5rem;">
@@ -41,9 +40,8 @@ const sections = [
       </header>
 
       <div class="privacy-list panel-tactile">
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <section class="privacy-item">
-            <p class="eyebrow">0{index + 1}</p>
             <h2>{section.title}</h2>
             <p>{section.body}</p>
           </section>

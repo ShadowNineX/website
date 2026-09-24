@@ -54,7 +54,7 @@ const groupOrder = ["Code", "Music"];
         <Image src={backgroundAvatar} alt="" width={672} height={240} loading="eager" class="explore-banner" />
         <div class="explore-profile-copy">
           <Image src={githubAvatarUrl} alt={`${displayName} GitHub avatar`} width="112" height="112" loading="eager" class="explore-avatar" />
-          <p class="eyebrow" style="margin-top: 1.2rem;">@{githubUsername}</p>
+          <p class="profile-handle">@{githubUsername}</p>
           <h1>{displayName}</h1>
           <p>{profileBio} Kept small on purpose: a project door, a listening corner, and enough quiet around both.</p>
           <a class="button-soft" href={`${base}/`} style="margin-top: 1.2rem;">
@@ -64,7 +64,6 @@ const groupOrder = ["Code", "Music"];
       </header>
 
       <div>
-        <p class="eyebrow">Open doors / listening rooms</p>
         <h1 class="page-title">A few good corners of the <em>same sky.</em></h1>
         <p class="lede">Follow the build trail, check what has been playing, or leave one of these little windows open while you look around.</p>
 
