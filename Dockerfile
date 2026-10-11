@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# Self-contained: bun builds the site, nginx serves it. No railpack, no build-token.
 FROM oven/bun:1 AS build
 WORKDIR /app
 COPY package.json bun.lock ./
