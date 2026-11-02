@@ -1,10 +1,14 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
+import gta6Sunset from "@/assets/themes/gta6-afterglow.png";
+import tailsWorkshop from "@/content/blog/tails-trust-tools-home.png";
 import { Icon } from "astro-iconify";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import "@/styles/home-workshop.css";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const gta6Hero = await getImage({ src: gta6Sunset, width: 2304, format: "webp", quality: 88 });
 const githubUsername = "ShadowNineX";
 const githubProfileUrl = `https://github.com/${githubUsername}`;
 const githubAvatarUrl = `${githubProfileUrl}.png?size=512`;
@@ -148,22 +152,22 @@ const stackGroups = [
   {
     title: "Languages",
     items: [
-      ["TypeScript", "simple-icons:typescript"], ["C#", "simple-icons:csharp"], ["C++", "simple-icons:cplusplus"],
-      ["Kotlin", "simple-icons:kotlin"], ["Go", "simple-icons:go"], ["Lua", "simple-icons:lua"], ["Python", "simple-icons:python"],
+      ["TypeScript", "simple-icons:typescript", "#4598e6"], ["C#", "simple-icons:csharp", "#bd8cf4"], ["C++", "simple-icons:cplusplus", "#67a9df"],
+      ["Kotlin", "simple-icons:kotlin", "#ad80ff"], ["Go", "simple-icons:go", "#00c5e5"], ["Lua", "simple-icons:lua", "#96aaff"], ["Python", "simple-icons:python", "#f4cf67"],
     ],
   },
   {
     title: "Frontend",
     items: [
-      ["Astro", "simple-icons:astro"], ["Vue", "simple-icons:vuedotjs"], ["Tailwind CSS", "simple-icons:tailwindcss"],
-      ["shadcn-vue", "lucide:layers-3"], ["Vite", "simple-icons:vite"],
+      ["Astro", "simple-icons:astro", "#ff825c"], ["Vue", "simple-icons:vuedotjs", "#42c995"], ["Tailwind CSS", "simple-icons:tailwindcss", "#38bdf8"],
+      ["shadcn-vue", "lucide:layers-3", "#eeaacb"], ["Vite", "simple-icons:vite", "#ba94ff"],
     ],
   },
   {
     title: "Tools",
     items: [
-      ["Bun", "simple-icons:bun"], [".NET", "simple-icons:dotnet"], ["CMake", "simple-icons:cmake"],
-      ["Unreal Engine", "simple-icons:unrealengine"], ["MCP", "lucide:bot"],
+      ["Bun", "simple-icons:bun", "#f3d1a8"], [".NET", "simple-icons:dotnet", "#b49aff"], ["CMake", "simple-icons:cmake", "#78d39b"],
+      ["Unreal Engine", "simple-icons:unrealengine", "#a3baff"], ["MCP", "lucide:bot", "#71e7dc"],
     ],
   },
 ];
@@ -173,9 +177,9 @@ const stackGroups = [
   title={displayName}
   description={`${displayName}'s luminous workshop for projects, game tooling, music, and small notes.`}
 >
-  <section class="home-hero wrap">
+  <section class="home-hero wrap" style={{ "--gta6-hero-image": `url("${gta6Hero.src}")` }}>
     <div class="hero-copy">
-      <h1 class="display-title">A home for bright ideas and <em>useful sparks.</em></h1>
+      <h1 class="display-title"><span class="hero-title-line">A home for bright</span>{" "}<span class="hero-title-line">ideas and <em>useful sparks.</em></span></h1>
       <p class="lede">
         I'm {displayName}, a developer building tools, modding experiments, cozy web pages, and odd ideas that need somewhere warm to land. Come in—the music is nearby and the workbench is open.
       </p>
@@ -232,27 +236,35 @@ const stackGroups = [
     </div>
   </section>
 
-  <section class="page-section wrap">
-    <div class="twin-signal panel-tactile">
-      <div class="signal-intro">
-        <div class="signal-lamps" aria-hidden="true"><span></span><span></span></div>
-        <h2>I'm here—let's figure it out together.</h2>
+  <section class="companion-section wrap" aria-labelledby="companion-title">
+    <div class="companion-stage">
+      <Image
+        class="companion-art"
+        src={tailsWorkshop}
+        alt="Tails holding a wrench beside an open notebook in a warmly lit workshop."
+        width={1693}
+        height={929}
+        widths={[640, 960, 1440, 1693]}
+        sizes="(max-width: 680px) 100vw, (max-width: 1200px) 75vw, 1000px"
+        loading="lazy"
+      />
+      <div class="companion-copy">
+        <h2 id="companion-title">I'm here—let's figure it out <em>together.</em></h2>
         <p>Two warm lights from one shared room: the notebook is open, careful work is welcome, and there is space at the bench for the next idea.</p>
-        <a class="button-soft" href={`${base}/blog/tails-trust-tools-home`} style="margin-top: 1.5rem;">
-          <Icon name="lucide:book-heart" width="16" height="16" />
+        <a class="companion-link" href={`${base}/blog/tails-trust-tools-home`}>
+          <Icon name="lucide:book-heart" width="20" height="20" aria-hidden="true" />
           Read Tails's note
+          <Icon name="lucide:arrow-up-right" width="19" height="19" aria-hidden="true" />
         </a>
       </div>
-      <div class="signal-notes">
-        {tailsCompanionNotes.map((card) => (
-          <article class="signal-note">
-            <div>
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+    </div>
+    <div class="companion-notes">
+      {tailsCompanionNotes.map((note) => (
+        <article class="companion-note">
+          <h3>{note.title}</h3>
+          <p>{note.description}</p>
+        </article>
+      ))}
     </div>
   </section>
 
@@ -273,6 +285,7 @@ const stackGroups = [
             alt={latestBlogPost.data.imageAlt ?? ""}
             width={1200}
             height={630}
+            loading="eager"
             transition:name={`blog-image-${latestBlogPost.id}`}
             transition:animate="initial"
           />
@@ -330,8 +343,8 @@ const stackGroups = [
           <section>
             <h3>{group.title}</h3>
             <ul>
-              {group.items.map(([label, icon]) => (
-                <li><Icon name={icon} width="14" height="14" /> {label}</li>
+              {group.items.map(([label, icon, color]) => (
+                <li><Icon class="stack-icon" name={icon} width="20" height="20" style={`color: ${color}`} aria-hidden="true" /> {label}</li>
               ))}
             </ul>
           </section>

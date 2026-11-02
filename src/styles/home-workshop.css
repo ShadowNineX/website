@@ -1,0 +1,91 @@
+/* A single illustrated welcome, followed by open notes rather than card shells. */
+.companion-section {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+
+.companion-stage {
+  position: relative;
+  display: flex;
+  min-height: 35rem;
+  align-items: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.companion-art {
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  right: 0;
+  width: 74%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 46% center;
+  transition: scale 260ms cubic-bezier(0.16, 1, 0.3, 1), filter 260ms ease-out;
+}
+
+.companion-stage::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, var(--night) 0%, var(--night) 20%, color-mix(in srgb, var(--night) 94%, transparent) 34%, color-mix(in srgb, var(--night) 60%, transparent) 48%, transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.companion-copy {
+  max-width: 31rem;
+  padding-block: 2rem;
+}
+
+.companion-copy h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 4.6vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.companion-copy h2 em { color: var(--solar); font-style: normal; }
+.companion-copy p { max-width: 37ch; margin: 1.25rem 0 1.4rem; color: var(--paper); font-size: 0.95rem; line-height: 1.75; }
+.companion-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.6rem; color: var(--cyan); font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 0.35em; }
+.companion-link > svg { flex: none; }
+.companion-stage:has(.companion-link:is(:hover, :focus-visible)) .companion-art { scale: 1.015; filter: saturate(1.08); }
+
+.companion-notes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+
+.companion-note h3 { margin: 0 0 0.6rem; color: var(--solar); font-size: 1.08rem; font-weight: 700; }
+.companion-note p { margin: 0; color: var(--mist); font-size: 0.9rem; line-height: 1.7; }
+.companion-note + .companion-note { border-left: 1px solid var(--line); padding-left: clamp(1.5rem, 4vw, 3rem); }
+.stack-groups .stack-icon { width: 1.2rem; height: 1.2rem; flex: 0 0 auto; }
+
+@media (min-width: 681px) and (max-width: 1000px) {
+  .companion-copy { max-width: 48%; }
+  .companion-copy h2 { font-size: clamp(2.5rem, 5vw, 3.6rem); }
+  .companion-stage { min-height: 32rem; }
+}
+
+@media (max-width: 680px) {
+  .companion-stage { display: block; min-height: 0; overflow: visible; }
+  .companion-art { position: relative; z-index: auto; width: 100%; height: auto; aspect-ratio: 4 / 3; object-position: 45% center; }
+  .companion-stage::after { display: none; }
+  .companion-copy { max-width: none; padding-block: 1.5rem 0; }
+  .companion-copy h2 { max-width: 17ch; font-size: clamp(2.3rem, 9vw, 3.4rem); }
+  .companion-copy p { max-width: 45ch; }
+  .companion-notes { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 1.5rem; }
+  .companion-note + .companion-note { border-left: 0; border-top: 1px solid var(--line); padding: 1.25rem 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion-art { transition: none; }
+  .companion-stage:has(.companion-link:is(:hover, :focus-visible)) .companion-art { scale: none; filter: none; }
+}

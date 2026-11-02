@@ -1,0 +1,15 @@
+{
+  "buildPath": "comp",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-11-02T18:08:37.393Z",
+        "reason": "Preserved incumbent Tails theme: the user requested saving the original appearance as Tails while adding a separate GTA6 theme. Fraunces remains its existing display face; GTA6 uses Barlow Condensed."
+      }
+    ]
+  }
+}

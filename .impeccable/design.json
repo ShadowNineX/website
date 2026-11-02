@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T00:00:00Z",
+  "title": "Design System: ShadowNine",
+  "extensions": {
+    "typographyMeta": {
+      "body": {
+        "displayName": "Space Grotesk",
+        "purpose": "Plain readable body copy in both themes."
+      },
+      "display": {
+        "displayName": "Theme display face",
+        "purpose": "Fraunces for Tails; local Barlow Condensed ExtraBold for GTA6."
+      },
+      "mono": {
+        "displayName": "JetBrains Mono",
+        "purpose": "Technical labels and metadata where already used."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tails-ambient",
+        "value": "0 24px 80px rgb(4 5 20 / 0.34)",
+        "purpose": "Ambient depth in the Tails baseline."
+      },
+      {
+        "name": "gta6-ambient",
+        "value": "0 20px 60px rgb(17 6 25 / 0.22)",
+        "purpose": "Ambient depth for the Afterglow theme."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-transition",
+        "value": "150ms ease",
+        "purpose": "Existing button and control state transitions."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce)",
+        "purpose": "Disable or reduce entrance motion when requested by the visitor."
+      }
+    ],
+    "bodyFade": {
+      "name": "profile-black-bottom-fade",
+      "value": "linear-gradient(180deg, transparent 28%, rgb(0 0 0 / 0.15) 42%, rgb(0 0 0 / 0.9) 73%, #08080b)",
+      "purpose": "Black lower fade over the single full-bleed GTA6 profile image feature."
+    },
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "900px"
+      },
+      {
+        "name": "compact",
+        "value": "680px"
+      },
+      {
+        "name": "small",
+        "value": "480px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action using the current theme accent.",
+      "html": "<button class=\"ds-btn-primary\">OPEN PROJECT</button>",
+      "css": ".ds-btn-primary{background:var(--cyan);color:var(--night);border:1px solid transparent;border-radius:.85rem;padding:.75rem 1rem;font:700 .88rem Space Grotesk,sans-serif;transition:translate 150ms ease,background 150ms ease,border-color 150ms ease,box-shadow 150ms ease}.ds-btn-primary:hover{translate:0 -.15rem}.ds-btn-primary:focus-visible{outline:2px solid var(--solar);outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Soft secondary action on a panel surface.",
+      "html": "<button class=\"ds-btn-secondary\">READ NOTES</button>",
+      "css": ".ds-btn-secondary{background:var(--panel-soft);color:var(--paper);border:1px solid var(--line);border-radius:.85rem;padding:.75rem 1rem;font:700 .88rem Space Grotesk,sans-serif;transition:translate 150ms ease,background 150ms ease,border-color 150ms ease}.ds-btn-secondary:hover{translate:0 -.15rem;border-color:var(--cyan)}.ds-btn-secondary:focus-visible{outline:2px solid var(--solar);outline-offset:3px}"
+    },
+    {
+      "name": "Theme Selector",
+      "kind": "input",
+      "refersTo": "button-secondary",
+      "description": "Native labeled selector for explicit theme choice.",
+      "html": "<label class=\"ds-selector-label\">Theme<select class=\"ds-selector\"><option>Tails</option><option>GTA6</option></select></label>",
+      "css": ".ds-selector-label{display:inline-flex;align-items:center;gap:.6rem;color:var(--paper);font:700 .8rem Space Grotesk,sans-serif}.ds-selector{min-width:5.7rem;min-height:2.75rem;border:1px solid var(--line-bright);border-radius:.75rem;padding:.5rem .65rem;background:var(--panel-solid);color:var(--paper);font:inherit}.ds-selector:hover{border-color:var(--cyan)}.ds-selector:focus-visible{outline:2px solid var(--solar);outline-offset:3px}"
+    },
+    {
+      "name": "Active Navigation",
+      "kind": "nav",
+      "refersTo": "button-secondary",
+      "description": "Shared sliding rail navigation with active and hover tracking.",
+      "html": "<nav class=\"ds-nav-dial\" aria-label=\"Primary navigation\"><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">Home</a><a class=\"ds-nav-link\" href=\"#\">Notes</a><span class=\"ds-nav-rail\" aria-hidden=\"true\"></span></nav>",
+      "css": ".ds-nav-dial{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:20.25rem}.ds-nav-link{display:flex;min-height:2.75rem;align-items:center;justify-content:center;border-radius:.7rem;padding:.65rem .55rem;color:var(--mist);font:750 .8rem Space Grotesk,sans-serif;text-decoration:none;transition:color 150ms ease,translate 150ms ease}.ds-nav-link:hover,.ds-nav-link:focus-visible{color:var(--paper)}.ds-nav-link[aria-current=page]{color:var(--solar)}.ds-nav-rail{position:absolute;right:50%;bottom:-.08rem;left:0;width:50%;height:.2rem;border-radius:999px 999px 0 0;background:var(--solar);box-shadow:0 -.12rem .8rem rgb(255 209 102 / .34);transition:transform 210ms cubic-bezier(.2,.8,.2,1)}.ds-nav-link:focus-visible{outline:2px solid var(--solar);outline-offset:3px}@media (prefers-reduced-motion:reduce){.ds-nav-link,.ds-nav-rail{transition:none}}"
+    },
+    {
+      "name": "Explore Destination Row",
+      "kind": "custom",
+      "description": "Open real destination row for Explore, with responsive columns and no card shell.",
+      "html": "<a class=\"ds-explore-row\" href=\"#\"><strong>GitHub</strong><span>Projects and code</span><span aria-hidden=\"true\">↗</span></a>",
+      "css": ".ds-explore-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:1rem;align-items:center;min-width:0;border-top:1px solid var(--line);padding:1.15rem .35rem;color:var(--paper);text-decoration:none;transition:color 150ms ease}.ds-explore-row:hover,.ds-explore-row:focus-visible{color:var(--solar)}.ds-explore-row:focus-visible{outline:2px solid var(--solar);outline-offset:3px}.ds-explore-row span{color:var(--mist)}"
+    },
+    {
+      "name": "Profile Image Feature",
+      "kind": "custom",
+      "description": "Single full-bleed GTA6 profile image with black lower fade and overlaid identity.",
+      "html": "<article class=\"ds-image-feature\" aria-label=\"Profile preview\"><img src=\"https://github.com/ShadowNineX.png?size=512\" loading=\"eager\" alt=\"ShadowNine GitHub avatar\"><div><strong>ShadowNine</strong><p>Tails fan.</p><dl><dt>Profile stats</dt><dd>Live GitHub data</dd></dl></div></article>",
+      "css": ".ds-image-feature{position:relative;overflow:hidden;aspect-ratio:4/5;border-radius:.25rem;background:#08080b;color:#fff5e9;box-shadow:0 20px 44px rgb(17 6 25 / 0.25);font-family:Space Grotesk,sans-serif}.ds-image-feature img{width:100%;height:100%;object-fit:cover}.ds-image-feature:after{position:absolute;inset:0;background:linear-gradient(180deg,transparent 28%,rgb(0 0 0 / .15) 42%,rgb(0 0 0 / .9) 73%,#08080b);content:\"\";pointer-events:none}.ds-image-feature>div{position:absolute;z-index:1;right:0;bottom:0;left:0;padding:1.4rem}.ds-image-feature p{color:#e3dce5}.ds-image-feature:focus-within{outline:2px solid #ffd18b;outline-offset:3px}@media (max-width:360px){.ds-image-feature>div{padding:1.15rem}.ds-image-feature strong{font-size:1.8rem}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The cozy ShadowNine workshop at Miami dusk",
+    "overview": "Tails is the preserved indigo workshop baseline. GTA6 is the default Afterglow theme: warm plum surfaces, sunset accents, teal controls, and bold condensed headings while body copy remains plain and readable.",
+    "keyCharacteristics": [
+      "Shared semantic mapping",
+      "Warm dusk palettes",
+      "Readable workshop chrome"
+    ],
+    "rules": [
+      {
+        "name": "Shared Token Rule",
+        "body": "Use the same semantic variables across themes; only the theme mapping changes.",
+        "section": "colors"
+      },
+      {
+        "name": "Plain Body Rule",
+        "body": "Keep Space Grotesk for body text in both themes.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do preserve native selector and keyboard behavior.",
+      "Do respect prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't add seasonal scheduling, HUDs, wanted stars, or grit.",
+      "Don't manage the Yi tribute with the site theme controller."
+    ]
+  }
+}

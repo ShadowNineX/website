@@ -1,6 +1,8 @@
 ---
 import { SEO } from "astro-seo";
 import { canonicalUrlForPath } from "@/lib/routes";
+import { themeConfig } from "@/config/themes";
+import { installThemeController } from "@/scripts/theme-controller";
 import type { Props as SEOProps } from "astro-seo";
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
   noindex?: boolean;
   nofollow?: boolean;
   themeColor?: string;
+  themeManaged?: boolean;
 }
 
 const {
@@ -22,8 +25,11 @@ const {
   twitter,
   noindex,
   nofollow,
-  themeColor = "#171936",
+  themeColor,
+  themeManaged = true,
 } = Astro.props;
+const resolvedThemeColor = themeColor ?? (themeManaged ? themeConfig.themes[themeConfig.defaultTheme].color : themeConfig.themes.tails.color);
+const themeBootstrap = `(${installThemeController.toString()})(${JSON.stringify(themeConfig)});`;
 
 const siteName = "ShadowNine";
 const defaultTitle = "ShadowNine";
@@ -86,7 +92,8 @@ const resolvedTwitter = {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content={themeColor} />
+  <meta name="theme-color" content={resolvedThemeColor} data-site-theme-color={themeManaged} />
+  <script is:inline set:html={themeBootstrap} />
   <meta name="generator" content={Astro.generator} />
   <SEO
     title={resolvedTitle}

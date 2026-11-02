@@ -19,7 +19,86 @@
   <div class="sky-map__stars"></div>
 </div>
 
+<div class="afterglow-geometry" aria-hidden="true" transition:persist="afterglow-geometry">
+  <span class="afterglow-arch afterglow-arch--teal"></span>
+  <span class="afterglow-arch afterglow-arch--apricot"></span>
+  <span class="afterglow-sun"></span>
+  <svg class="afterglow-horizon" viewBox="0 0 1440 460" preserveAspectRatio="none" fill="none">
+    <path d="M-100 300C230 65 400 475 775 250S1250 45 1540 170" />
+    <path d="M-100 318C230 83 400 493 775 268S1250 63 1540 188" />
+  </svg>
+</div>
+
 <style>
+  .afterglow-geometry { display: none; }
+
+  :global([data-theme="gta6"]) .afterglow-geometry {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .afterglow-arch {
+    position: absolute;
+    width: clamp(13rem, 21vw, 23rem);
+    height: clamp(27rem, 65vh, 44rem);
+    border: 1px solid currentColor;
+    border-radius: 50% 50% 0 0;
+  }
+
+  .afterglow-arch::after {
+    position: absolute;
+    inset: 0.85rem;
+    border: 1px solid currentColor;
+    border-bottom: 0;
+    border-radius: inherit;
+    content: "";
+  }
+
+  .afterglow-arch--teal {
+    top: 18vh;
+    left: -9rem;
+    color: color-mix(in srgb, var(--cyan) 22%, transparent);
+    transform: rotate(-18deg);
+  }
+
+  .afterglow-arch--apricot {
+    right: -8rem;
+    bottom: -12rem;
+    color: color-mix(in srgb, var(--coral) 20%, transparent);
+    transform: rotate(24deg);
+  }
+
+  .afterglow-sun {
+    position: absolute;
+    top: 17vh;
+    right: 3vw;
+    width: clamp(7rem, 12vw, 12rem);
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb, var(--solar) 18%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--coral) 4%, transparent);
+  }
+
+  .afterglow-horizon {
+    position: absolute;
+    inset: auto 0 -4rem;
+    width: 100%;
+    height: 46vh;
+    stroke: color-mix(in srgb, var(--magenta) 13%, transparent);
+    stroke-width: 1;
+  }
+
+  @media (max-width: 680px) {
+    .afterglow-arch--teal { left: -10rem; opacity: 0.7; }
+    .afterglow-arch--apricot { right: -11rem; }
+    .afterglow-sun { top: 24vh; right: -3rem; opacity: 0.6; }
+    .afterglow-horizon { opacity: 0.6; }
+  }
+
   .sky-map {
     --drift-x: 0px;
     --drift-y: 0px;

@@ -1,0 +1,56 @@
+---
+import { Icon } from "astro-iconify";
+import ThemeSwitcher from "@/components/ThemeSwitcher.astro";
+import { normalizeRoutePath } from "@/lib/routes";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const navLinks = [
+  { href: `${base}/`, label: "Home", icon: "lucide:house" },
+  { href: `${base}/blog`, label: "Notes", icon: "lucide:notebook-tabs" },
+  { href: `${base}/linktree`, label: "Explore", icon: "lucide:orbit" },
+];
+const home = normalizeRoutePath(`${base}/`);
+const currentPath = normalizeRoutePath(Astro.url.pathname);
+const isActive = (href: string) => {
+  const target = normalizeRoutePath(href);
+  return target === home
+    ? currentPath === home
+    : currentPath === target || currentPath.startsWith(`${target}/`);
+};
+const activeIndex = navLinks.findIndex((link) => isActive(link.href));
+---
+
+<nav class="site-nav wrap" aria-label="Primary navigation">
+  <a class="brand" href={`${base}/`} aria-label="ShadowNine home">
+    <span class="brand-mark" aria-hidden="true">
+      <Icon name="lucide:radio-tower" width="19" height="19" />
+    </span>
+    <span class="brand-copy">
+      <strong>ShadowNine</strong>
+      <span>a warm place for small builds</span>
+    </span>
+  </a>
+
+  <div class="nav-dial" style={`--nav-active: ${activeIndex}`}>
+    <ul class="nav-list">
+      {
+        navLinks.map((link, index) => (
+          <li>
+            <a
+              class="nav-link"
+              href={link.href}
+              data-nav-index={index}
+              aria-current={isActive(link.href) ? "page" : undefined}
+            >
+              <Icon name={link.icon} width="16" height="16" />
+              <span>{link.label}</span>
+              <Icon class="nav-link__arrow" name="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {activeIndex >= 0 && <span class="nav-rail" aria-hidden="true"></span>}
+  </div>
+  <ThemeSwitcher />
+</nav>

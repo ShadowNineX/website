@@ -1,0 +1,584 @@
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../assets/fonts/BarlowCondensed-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Shared appearance control; original Tails colors stay in global.css. */
+.site-nav {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--paper);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.theme-select {
+  min-width: 5.7rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--line-bright);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--panel-solid);
+  color: var(--paper);
+  font: inherit;
+  cursor: pointer;
+}
+
+.theme-select:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.theme-select:hover:not(:disabled) {
+  border-color: var(--cyan);
+}
+
+.theme-switcher__noscript {
+  color: var(--mist);
+  font-size: 0.75rem;
+}
+
+:root[data-theme="gta6"] {
+  min-width: 0;
+  --night: #24112e;
+  --night-deep: #1b0d25;
+  --panel: #351a3e;
+  --panel-solid: #351a3e;
+  --panel-soft: #49244e;
+  --paper: #fff5e9;
+  --mist: #e3cde4;
+  --line: rgb(239 174 215 / 0.28);
+  --line-bright: #d8e7e5;
+  --cyan: #9de6e2;
+  --cyan-deep: #32bcb2;
+  --violet: #c29be7;
+  --magenta: #ff80bc;
+  --solar: #ffd18b;
+  --coral: #ffad91;
+  --green: #99e1b7;
+  --shadow: 0 20px 60px rgb(17 6 25 / 0.22);
+  --font-display: "Barlow Condensed", "Space Grotesk", sans-serif;
+  scrollbar-color: var(--magenta) var(--night-deep);
+  caret-color: var(--solar);
+}
+
+[data-theme="gta6"] body {
+  background: linear-gradient(180deg, #3c1b48 0, var(--night) 70rem, var(--night-deep));
+}
+
+[data-theme="gta6"] .sky-map {
+  display: none;
+}
+
+[data-theme="gta6"] .site-header {
+  background: #301239;
+  backdrop-filter: none;
+}
+
+[data-theme="gta6"] .brand-mark {
+  border-color: var(--cyan);
+  border-radius: 0.7rem;
+  background: #432448;
+  box-shadow: none;
+}
+
+[data-theme="gta6"] .brand-mark::after {
+  box-shadow: none;
+}
+
+[data-theme="gta6"] .nav-link[aria-current="page"] {
+  border-color: var(--solar);
+  background: rgb(255 209 139 / 0.08);
+}
+
+[data-theme="gta6"] .theme-select {
+  border-color: var(--line-bright);
+  background: #301239;
+}
+
+[data-theme="gta6"] :is(.display-title, .page-title, .section-title, .article-title) {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+}
+
+[data-theme="gta6"] :is(.display-title, .page-title) {
+  max-width: 16ch;
+  font-size: clamp(3.4rem, 6.7vw, 6rem);
+}
+
+[data-theme="gta6"] :is(.display-title, .page-title, .section-title) em {
+  color: var(--coral);
+  font-style: normal;
+  font-weight: 800;
+}
+
+[data-theme="gta6"] .home-hero {
+  position: relative;
+  isolation: isolate;
+  width: min(100% - 4rem, 86rem);
+  min-height: 42.5rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.85fr);
+  gap: 4rem;
+  padding-block: 4rem;
+}
+
+/* Keep the full-bleed hero artwork inside the page's scrollbar gutter. */
+[data-theme="gta6"] .site-frame {
+  overflow-x: clip;
+}
+
+[data-theme="gta6"] .home-hero::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-image:
+    linear-gradient(90deg, rgb(36 17 46 / 0.24), transparent 68%),
+    var(--gta6-hero-image);
+  background-position: center;
+  background-size: cover;
+  content: "";
+}
+
+[data-theme="gta6"] .hero-copy .display-title {
+  max-width: none;
+  font-size: clamp(3.4rem, 5.6vw, 6rem);
+}
+
+[data-theme="gta6"] .hero-title-line {
+  display: block;
+}
+
+[data-theme="gta6"] .hero-copy::after,
+[data-theme="gta6"] .page-hero::after {
+  display: none;
+}
+
+[data-theme="gta6"] .hero-copy .lede {
+  max-width: 39rem;
+  color: var(--paper);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+[data-theme="gta6"] .observatory-card {
+  width: min(100%, 23rem);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0;
+  background: #08080b;
+  box-shadow: 0 20px 44px rgb(17 6 25 / 0.25);
+  rotate: none;
+}
+
+[data-theme="gta6"] .observatory-card .profile-image-wrap {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+[data-theme="gta6"] .observatory-card .profile-image {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-position: 50% 25%;
+}
+
+[data-theme="gta6"] .observatory-card::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 28%, rgb(0 0 0 / 0.15) 42%, rgb(0 0 0 / 0.9) 73%, #08080b);
+  pointer-events: none;
+  content: "";
+}
+
+[data-theme="gta6"] .profile-copy {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1.4rem;
+}
+
+[data-theme="gta6"] .profile-copy h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+[data-theme="gta6"] .stat-chip {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+[data-theme="gta6"] .stat-row {
+  gap: 0.75rem;
+  border-top: 1px solid rgb(255 245 233 / 0.3);
+  padding-top: 0.85rem;
+}
+
+[data-theme="gta6"] .profile-copy :is(p, dt) {
+  color: #e3dce5;
+}
+
+[data-theme="gta6"] .stat-chip dd {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+}
+
+[data-theme="gta6"] .button {
+  background: var(--solar);
+  box-shadow: none;
+}
+
+[data-theme="gta6"] .button-soft {
+  border-color: var(--cyan);
+  background: rgb(36 17 46 / 0.8);
+}
+
+[data-theme="gta6"] .button-soft:hover {
+  background: #49244e;
+}
+
+[data-theme="gta6"] :is(.panel, .panel-tactile, .project-card, .note-card, .link-card, .article-prose) {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-theme="gta6"] .observatory-card.panel-tactile {
+  border-radius: 0.25rem;
+  background: #08080b;
+  box-shadow: 0 20px 44px rgb(17 6 25 / 0.25);
+}
+
+[data-theme="gta6"] :is(.signal-intro, .signal-note, .stack-copy, .stack-groups, .privacy-item) {
+  background: transparent;
+}
+
+[data-theme="gta6"] :is(.twin-signal, .stack-board) {
+  gap: clamp(2rem, 6vw, 5rem);
+  overflow: visible;
+}
+
+[data-theme="gta6"] :is(.signal-intro, .stack-copy, .stack-groups) {
+  padding: 0;
+}
+
+[data-theme="gta6"] .signal-notes {
+  gap: 0;
+  background: transparent;
+}
+
+[data-theme="gta6"] .signal-note {
+  border-top: 1px solid var(--line);
+  padding: 1.35rem 0;
+}
+
+[data-theme="gta6"] .feature-note-copy {
+  padding-block: 0;
+}
+
+[data-theme="gta6"] .project-grid {
+  display: block;
+  border-top: 1px solid var(--line);
+}
+
+[data-theme="gta6"] .project-card {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: 1.5rem minmax(12rem, 0.9fr) minmax(0, 1.4fr);
+  gap: 0.65rem 1.5rem;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding: 1.6rem 0;
+}
+
+[data-theme="gta6"] .project-top {
+  display: contents;
+}
+
+[data-theme="gta6"] .project-icon {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+[data-theme="gta6"] .project-card h3 {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-size: 2rem;
+}
+
+[data-theme="gta6"] .project-card p {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  margin: 0;
+}
+
+[data-theme="gta6"] .project-meta {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+[data-theme="gta6"] .project-card:hover,
+[data-theme="gta6"] .link-card:hover,
+[data-theme="gta6"] .note-card:hover {
+  background: transparent;
+  color: var(--solar);
+  translate: none;
+}
+
+[data-theme="gta6"] :is(.project-icon, .link-icon) {
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+[data-theme="gta6"] .article-image {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-theme="gta6"] .article-prose {
+  padding: 0;
+}
+
+[data-theme="gta6"] :is(.note-card, .link-card, .privacy-item) {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 0;
+}
+
+[data-theme="gta6"] .note-card {
+  min-height: 12rem;
+}
+
+[data-theme="gta6"] .link-card-main {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0 0 1rem;
+}
+
+[data-theme="gta6"] :is(.explore-grid > *, .link-groups, .link-cards, .link-card-main > *) {
+  min-width: 0;
+}
+
+[data-theme="gta6"] .link-group-title {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+[data-theme="gta6"] .link-group-title > span:last-child {
+  flex: none;
+}
+
+[data-theme="gta6"] .privacy-list {
+  gap: 0;
+}
+
+[data-theme="gta6"] .explore-profile-copy {
+  padding: 1.5rem 0;
+}
+
+[data-theme="gta6"] .explore-avatar {
+  border-radius: 0;
+}
+
+[data-theme="gta6"] .focus-strip {
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  border: 0;
+  background: transparent;
+  padding-block: 3rem;
+}
+
+[data-theme="gta6"] .focus-intro {
+  position: static;
+}
+
+[data-theme="gta6"] .focus-intro h2 {
+  font-size: clamp(2.4rem, 3.7vw, 3.5rem);
+  font-weight: 800;
+}
+
+[data-theme="gta6"] .focus-intro p {
+  max-width: 50rem;
+}
+
+[data-theme="gta6"] .focus-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  border: 0;
+}
+
+[data-theme="gta6"] .focus-item {
+  display: block;
+  border: 0;
+  padding: 0;
+}
+
+[data-theme="gta6"] .focus-item h2 {
+  margin-bottom: 0.7rem;
+  font-size: 1.75rem;
+}
+
+[data-theme="gta6"] .page-hero {
+  background: linear-gradient(115deg, #3b1c49, #60304f);
+}
+
+[data-theme="gta6"] .site-footer {
+  background: var(--night-deep);
+  backdrop-filter: none;
+}
+
+[data-theme="gta6"] :is(.home-hero, .page-hero) > * {
+  animation: none;
+}
+
+@media (max-width: 900px) {
+  [data-theme="gta6"] .home-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-block: 3.5rem;
+  }
+
+  [data-theme="gta6"] .home-hero::before {
+    background-position: 60% top;
+    background-size: auto 100%;
+    background-image:
+      linear-gradient(90deg, rgb(36 17 46 / 0.45), rgb(36 17 46 / 0.22)),
+      var(--gta6-hero-image);
+  }
+
+  [data-theme="gta6"] .observatory-card {
+    justify-self: center;
+  }
+
+  [data-theme="gta6"] .hero-title-line {
+    display: inline;
+  }
+
+  [data-theme="gta6"] .feature-note-copy {
+    padding: 1.5rem 0 0;
+  }
+
+  [data-theme="gta6"] .explore-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .site-nav {
+    gap: 0.4rem;
+  }
+
+  .theme-switcher > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .theme-select {
+    width: 5rem;
+    min-width: 0;
+    padding-inline: 0.35rem;
+    font-size: 0.8rem;
+  }
+
+  [data-theme="gta6"] .home-hero {
+    width: calc(100% - 2rem);
+    padding-block: 3rem;
+  }
+
+  [data-theme="gta6"] .hero-copy .display-title {
+    font-size: clamp(3.4rem, 13vw, 5.4rem);
+  }
+
+  [data-theme="gta6"] .hero-copy .lede {
+    font-size: 1rem;
+  }
+
+  [data-theme="gta6"] .focus-list {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  [data-theme="gta6"] .project-card {
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+  }
+
+  [data-theme="gta6"] .project-card p {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-nav {
+    gap: 0.25rem;
+  }
+
+  .brand-mark {
+    display: none;
+  }
+
+  .brand-copy strong {
+    font-size: 0.82rem;
+  }
+
+  .nav-link {
+    width: 2.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  [data-theme="gta6"] .profile-copy {
+    padding: 1.15rem;
+  }
+
+  [data-theme="gta6"] .profile-copy h2 {
+    font-size: 1.8rem;
+  }
+
+  .site-nav {
+    grid-template-columns: minmax(0, 1fr) auto 4.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .nav-list {
+    gap: 0;
+  }
+
+  .nav-link {
+    width: 2.15rem;
+  }
+
+  .theme-select {
+    width: 4.25rem;
+  }
+}

@@ -1,0 +1,18 @@
+---
+import { themeConfig } from "@/config/themes";
+
+const themes = Object.entries(themeConfig.themes);
+---
+
+<label class="theme-switcher">
+  <span>Theme</span>
+  <select class="theme-select" data-theme-select disabled>
+    {
+      themes.map(([value, theme]) => (
+        <option value={value} selected={value === themeConfig.defaultTheme}>{theme.label}</option>
+      ))
+    }
+  </select>
+</label>
+
+<noscript><span class="theme-switcher__noscript">Theme selection needs JavaScript.</span></noscript>

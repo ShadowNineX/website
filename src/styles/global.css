@@ -60,7 +60,7 @@
   }
 
   html {
-    min-width: 320px;
+    min-width: 0;
     scroll-behavior: smooth;
     background: var(--night);
     text-size-adjust: 100%;

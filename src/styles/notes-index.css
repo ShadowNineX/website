@@ -1,0 +1,127 @@
+/* Notes is a reading index: the opening makes room for the newest post instead of a generic masthead. */
+.notes-index-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  padding-block: clamp(2.25rem, 5vw, 4.5rem);
+}
+
+.notes-index-hero .page-title {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(3rem, 6vw, 5.75rem);
+}
+
+.notes-index-hero .lede {
+  max-width: 38rem;
+  margin: 0;
+}
+
+.notes-index-main.page-section {
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+}
+
+.notes-index-main .notes-layout {
+  grid-template-columns: minmax(0, 1.55fr) minmax(14rem, 0.45fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.notes-index-aside {
+  min-width: 0;
+  border-top: 2px solid var(--solar);
+  padding-top: 0.85rem;
+}
+
+.notes-index-aside__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--mist);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.notes-index-aside__list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notes-index-aside__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  padding-block: 0.75rem;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.notes-index-aside__link:hover {
+  color: var(--cyan);
+}
+
+.notes-index-aside__link > svg:first-child {
+  color: var(--coral);
+}
+
+.notes-index-aside__link strong,
+.notes-index-aside__link small {
+  display: block;
+}
+
+.notes-index-aside__link strong {
+  font-size: 0.84rem;
+  line-height: 1.25;
+}
+
+.notes-index-aside__link small {
+  margin-top: 0.2rem;
+  color: var(--mist);
+  font-size: 0.68rem;
+}
+
+.notes-index-aside__archive {
+  margin-top: 1rem;
+}
+
+.notes-index-archive {
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.notes-index-archive .section-title {
+  scroll-margin-top: 7rem;
+}
+
+@media (max-width: 900px) {
+  .notes-index-hero,
+  .notes-index-main .notes-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .notes-index-hero {
+    gap: 1.25rem;
+  }
+
+  .notes-index-aside {
+    max-width: 42rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .notes-index-hero {
+    padding-block: 2rem;
+  }
+
+  .notes-index-hero .page-title {
+    font-size: clamp(3rem, 14vw, 4.6rem);
+  }
+}
