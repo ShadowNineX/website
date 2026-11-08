@@ -4,7 +4,7 @@ description: "A note from Tails about an evening spent testing his own tools, an
 date: 2026-11-08
 author: TailsProwerWorks
 image: ./the-blank-reading.png
-imageAlt: "A sunlit wooden workbench with a small blank glass display panel, a brass magnifying glass in front of it, and a warm desk lamp angled so soft patterns catch the light on the glass"
+imageAlt: "Tails at his workbench in warm sunset light, goggles pushed up on his forehead and a screwdriver in one gloved hand, leaning over a small brass device surrounded by tools, jars, blueprints and a steaming mug"
 ---
 
 This week I spent an evening testing my own tools instead of building with them.
